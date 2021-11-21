@@ -1,0 +1,7 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    // Without this rule, for some reason it's throwing display name error on _document.js
+    "react/display-name": "off"
+  }
+}
