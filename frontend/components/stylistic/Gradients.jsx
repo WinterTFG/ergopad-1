@@ -11,11 +11,11 @@ const Gradients = ({}) => {
                 <defs>
                 <radialGradient id="heroglow_paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(90 149 251) scale(315.089)">
                     <stop stopColor={theme.palette.primary.main} />
-                    <stop offset="1" stopColor={theme.palette.secondary.main} stopOpacity=".01" />
+                    <stop offset="1" stopColor={theme.palette.primary.main} stopOpacity=".01" />
                 </radialGradient>
                 <radialGradient id="heroglow_paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(90 -40 249) scale(133.913)">
-                    <stop stopColor={theme.palette.primary.main} />
-                    <stop offset="1" stopColor={theme.palette.primary.main} stopOpacity=".01" />
+                    <stop stopColor={theme.palette.tertiary.main} />
+                    <stop offset="1" stopColor={theme.palette.tertiary.main} stopOpacity=".01" />
                 </radialGradient>
                 </defs>
             </svg>

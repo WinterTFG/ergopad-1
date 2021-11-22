@@ -23,6 +23,7 @@ function ElevationScroll(props) {
 
   return cloneElement(children, {
     elevation: trigger ? 4 : 0,
+    color: trigger ? 'background' : 'transparent'
   });
 }
 
@@ -31,17 +32,18 @@ const Header = () => {
   return (
     <>
       <ElevationScroll>
-        <AppBar color="transparent" sx={{ 
+        <AppBar color="transparent" enableColorOnDark sx={{ 
           p: 0, 
           display: 'flex', 
           alignItems: 'center', 
+          // background: theme.palette.background.default
         }}>
           <Toolbar sx={{ 
             maxWidth: 'lg', 
             alignItems: 'center', 
             justifyContent: 'space-between',
             width: '100%',
-            backgroundColor: theme.palette.background.default 
+            // backgroundColor: theme.palette.background.default 
           }}>
 
             <Box sx={{ display: 'flex', flexGrow: 1 }}>

@@ -9,15 +9,16 @@ let theme = createTheme({
       // main: 'rgb(58, 186, 180)',
       main: '#3ABAB4',
       hover: '#4BD0C9',
-      active: '#3ABAB496'
+      active: 'rgba(49, 151, 149, 0.25)'
     },
     secondary: {
       main: '#9f7aea',
       hover: '#B886F9',
-      active: '#A88CE3',
+      active: 'rgba(128, 90, 213, 0.25)',
     },
     tertiary: {
       main: '#667eea',
+      active: 'rgba(90, 103, 216, 0.25)'
     },
     quaternary: {
       main: 'rgb(237, 100, 166)',
@@ -29,15 +30,42 @@ let theme = createTheme({
     text: {
       primary: 'rgb(244, 244, 245)',
       secondary: 'rgb(162, 162, 168)',
+      tertiary: 'rgb(228, 228, 231)'
     },
     action: {
       hover: '#ffffff',
       light: {},
     },
+    greyButton: {
+      background: 'rgb(46, 46, 51)',
+      hover: 'rgba(63,62,68,255)'
+    }
   },
   typography: {
     fontFamily: ['Inter', 'sans-serif'].join(','),
     },
+  components: {
+    // Name of the component
+    MuiAccordion: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          marginBottom: '1rem',
+        },
+      },
+    },
+    MuiAppBar: {
+      variants: [
+        {
+          props: { color: 'background' },
+          style: {
+            background: 'rgb( 29, 29, 32 )'
+          }
+        }
+      ]
+    }
+  },
 });
 
 theme.typography.h1 = {

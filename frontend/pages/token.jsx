@@ -220,7 +220,7 @@ const Token = () => {
                         aria-controls="panel1bh-content"
                         id="panel1bh-header"
                         >
-                        <Typography variant="h5" sx={{ width: '33%', flexShrink: 0 }}>
+                        <Typography variant="h5" sx={{ width: '33%', flexShrink: 0, mb: 0 }}>
                             Governance
                         </Typography>
                         </AccordionSummary>
@@ -236,7 +236,7 @@ const Token = () => {
                         aria-controls="panel2bh-content"
                         id="panel2bh-header"
                         >
-                            <Typography variant="h5" sx={{ width: '33%', flexShrink: 0 }}>
+                            <Typography variant="h5" sx={{ width: '33%', flexShrink: 0, mb: 0 }}>
                                 Staking
                             </Typography>
                         </AccordionSummary>
@@ -261,7 +261,7 @@ const Token = () => {
                         aria-controls="panel3bh-content"
                         id="panel3bh-header"
                         >
-                        <Typography variant="h5" sx={{ width: '33%', flexShrink: 0 }}>
+                        <Typography variant="h5" sx={{ width: '33%', flexShrink: 0, mb: 0 }}>
                             Deflationary Mechanics
                         </Typography>
                         </AccordionSummary>
@@ -277,7 +277,7 @@ const Token = () => {
                         aria-controls="panel4bh-content"
                         id="panel4bh-header"
                         >
-                        <Typography variant="h5" sx={{ width: '33%', flexShrink: 0 }}>
+                        <Typography variant="h5" sx={{ width: '33%', flexShrink: 0, mb: 0 }}>
                             Liqudity Farming
                         </Typography>
                         </AccordionSummary>

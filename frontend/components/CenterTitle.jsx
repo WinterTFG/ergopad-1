@@ -1,6 +1,6 @@
 import { Typography, Box }  from '@mui/material';
 
-const CenterTitle = ({ title, subtitle }) => {
+const CenterTitle = ({ title, subtitle, main }) => {
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: '3rem' }}>
@@ -10,7 +10,7 @@ const CenterTitle = ({ title, subtitle }) => {
                     , maxWidth: '768px'
                 }}
             >
-                <Typography variant='h2'>
+                <Typography variant={main ? 'h1' : 'h2'}>
                     {title}
                 </Typography>
 

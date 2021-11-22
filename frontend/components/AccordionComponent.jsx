@@ -16,16 +16,23 @@ const AccordionComponent = ({ accordionItems, uniqueId }) => {
     };
 
     return (
-<>
-        {accordionItems.map((item, i) => {
+        <>
+        
+
+        {accordionItems.map((item) => {
+            if (item.visibility) {
             return (
                 <>
-                <Accordion expanded={expanded === ('panel_' + uniqueId + i)} onChange={handleChange(('panel_' + uniqueId + i))}>
+                <Accordion 
+                    key={item.id} 
+                    expanded={expanded === ('panel_' + uniqueId + item.id)} 
+                    onChange={handleChange(('panel_' + uniqueId + item.id))}
+                >
 
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    aria-controls={'panel' + uniqueId + i + 'bh-content'}
-                    id={'panel' + uniqueId + i + 'bh-header'}
+                    aria-controls={'panel' + uniqueId + item.id + 'bh-content'}
+                    id={'panel' + uniqueId + item.id + 'bh-header'} 
                 >
                     <Typography variant="h5" sx={{ flexShrink: 0, m: 0 }}>
                         {item.title}
@@ -41,6 +48,7 @@ const AccordionComponent = ({ accordionItems, uniqueId }) => {
             </Accordion>
             </>
                 )
+            }
         })} 
         </>
         

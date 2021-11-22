@@ -1,32 +1,148 @@
-import { Typography, Container, Divider } from '@mui/material';
-import PageTitle from '@components/PageTitle';
+import { Button, Icon, Box } from '@mui/material';
+import Section from '@components/layout/Section';
+import AccordionComponent from '@components/AccordionComponent';
+import { useState, useEffect } from 'react';
+import { styled } from '@mui/system';
+import theme from '../styles/theme';
+import Search from '@components/Search';
+
+const faqItems = [
+    {
+        id: '1',
+        title: 'test 1',
+        bodyText: 'Answer',
+        category: 'Token',
+        visibility: true
+    },
+    {
+        id: '2',
+        title: 'test 2',
+        bodyText: 'Answer',
+        category: 'Staking',
+        visibility: true
+    },    
+    {
+        id: '3',
+        title: 'test 3',
+        bodyText: 'Answer',
+        category: 'Company',
+        visibility: true
+    },
+]
+
+const SortButton = styled(Button)({
+    borderRadius: `20px`,
+    background: theme.palette.greyButton.background,
+    color: theme.palette.text.tertiary,
+    fontSize: '1rem',
+    textTransform: 'none',
+    '&:hover': {
+        background: theme.palette.greyButton.hover,
+    },
+  });
 
 const Faq = () => {
+
+    const [category, setCategory] = useState('')
+    const [data, setData] = useState(faqItems)
+
+    useEffect(() => {
+        if (category === '') {
+            setData(faqItems)
+        }
+        else {
+            const newFaqItems = faqItems.filter(item => item.category === category)
+            setData(newFaqItems)
+        }
+        
+    }, [category])
+    
   return (
     <>
-        <Container maxWidth="760px" sx={{ maxWidth: '760px', mx: 'auto' }}>
-            <PageTitle 
-                title="Frequently Asked Questions"
-                subtitle="If we get asked a question often, you'll find it answered here"
-            />
-            
-            <Typography variant="p">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-                esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt 
-                in culpa qui officia deserunt mollit anim id est laborum.
-            </Typography>
+        <Section
+            title="Frequently Asked Questions"
+            subtitle="You've got questions, we've got answers"
+            main={true}
+            toggleOutside={true}
+            extra={<Search />}
+        >
 
-            <Typography variant="p">
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
-                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
-                dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
-                sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro 
-                quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non 
-                numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
-            </Typography>
-        </Container>
+            
+
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                gap: 2,
+                mb: '2rem'
+            }}>
+
+                <SortButton 
+                    variant="contained" 
+                    disableElevation 
+                    onClick={() => setCategory('')} 
+                    startIcon={<Icon>list</Icon>}
+                >
+                    View All
+                </SortButton>
+
+                <SortButton 
+                    variant="contained" 
+                    disableElevation 
+                    onClick={() => setCategory('Token')} 
+                    sx={category === 'Token' ? { 
+                        background: theme.palette.primary.active,
+                        color: theme.palette.primary.main,
+                        '&:hover': {
+                            background: theme.palette.primary.active,
+                        }
+                    } : {}}
+                    startIcon={<Icon color="primary">toll</Icon>}
+                >
+                    Token
+                </SortButton>
+
+                <SortButton 
+                    variant="contained" 
+                    disableElevation 
+                    onClick={() => setCategory('Staking')} 
+                    sx={category === 'Staking' ? { 
+                        background: theme.palette.secondary.active,
+                        color: theme.palette.secondary.main,
+                        '&:hover': {
+                            background: theme.palette.secondary.active,
+                        }
+                    } : {}}
+                    startIcon={<Icon color="secondary">auto_graph</Icon>}
+                >
+                    Staking
+                </SortButton>
+
+                <SortButton 
+                    variant="contained" 
+                    disableElevation 
+                    onClick={() => setCategory('Company')} 
+                    sx={category === 'Company' ? { 
+                        background: theme.palette.tertiary.active,
+                        color: theme.palette.tertiary.main,
+                        '&:hover': {
+                            background: theme.palette.tertiary.active,
+                        }
+                    } : {}}
+                    startIcon={<Icon sx={{ color: theme.palette.tertiary.main }}>business</Icon>}
+                >
+                    Company
+                </SortButton>
+
+            </Box>
+
+            
+            <AccordionComponent 
+                accordionItems={data}
+                uniqueId="faq"
+            />
+        </Section>
     </>
   );
 };

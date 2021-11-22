@@ -11,7 +11,7 @@ const boxStyles = {
     borderTop: 1
 }
 
-const Section = ({ title, subtitle, children, toggleOutside }) => {
+const Section = ({ title, subtitle, children, toggleOutside, extra, main }) => {
 
     return (
         <>
@@ -21,7 +21,15 @@ const Section = ({ title, subtitle, children, toggleOutside }) => {
                 <CenterTitle 
                     title={title} 
                     subtitle={subtitle}
+                    main={main}
                 />
+                
+                {extra ? (
+                <Container maxWidth='lg' sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: '-3rem', mb: '3rem' }}>
+                    {extra}
+                </Container>
+                ) : ({})}
+
                 <Box sx={boxStyles}>
 
                     <Container maxWidth='lg' sx={{ }}>
