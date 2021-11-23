@@ -12,21 +12,18 @@ const faqItems = [
         title: 'test 1',
         bodyText: 'Answer',
         category: 'Token',
-        visibility: true
     },
     {
         id: '2',
         title: 'test 2',
         bodyText: 'Answer',
         category: 'Staking',
-        visibility: true
     },    
     {
         id: '3',
         title: 'test 3',
         bodyText: 'Answer',
         category: 'Company',
-        visibility: true
     },
 ]
 
@@ -56,6 +53,7 @@ const Faq = () => {
         }
         
     }, [category])
+
     
   return (
     <>

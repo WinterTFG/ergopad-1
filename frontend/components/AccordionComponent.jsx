@@ -20,7 +20,6 @@ const AccordionComponent = ({ accordionItems, uniqueId }) => {
         
 
         {accordionItems.map((item) => {
-            if (item.visibility) {
             return (
                 <>
                 <Accordion 
@@ -48,7 +47,6 @@ const AccordionComponent = ({ accordionItems, uniqueId }) => {
             </Accordion>
             </>
                 )
-            }
         })} 
         </>
         
