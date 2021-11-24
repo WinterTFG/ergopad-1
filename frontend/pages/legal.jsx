@@ -28,23 +28,15 @@ const Legal = () => {
             </Typography>
 
             <Typography variant="p">
-                Legally speaking, because of the organization of the DAO, there will be no corporation to 
-                sue if you are unhappy with the results of an IDO. An investment in any token launched by 
-                ErgoPad has the potential to go to zero. By interacting with the smart contracts on 
-                the Ergo blockchain through this website, you accept full responsibility for your decisions 
-                and agree to not hold the members of the DAO responsible for the price changes in the open 
-                market. 
+                Legally speaking, a DAO is a decentralized, global organization. It does not fall under the jurisdiction of any one government. As with any investment, an investment in any token launched by ErgoPad has the potential to go to zero. By interacting with the smart contracts on the Ergo blockchain through this website, you must accept full responsiblity for your decisions and understand that members of the DAO cannot be held personally liable for any change in market conditions that affect the price of tokens launched on this platform. 
             </Typography>
 
             <Typography variant="p">
-                The developers behind this website will take steps necessary to provide a bug-free and 
-                secure experience, but there is no guarantee of an absence of bugs and errors. 
+                The developers behind this website will take steps necessary to provide a bug-free and secure experience, but there is no guarantee of an absence of bugs and errors. 
             </Typography>
 
             <Typography variant="p">
-                The team believes that everyone should have the right to have full control of their finances 
-                and no government should be able to stop you from investing your crypto in whatever you wish, 
-                but with those freedoms come inherent risks. 
+                The team believes that everyone should have the right to have full control of their finances and no government should be able to stop you from investing your crypto in whatever you wish, but with those freedoms come inherent risks. Thus, we do not KYC, but we do our best to educate and explain everything up front, so you can make the best investment decision possible. 
             </Typography>
         </Container>
     </>
