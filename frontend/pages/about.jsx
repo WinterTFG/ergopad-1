@@ -22,7 +22,7 @@ const About = () => {
                 The <MuiNextLink key="tokenomics-01" href="/token">tokenomics</MuiNextLink> will be 
                 controlled via smart contracts, and the governing body will be 
                 set up as a DAO (decentralized autonomous organization). All tokens and smart contracts 
-                will be voted on by memebers of the DAO, and no corporate entity will have control over these 
+                will be voted on by members of the DAO, and no corporate entity will have control over these 
                 token issuances. It will all happen on chain. 
             </Typography>
 
