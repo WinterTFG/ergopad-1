@@ -123,10 +123,11 @@ const Token = () => {
 
   return (
     <>
-        <Container maxWidth="lg" sx={{ mt: '5rem', mb: '3rem' }}>
+        <Container maxWidth="lg" sx={{ mb: '3rem' }}>
             <CenterTitle 
                 title="Tokenomics"
                 subtitle="The ErgoPad tokenomics and uses"
+                main={true}
             />
 
 

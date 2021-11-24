@@ -47,6 +47,7 @@ const Projects = () => {
             <CenterTitle 
                 title="ErgoPad Projects"
                 subtitle="Building the future of the Ergo ecosystem"
+                main={true}
             />
         </Container>
         <Box sx={boxStyles}>
