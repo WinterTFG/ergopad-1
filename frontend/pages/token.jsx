@@ -226,7 +226,7 @@ const Token = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                         <Typography variant="p">
-                            Your tokens will give you a vote on DAO decisions, which will be outlined in more detail shortly. 
+                            Your tokens will give you a vote on certain decisions, such as which projects are launched on ErgoPad. 
                         </Typography>
                         </AccordionDetails>
                     </Accordion>
@@ -283,7 +283,7 @@ const Token = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                         <Typography variant="p">
-                            If you aren't interested in investing in IDOs and feel liquidity farming will provide a greater yield than the current staking rewards, you can provide liquidity on ErgoDex
+                            If you aren't interested in investing in IDOs and feel liquidity farming will provide a greater yield than the current staking rewards, you can provide liquidity on ErgoDex. We may even release a dex of our own!
                         </Typography>
                         </AccordionDetails>
                     </Accordion>

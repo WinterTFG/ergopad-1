@@ -21,7 +21,7 @@ const About = () => {
             <Typography variant="p">
                 The <MuiNextLink key="tokenomics-01" href="/token">tokenomics</MuiNextLink> will be 
                 controlled via smart contracts, and the governing body will be 
-                set up as DAO (decentralized autonomous organization). All tokens and smart contracts 
+                set up as a DAO (decentralized autonomous organization). All tokens and smart contracts 
                 will be voted on by memebers of the DAO, and no corporate entity will have control over these 
                 token issuances. It will all happen on chain. 
             </Typography>
@@ -50,7 +50,7 @@ const About = () => {
                 projects that began with creative new features are beginning to show their flaws. Chains like Ergo have 
                 arrived at a time where the industry is shifting from the accounting model into an eUTXO system 
                 that does away with gas fees and returns to the true philosophies Bitcoin began with: a financial 
-                system for anyone that's inexpensive to use and does not allow certain individuals excess control 
+                system for everyone, that's inexpensive to use and does not allow some individuals excess control 
                 over others. 
             </Typography>
 
@@ -58,7 +58,7 @@ const About = () => {
                 Because the eUTXO system is still in its infancy, the user experience is severly lacking in 
                 comparison to other projects that have had a several year head start. However, that leaves a 
                 lot of room for growth, and we would like to be part of that growth. ErgoPad was created to 
-                generate financial backing to the developers who need it, so we can help the Ergo platform grow 
+                generate financial backing for the developers who need it, so we can help the Ergo platform grow 
                 into a safe, accessible financial ecosystem where everyone can get involved. All dApps should 
                 provide an experience where a user's data is only shared when they want it to, and where they can 
                 leverage or spend their money any way they wish with minimal fees for doing so. 

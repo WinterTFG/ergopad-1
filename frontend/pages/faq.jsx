@@ -9,20 +9,20 @@ import Search from '@components/Search';
 const faqItems = [
     {
         id: '1',
-        title: 'test 1',
-        bodyText: 'Answer',
+        title: 'Token questions',
+        bodyText: 'Token questions coming soon',
         category: 'Token',
     },
     {
         id: '2',
-        title: 'test 2',
-        bodyText: 'Answer',
+        title: 'Staking questions',
+        bodyText: 'Coming soon',
         category: 'Staking',
     },    
     {
         id: '3',
-        title: 'test 3',
-        bodyText: 'Answer',
+        title: 'Question about ErgoPad',
+        bodyText: 'Answers to all your questions coming soon',
         category: 'Company',
     },
 ]
