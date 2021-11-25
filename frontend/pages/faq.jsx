@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { styled } from '@mui/system';
 import theme from '../styles/theme';
 import Search from '@components/Search';
+import { useSearch } from '../utils/SearchContext';
 
 const faqItems = [
     {
@@ -42,6 +43,7 @@ const Faq = () => {
 
     const [category, setCategory] = useState('')
     const [data, setData] = useState(faqItems)
+    const { search, setSearch } = useSearch()
 
     useEffect(() => {
         if (category === '') {
@@ -54,6 +56,18 @@ const Faq = () => {
         
     }, [category])
 
+    useEffect(() => {
+        if (search != '') {
+            let lowerCase = search.toLowerCase()
+            const filtered = faqItems.filter(item => {
+                return (item.title.toLowerCase().includes(lowerCase) || item.bodyText.toLowerCase().includes(lowerCase))
+            })
+
+            setData(filtered)
+        }
+        
+    }, [search])
+
     
   return (
     <>
@@ -62,10 +76,8 @@ const Faq = () => {
             subtitle="You've got questions, we've got answers"
             main={true}
             toggleOutside={true}
-            extra={<Search />}
+            extra={<Search placeholder="Filter questions" />}
         >
-
-            
 
             <Box sx={{
                 display: 'flex',

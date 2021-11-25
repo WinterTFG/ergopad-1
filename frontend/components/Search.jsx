@@ -1,12 +1,16 @@
-import { TextField, Icon, Paper, InputBase } from "@mui/material";
+import { Icon, Paper, InputBase } from "@mui/material";
 import theme from "../styles/theme";
-import { useState } from "react";
+import { useSearch } from "../utils/SearchContext";
 
-const Search = () => {
-    const [search, setSearch] = useState('');
+const Search = ({ placeholder }) => {
+    const { search, setSearch } = useSearch()
     const handleChange = (e) => {
-      setSearch(e.target.value);
+        e.preventDefault()
+        setSearch(e.target.value);
     };
+    const submitForm = (e) => {
+        e.preventDefault()
+    }
 
     return (
         <>
@@ -31,6 +35,7 @@ const Search = () => {
 
             <Paper
                 component="form"
+                onSubmit={submitForm}
                 sx={{ 
                     p: '8px', 
                     mt: '1rem',
@@ -47,18 +52,16 @@ const Search = () => {
                 }}
             >
 
-            <Icon sx={{ color: theme.palette.text.secondary }}>search</Icon>
+                <Icon sx={{ color: theme.palette.text.secondary }}>search</Icon>
+                <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder={placeholder}
+                    inputProps={{ 'aria-label': 'search' }}
+                    value={search}
+                    onChange={handleChange}
+                />
 
-            <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Search"
-                inputProps={{ 'aria-label': 'search' }}
-                
-                value={search}
-                onChange={handleChange}
-            />
-
-</Paper>
+            </Paper>
 
             
         </>

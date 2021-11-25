@@ -9,6 +9,7 @@ import theme from '../styles/theme';
 import Layout from '@components/layout/Layout';
 import { SnackbarProvider } from 'notistack';
 import { WalletProvider } from '../utils/WalletContext';
+import { SearchProvider } from '../utils/SearchContext';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -29,9 +30,11 @@ function MyApp({ Component, pageProps }: AppProps)  {
 					{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 					<CssBaseline />
 						<WalletProvider>
+						<SearchProvider>
 							<Layout>
 								<Component {...pageProps} />
 							</Layout>
+						</SearchProvider>
 						</WalletProvider>
 				</SnackbarProvider>
 				
