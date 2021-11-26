@@ -18,7 +18,7 @@ ERGO_PLATFORM_URL = {
 
 headers       = {'Content-Type': 'application/json'}
 assembler_url = f'http://{HOST}:{PORT}'
-api_key       = 'oncejournalstrangeweather'
+api_key       = 'goalspentchillyamber'
 
 # node wallet
 userWallet  = Address('3WzKopFYhfRGPaUvC7v49DWgeY1efaCD3YpNQ6FZGr2t5mBhWjmw')
@@ -40,8 +40,8 @@ ergAmount     = .1 # default
 nergAmount    = int(ergAmount * nanoergsInErg)
 qtyTokens     = 1000 # number of tokens to send
 decimals      = 0
-name          = 'leeroy_2'
-description   = 'jenkins'
+name          = 'ergopad'
+description   = 'ergopad.io'
 
 # ergoscript
 scriptAlwaysTrue = "{ 1 == 1 }"
@@ -117,5 +117,5 @@ fin = requests.get(f'{assembler_url}/result/{id}')
 logging.info(f'result: {fin.json()}')
 logging.info('fin...')
 
-tokenId = '67ba5e86afa43da553c2719870a6ae3d95a99b8fb024aa99edb0ebd57df90c73'
-tkn = requests.get(f'{ERGO_PLATFORM_URL[ERGONODE_NETWORK]}/tokens/{tokenId}'); tkn.json()
+# tokenId = '67ba5e86afa43da553c2719870a6ae3d95a99b8fb024aa99edb0ebd57df90c73'
+# tkn = requests.get(f'{ERGO_PLATFORM_URL[ERGONODE_NETWORK]}/tokens/{tokenId}'); tkn.json()

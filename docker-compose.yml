@@ -8,16 +8,16 @@ services:
     # volumes: .:/opt/hello
     # ${SERVICE_PORT}:54321 # set in .env; # HOST:CONTAINER
 
-  # nginx:
-  #   container_name: nginx
-  #   env_file: .env
-  #   image: nginx:1.17
-  #   volumes: 
-  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-  #   ports: 
-  #     - ${NGINX_PORT}:80
-  #   profiles: 
-  #     - reverseproxy
+  nginx:
+    container_name: nginx
+    env_file: .env
+    image: nginx:1.17
+    volumes: 
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports: 
+      - ${NGINX_PORT}:80
+    profiles: 
+      - reverseproxy
 
   backend:
     container_name: backend
@@ -109,18 +109,18 @@ services:
     depends_on:
       - redis
 
-  # ergonode:
-  #   container_name: ergonode
-  #   env_file: .env
-  #   image: openjdk
-  #   volumes: 
-  #     - ./ergonode/:/opt/ergo # jar/conf
-  #     - /ergo/testnet/.ergo:/opt/ergo/.ergo # blockchain
-  #   ports: 
-  #     - ${ERGONODE_PORT}:9052 # testnet
-  #   # ports: ${ERGONODE_PORT}:9053 # mainnet
-  #   working_dir: /opt/ergo
-  #   command: java -jar ergo-4.0.15.jar --testnet -c testnet.conf
+  ergonode:
+    container_name: ergonode
+    env_file: .env
+    image: openjdk
+    volumes: 
+      - ./ergonode/:/opt/ergo # jar/conf
+      - /ergo/testnet/.ergo:/opt/ergo/.ergo # blockchain
+    ports: 
+      - ${ERGONODE_PORT}:9052 # testnet
+    # ports: ${ERGONODE_PORT}:9053 # mainnet
+    working_dir: /opt/ergo
+    command: java -jar ergo-4.0.15.jar --testnet -c testnet.conf
 
   # allow a different node to test with
   launchpad:

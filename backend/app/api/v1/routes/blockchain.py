@@ -1,32 +1,53 @@
-import requests
-
+import requests 
 from wallet import Wallet
 from config import Config, Network
 
-### LOGGING
-import logging
-level = logging.DEBUG # TODO: set from .env
-logging.basicConfig(format="%(asctime)s %(levelname)s %(threadName)s %(name)s %(message)s", datefmt='%m-%d %H:%M', level=level)
+from fastapi import APIRouter
+from fastapi import Path
+from fastapi import Request
 
-### INIT 
+#region BLOCKHEADER
+"""
+Blockchain API
+---------
+Created: vikingphoenixconsulting@gmail.com
+On: 20211009
+Purpose: Returns coin and token values by user, coin or wallet.
+
+Notes: 
+"""
+#endregion BLOCKHEADER
+
+#region LOGGING
+import logging
+logging.basicConfig(format="%(asctime)s %(levelname)s %(threadName)s %(name)s %(message)s", datefmt='%m-%d %H:%M', level=logging.DEBUG)
+#endregion LOGGING
+
 try:
   CFG = Config[Network]
+  CFG.ergopadTokenId = 'f2d51387a03df2baa68f0a1d32976265a504514423a6c39457701477c59bcaf6'
   isSimulation = True
   headers = {'Content-Type': 'application/json'}
   tkn = requests.get(f'{CFG.explorer}/tokens/{CFG.ergopadTokenId}')
-  nodeWallet  = Wallet('3WzKopFYhfRGPaUvC7v49DWgeY1efaCD3YpNQ6FZGr2t5mBhWjmw') # contains tokens
-  buyerWallet  = Wallet('3WwjaerfwDqYvFwvPRVJBJx2iUvCjD2jVpsL82Zho1aaV5R95jsG') # simulate buyer
+  nodeWallet  = Wallet(CFG.ergopadWallet) # contains tokens
+  buyerWallet  = Wallet(CFG.buyerWallet) # simulate buyer
 
 except Exception as e:
   logging.error(f'Init {e}')
 
-### CLASSES/FUNCTIONS
-# find current height
+blockchain_router = r = APIRouter()
+#endregion INIT
+
+#region ROUTES
+#
+# current node info
+#
+@r.get("/nodeinfo", name="blockchain:nodeinfo")
 def getNodeInfo():
   try:
     nodeInfo = {}
     
-    res = requests.get(f'{CFG.node}/info', headers=dict(headers, **{'api_key': CFG.apiKey}))
+    res = requests.get(f'{CFG.node}/info', headers=dict(headers, **{'api_key': CFG.ergopadApiKey}))
     if res.ok:
       info = res.json()
       if 'parameters' in info:
@@ -38,16 +59,17 @@ def getNodeInfo():
     return nodeInfo
 
   except Exception as e:
-    logging.error(f'getNodeInfo {e}')
+    logging.error(f'getBoxesWithUnspentTokens {e}')
     return None
 
 # find unspent boxes with tokens
-def getBoxesWithUnspentTokens(allowMempool=False):
+@r.get("/unspentTokens", name="blockchain:unspentTokens")
+def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=True):
   try:
     tot = 0
-    ergopadTokenBoxes = {}
+    ergopadTokenBoxes = {}    
 
-    res = requests.get(f'{CFG.node}/wallet/boxes/unspent?minConfirmations=0&minInclusionHeight={(0, -1)[allowMempool]}', headers=dict(headers, **{'api_key': CFG.apiKey}))
+    res = requests.get(f'{CFG.node}/wallet/boxes/unspent?minInclusionHeight=0&minConfirmations={(0, -1)[allowMempool]}', headers=dict(headers, **{'api_key': CFG.ergopadApiKey}))
     if res.ok:
       assets = res.json()
       for ast in assets:
@@ -55,7 +77,7 @@ def getBoxesWithUnspentTokens(allowMempool=False):
           if ast['box']['assets'] != []:
             for tkn in ast['box']['assets']:
               if 'tokenId' in tkn and 'amount' in tkn:
-                if tkn['tokenId'] == CFG.ergopadTokenId:
+                if tkn['tokenId'] == tokenId:
                   tot += tkn['amount']
                   if ast['box']['boxId'] in ergopadTokenBoxes:
                     ergopadTokenBoxes[ast['box']['boxId']].append(tkn)
@@ -67,20 +89,24 @@ def getBoxesWithUnspentTokens(allowMempool=False):
 
     # invalid wallet, no unspent boxes, etc..
     else:
-      logging.error('unable to find expeted unspent boxes')
+      logging.error('unable to find unspent boxes')
 
+    # return CFG.node
     return ergopadTokenBoxes
 
   except Exception as e:
     logging.error(f'getBoxesWithUnspentTokens {e}')
-    return None
+    return({'status': 'fail', 'tokenId': tokenId, 'description': e})
 
 # ergoscript
+@r.get("/script/{name}", name="blockchain:script")
 def getErgoscript(name, params={}):
   try:
-    script = ''
     if name == 'alwaysTrue':
       script = "{ 1 == 1 }"
+
+    if name == 'neverTrue':
+      script = "{ 1 == 0 }"
 
     if name == 'ergopad':
       return f"""
@@ -122,24 +148,29 @@ def getErgoscript(name, params={}):
     return smartContract
   
   except Exception as e:
-    logging.error(f'getErgoscrip {e}')
+    logging.error(f'getErgoscript {e}')
     return None
 
 # smartcontract- height lock
-def scHeightLock(nodeInfo, smartContract):
+@r.get("/purchase/{qty}", name="blockchain:purchase")
+def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue'):
 
   try:
-    ergopadTokenBoxes = getBoxesWithUnspentTokens()
-    outBox = []
+    nodeInfo = getNodeInfo()  
+    smartContract = getErgoscript(scScript)
+    ergopadTokenBoxes = getBoxesWithUnspentTokens(tokenId)
     vestingBeginHeight = nodeInfo['currentHeight']+1 # next height
 
     # 1 outbox per vesting period to lock spending until vesting complete
+    outBox = []
+    logging.info(f'vesting periods: {CFG.vestingPeriods}')
     for i in range(CFG.vestingPeriods):
       
       # in event the requested tokens do not divide evenly by vesting period, add remaining to final output
       remainder = 0
+      logging.info(remainder)
       if i == CFG.vestingPeriods-1:
-        remainder = CFG.requestedTokens % CFG.requestedTokens
+        remainder = qty%CFG.vestingPeriods
       scVesting = getErgoscript('heightLock', {'heightLock': vestingBeginHeight+i*2}) # unlock every 2
 
       # create outputs for each vesting period; add remainder to final output, if exists
@@ -151,12 +182,13 @@ def scHeightLock(nodeInfo, smartContract):
           'R4': vestingBeginHeight+i*2, # heightlock
         },
         'assets': [{ 
-          'tokenId': CFG.ergopadTokenId,
-          'amount': int(CFG.requestedTokens/CFG.requestedTokens + remainder)
+          'tokenId': tokenId,
+          'amount': int(qty/CFG.vestingPeriods + remainder)
         }]
       })
 
     # create transaction with smartcontract, into outbox(es), using tokens from ergopad token box
+    logging.info(f'build request')
     request = {
         'address': smartContract,
         'returnTo': buyerWallet.address,
@@ -175,61 +207,12 @@ def scHeightLock(nodeInfo, smartContract):
     # logging.info(request); exit(); # !! testing
     res = requests.post(f'{CFG.assembler}/follow', headers=headers, json=request)
     id = res.json()['id']
-    logging.info(f'id: {id}')
-
-    return id
+    fin = requests.get(f'{CFG.assembler}/result/{id}')
+    logging.info({'status': 'success', 'fin': fin.json(), 'followId': id, 'request': request})
+    return({'status': 'success', 'fin': fin.json(), 'smartContract': smartContract, 'followId': id, 'request': request})
   
   except Exception as e:
     logging.error(f'scHeightLock: {e}')
-    return None
+    return({'status': 'fail', 'id': -1, 'tokenId': tokenId, 'description': e})
 
-# simulate paynent from buyer; testing
-def sendPayment(smartContract):
-  try:
-    sendMe = [{
-        'address': smartContract,
-        'value': CFG.txFee + CFG.minTx*CFG.vestingPeriods, # nergAmount + 2*minTx + txFee,
-        'assets': [],
-    }]
-    # logging.info(sendMe)
-    pay = requests.post(f'http://localhost:9053/wallet/payment/send', headers=dict(headers, **{'api_key': 'oncejournalstrangeweather'}), json=sendMe)
-    logging.info(f'payment: {pay.json()}')
-
-  except Exception as e:
-    logging.error(f'sendPayment {e}')
-    return None
-
-### MAIN
-if __name__ == '__main__':
-
-  logging.info(f'network: {Network}\nnode: {nodeWallet.address}\nbuyer: {buyerWallet.address}')
-
-  try:
-    nodeInfo = getNodeInfo()  
-    smartContract = getErgoscript('alwaysTrue')
-    id = scHeightLock(nodeInfo, smartContract)
-
-    # simulate spending
-    if isSimulation:
-      logging.info(f'simulate payment to smart contract')
-      sendPayment(smartContract) # testWallet.sendPayment(adr, val, [])
-
-    # wait for timeout for various events: timeout, error, ...
-    i = 0
-    timeout = 180 # seconds
-    from time import sleep
-    while i < timeout:
-      fin = requests.get(f'{CFG.assembler}/result/{id}')
-      logging.info(f'result({i}): {fin.json()}')
-      i = i + 1
-      try:
-        if fin.json()['detail'] in ('timeout', 'success'):
-          i = timeout
-      except:
-        pass
-      sleep(3)
-    sleep(5)
-    tkn = requests.get(f'http://localhost:9054/wallet/balances/withUnconfirmed', headers=dict(headers, **{'api_key': 'goalspentchillyamber'})
-
-  except Exception as e:
-    logging.error(f'Main {e}')
+# tkn = requests.get(f'{CFG.node}/wallet/balances/withUnconfirmed', headers=dict(headers, **{'api_key': CFG.apiKey})

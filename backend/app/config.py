@@ -1,3 +1,5 @@
+import os
+
 from types import SimpleNamespace
 from base64 import b64encode
 
@@ -10,45 +12,52 @@ class dotdict(SimpleNamespace):
             else:
                 self.__setattr__(key, value)
 
+
+import os
+POSTGRES_PORT = os.getenv('POSTGRES_PORT')
+POSTGRES_USER = os.getenv('POSTGRES_USER')
+
 Network = 'testnet'
 Config = {
   # 'devnet':
   'testnet': dotdict({
-    'node'              : 'http://localhost:9054',
+    'node'              : 'http://launchpad:9052',
     'explorer'          : 'https://api-testnet.ergoplatform.com/api/v1',
-    'apiKey'            : 'goalspentchillyamber',
-    'assembler'         : 'http://localhost:8080',
+    'ergopadApiKey'     :  os.getenv('ERGOPAD_APIKEY'),
+    'bogusApiKey'       :  os.getenv('BOGUS_APIKEY'),
+    'assembler'         : 'http://assembler:8080',
     'minTx'             : 10000000, # required
     'txFee'             : 2000000, # tips welcome
     'nanoergsInErg'     : 1000000000, # 1e9
     'nergAmount'        : .1, # default
     'qtyTokens'         : 5, 
     'tokenPriceNergs'   : 1500000000, # 1.5 ergs
-    'ergopadWallet'     : '3WzKopFYhfRGPaUvC7v49DWgeY1efaCD3YpNQ6FZGr2t5mBhWjmw',
-    'testingWallet'     : '3WwjaerfwDqYvFwvPRVJBJx2iUvCjD2jVpsL82Zho1aaV5R95jsG',
-    'ergopadTokenId'    : '81ba2a45d4539045995ad6ceeecf9f14b942f944a1c9771430a89c3f88ee898a',
-    'b64ergopadTokenId' : b64encode(bytes.fromhex('81ba2a45d4539045995ad6ceeecf9f14b942f944a1c9771430a89c3f88ee898a')).decode(),
+    'ergopadTokenId'    : os.getenv('ERGOPAD_TOKENID'),
+    'b64ergopadTokenId' : b64encode(bytes.fromhex(os.getenv('ERGOPAD_TOKENID'))).decode(),
+    'ergopadWallet'     : os.getenv('ERGOPAD_WALLET'),
+    'buyerWallet'       : os.getenv('BOGUS_WALLET'),
     'requestedTokens'   : 4,
     'vestingPeriods'    : 2,
-    'wallet'            : 'http://localhost:9053',
-    'walletApiKey'      : 'oncejournalstrangeweather',
+    'wallet'            : 'http://ergonode:9052',
   }),
   'mainnet': dotdict({
-    'node'              : 'http://localhost:9053',
+    'node'              : 'http://ergonode:9053',
     'explorer'          : 'https://api.ergoplatform.com/api/v1',
-    'apiKey'            : 'helloworld',
-    'assembler'         : 'http://localhost:8080',
+    'ergopadApiKey'     :  os.getenv('ERGOPAD_APIKEY'),
+    'bogusApiKey'       :  os.getenv('BOGUS_APIKEY'),
+    'assembler'         : 'http://assembler:8080',
     'minTx'             : 10000000, # required
     'txFee'             : 2000000, # tips welcome
     'nanoergsInErg'     : 1000000000, # 1e9
     'nergAmount'        : .1, # default
     'qtyTokens'         : 5, 
     'tokenPriceNergs'   : 1500000000, # 1.5 ergs
-    'ergopadTokenId'    : '81ba2a45d4539045995ad6ceeecf9f14b942f944a1c9771430a89c3f88ee898a',
-    'b64ergopadTokenId' : b64encode(bytes.fromhex('81ba2a45d4539045995ad6ceeecf9f14b942f944a1c9771430a89c3f88ee898a')).decode(),
+    'ergopadTokenId'    : os.getenv('ERGOPAD_TOKENID'),
+    'b64ergopadTokenId' : b64encode(bytes.fromhex(os.getenv('ERGOPAD_TOKENID'))).decode(),
+    'ergopadWallet'     : os.getenv('ERGOPAD_WALLET'),
+    'buyerWallet'       : os.getenv('BOGUS_WALLET'),
     'requestedTokens'   : 4,
     'vestingPeriods'    : 2,
-    'wallet'            : 'http://localhost:9054',
-    'walletApiKey'      : 'xyzpdq',
+    'wallet'            : 'http://launchpad:9052',
   })
 }
