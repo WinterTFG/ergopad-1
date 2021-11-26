@@ -67,9 +67,24 @@ Send ERG in testnet or tokens in mainnet to wallet: https://testnet.ergofaucet.o
 ## .ENV
 example .env:
 ```
+#######################
+# Ports
+# =====
+# 3000 - frontend
+# 5000 - aggregator
+# 5050 - pgadmin
+# 5432 - postgres
+# 5555 - flower
+# 6379 - redis
+# 8000 - backend
+# 8080 - assembler
+# 8888 - nginx
+# 9053 - ergonode
+#######################
+
 # fastapi- REST API interface to application 
 BACKEND_PORT=8000
-SECRET_KEY=<shhh...>
+SECRET_KEY=whispers
 
 # node/react- web interface
 FRONTEND_PORT=3000
@@ -84,14 +99,14 @@ POWERNAP=90 # seconds
 # postgres- sql server
 POSTGRES_PORT=5432
 POSTGRES_USER=hello
-POSTGRES_PASSWORD=world
+POSTGRES_PASSWORD=<password>
 POSTGRES_DBNM=hello
 PGDATA=/var/lib/postgresql/data/pgdata
 
 # pgadmin- sql client
 PGADMIN_LISTEN_PORT=5050
 PGADMIN_DEFAULT_EMAIL=hello@world.com
-PGADMIN_DEFAULT_PASSWORD=ch@ngeme!
+PGADMIN_DEFAULT_PASSWORD=<password>
 
 # flower- celery monitor
 FLOWER_PORT=5555
@@ -103,7 +118,21 @@ NGINX_PORT=8888
 AGGREGATOR_PORT=5000
 
 # ergo
-ERGONODE_PORT=9053
+# .. testnet
+ERGONODE_NETWORK=testnet
+ERGONODE_HOST=ergonode
+ERGONODE_PORT=9052
+ERGO_API_KEY=<apikey>
+ERGOPAD_TOKENID=<tokenid>
+ERGOPAD_APIKEY=<apikey>
+ERGOPAD_WALLET=<wallet>
+BOGUS_APIKEY=<apikey>
+BOGUS_WALLET=<wallet>
+# .. mainnet
+# ERGONODE_NETWORK=mainnet
+# ERGONODE_HOST=ergonode
+# ERGONODE_PORT=9053
+# ERGO_API_KEY=<apikey>
 
 # assembler
 ASSEMBLER_PORT=8080
