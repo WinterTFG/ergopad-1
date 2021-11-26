@@ -120,13 +120,18 @@ const Footer = () => {
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://t.me/ergopad' sx={linkStyles} target='_blank'>
-								Announcements
+							<Link activeClassName='active' href='https://twitter.com/ErgoPadOfficial' sx={linkStyles} target='_blank'>
+								Twitter
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
 							<Link activeClassName='active' href='https://discord.gg/QHrbwrR9' sx={linkStyles} target='_blank'>
 								Discord
+							</Link>
+						</ListItem>
+						<ListItem disableGutters sx={listItemStyles}>
+							<Link activeClassName='active' href='https://ergopad.medium.com/' sx={linkStyles} target='_blank'>
+								Medium
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
@@ -178,13 +183,13 @@ const Footer = () => {
 				</Grid>
 				<Grid item xs={12} md={4} sx={{ display: 'flex', textAlign: { xs: 'center', md: 'right' }, justifyContent: { xs: 'center', md: 'flex-end' } }}>
 						<List sx={{ display: 'flex' }}>
-				{/* <ListItem>
-					<Link className="flex justify-center items-center text-white bg-teal-500 dark:text-teal-500 dark:bg-gray-800 hover:underline hover:bg-teal-600 rounded-full transition duration-150 ease-in-out" href="#" aria-label="Twitter" title="Twitter" target="_blank">
-						<svg className="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+				<ListItem sx={socialStyles}>
+					<Link sx={{ display: 'flex', justifyContent: 'center' }} href="https://twitter.com/ErgoPadOfficial" aria-label="Twitter" title="Twitter" target="_blank">
+						<SvgIcon sx={{ width: '32px', height: '32px' }} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 							<path d="M24 11.5c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4 0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H8c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4c.7-.5 1.3-1.1 1.7-1.8z" />
-						</svg>
+						</SvgIcon>
 					</Link>
-				</ListItem> */}
+				</ListItem> 
 				<ListItem sx={socialStyles}>
 					<Link sx={{ display: 'flex', justifyContent: 'center' }} href="https://discord.gg/DAtqtfGj" aria-label="Discord" title="Discord" target="_blank">
 						<SvgIcon sx={{ width: '32px', height: '32px' }} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">

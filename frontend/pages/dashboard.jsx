@@ -5,6 +5,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { VictoryArea, VictoryContainer, VictoryPie } from 'victory';
 import axios from 'axios';
 import { useWallet } from 'utils/WalletContext'
+import CenterTitle from '@components/CenterTitle'
 // import { useAuth } from 'src/auth';
 
 const rawData2 = 
@@ -184,57 +185,87 @@ const Dashboard = () => {
 
   	return (
 		<>
-			<Backdrop
-				sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-				open={loading}
-			>
-        		<CircularProgress color="inherit" />
-      		</Backdrop>
+
+		<CenterTitle 
+			title="Dashboard"
+			subtitle="Connect wallet above to see all your ergo assets"
+			main="true"
+		/>
+
+
 		<Container maxWidth='lg' sx={{ mx: 'auto' }}>
 			<Grid container spacing={1} alignItems="stretch" sx={{ pt: 4 }}>
 
 				<Grid item xs={12} md={6}>
 					<GlassContainer>
-						<Typography variant='h4'>Wallet Holdings</Typography>
-						<VictoryPie
-							id='victory-pie-chart'
-							innerRadius={100}
-							padAngle={2}
-							data={holdingData}
-							colorScale='cool'
-							style={{ labels: { fill: 'white' } }}
-							containerComponent={
-							<VictoryContainer
-								id='victory-pie-chart-container'
-								style={{
-								touchAction: 'auto',
-								}}
-							/>
-							}
-							animate={{ easing: 'exp' }}
-						/>
+					<Typography variant='h4'>Wallet Holdings</Typography>
+						{loading ? (
+								<>
+									<CircularProgress color="inherit" />
+								</>
+							) : 
+							(
+								<>
+									<VictoryPie
+										id='victory-pie-chart'
+										innerRadius={100}
+										padAngle={2}
+										data={holdingData}
+										colorScale='cool'
+										style={{ labels: { fill: 'white' } }}
+										containerComponent={
+										<VictoryContainer
+											id='victory-pie-chart-container'
+											style={{
+											touchAction: 'auto',
+											}}
+										/>
+										}
+										animate={{ easing: 'exp' }}
+									/>
+								</>
+							)
+						}
+						
 					</GlassContainer>
 				</Grid>
 				
 				<Grid item xs={12} md={6}>
 					<GlassContainer>
 					<Typography variant='h4'>Portfolio Hisory</Typography>
-					<VictoryArea
-						id='victory-area-chart'
-						style={{ data: { fill: "rgb(57, 186, 181)" } }}
-						data={historicData}
-						containerComponent={
-						<VictoryContainer
-							id='victory-area-chart-container'
-							style={{
-							touchAction: 'auto',
-							}}
-						/>
-						}
-					/>
+						{loading ? (
+								<>
+									<CircularProgress color="inherit" />
+								</>
+							) : 
+							(
+								<>
+							<VictoryArea
+								id='victory-area-chart'
+								style={{ data: { fill: "rgb(57, 186, 181)" } }}
+								data={historicData}
+								containerComponent={
+								<VictoryContainer
+									id='victory-area-chart-container'
+									style={{
+									touchAction: 'auto',
+									}}
+									/>
+									}
+								/>
+							</>
+								)
+							}
 					</GlassContainer>
 				</Grid>
 
+				{loading ? (
+								<>
+									
+								</>
+							) : 
+							(
+								<>
 				<Grid item xs={12} md={4}>
 					<GlassContainer>
 						<AssetList assets={assetList} title='Assets' />
@@ -252,6 +283,9 @@ const Dashboard = () => {
 						<AssetList assets={audNftList} title='Audio NFTs' />
 					</GlassContainer>
 				</Grid>
+				</>
+								)
+							}
 				
 			</Grid>
 		</Container>
