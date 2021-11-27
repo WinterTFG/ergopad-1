@@ -232,7 +232,7 @@ const Dashboard = () => {
 				
 				<Grid item xs={12} md={6}>
 					<GlassContainer>
-					<Typography variant='h4'>Portfolio Hisory</Typography>
+					<Typography variant='h4'>Portfolio History</Typography>
 						{loading ? (
 								<>
 									<CircularProgress color="inherit" />

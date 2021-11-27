@@ -25,10 +25,9 @@ logging.basicConfig(format="%(asctime)s %(levelname)s %(threadName)s %(name)s %(
 
 try:
   CFG = Config[Network]
-  CFG.ergopadTokenId = 'f2d51387a03df2baa68f0a1d32976265a504514423a6c39457701477c59bcaf6'
   isSimulation = True
   headers = {'Content-Type': 'application/json'}
-  tkn = requests.get(f'{CFG.explorer}/tokens/{CFG.ergopadTokenId}')
+  tokenInfo = requests.get(f'{CFG.explorer}/tokens/{CFG.ergopadTokenId}')
   nodeWallet  = Wallet(CFG.ergopadWallet) # contains tokens
   buyerWallet  = Wallet(CFG.buyerWallet) # simulate buyer
 
@@ -64,7 +63,7 @@ def getNodeInfo():
 
 # find unspent boxes with tokens
 @r.get("/unspentTokens", name="blockchain:unspentTokens")
-def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=True):
+def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=False):
   try:
     tot = 0
     ergopadTokenBoxes = {}    
@@ -75,9 +74,10 @@ def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=True):
       for ast in assets:
         if 'box' in ast:
           if ast['box']['assets'] != []:
-            for tkn in ast['box']['assets']:
+            for tkn in ast['box']['assets']:              
               if 'tokenId' in tkn and 'amount' in tkn:
-                if tkn['tokenId'] == tokenId:
+                logging.info(tokenId)
+                if tkn['tokenId'] == tokenId:                  
                   tot += tkn['amount']
                   if ast['box']['boxId'] in ergopadTokenBoxes:
                     ergopadTokenBoxes[ast['box']['boxId']].append(tkn)

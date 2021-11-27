@@ -6,4 +6,4 @@ WORKDIR /app
 RUN npm install
 RUN npm i next
 
-CMD yarn start
+# CMD yarn start

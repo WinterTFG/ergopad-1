@@ -41,6 +41,7 @@ ergo.*.log.gz
 
 # assembler
 /assembler/data/*
+/assembler/*net.conf
 
 ### PYTHON
 # Byte-compiled / optimized / DLL files

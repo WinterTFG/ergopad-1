@@ -17,7 +17,7 @@ import os
 POSTGRES_PORT = os.getenv('POSTGRES_PORT')
 POSTGRES_USER = os.getenv('POSTGRES_USER')
 
-Network = 'testnet'
+Network = os.getenv('ERGONODE_NETWORK')
 Config = {
   # 'devnet':
   'testnet': dotdict({
@@ -58,6 +58,6 @@ Config = {
     'buyerWallet'       : os.getenv('BOGUS_WALLET'),
     'requestedTokens'   : 4,
     'vestingPeriods'    : 2,
-    'wallet'            : 'http://launchpad:9052',
+    'wallet'            : 'http://ergonode2:9053',
   })
 }

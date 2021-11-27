@@ -78,8 +78,8 @@ limit = args.limit
 
 apiKeys = {
     'coinex': {
-        'ACCESS_ID': '8CD70BBCE0544FAAB454A3638A769EC0',
-        'SECRET_KEY': 'A7A7988516DD784E78742D21CB732A2291C04AD203F478F1'
+        'ACCESS_ID': os.getenv('COINEX_ACCESS_ID'),
+        'SECRET_KEY': os.getenv('COINEX_SECRET_KEY'),
     }
 }
 ACCESS_ID = apiKeys[exchangeName]['ACCESS_ID']
