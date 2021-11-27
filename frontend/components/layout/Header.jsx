@@ -53,7 +53,7 @@ const Header = () => {
                     <svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                       <linearGradient id="b" x2="32" y1="8" y2="8" gradientUnits="userSpaceOnUse">
                         <stop stopColor={theme.palette.primary.main} offset=".2813"/>
-                        <stop stopColor={theme.palette.primary.active} offset="1"/>
+                        <stop stopColor={theme.palette.tertiary.main} offset="1"/>
                       </linearGradient>
                       <polygon points="27.3 4.7 16 0 4.7 4.7 0 16 7.8 16 10.2 10.2 16 7.8 21.8 10.2 24.2 16 32 16" fill="url(#b)"/>
                       <linearGradient id="a" x2="32" y1="24" y2="24" gradientUnits="userSpaceOnUse">

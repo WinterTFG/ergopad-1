@@ -28,7 +28,7 @@ const Section = ({ title, subtitle, children, toggleOutside, extra, main }) => {
                 <Container maxWidth='lg' sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: '-3rem', mb: '3rem' }}>
                     {extra}
                 </Container>
-                ) : ({})}
+                ) : ''}
 
                 <Box sx={boxStyles}>
 
