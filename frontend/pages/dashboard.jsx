@@ -192,8 +192,12 @@ const Dashboard = () => {
 			main="true"
 		/>
 
+		
 
 		<Container maxWidth='lg' sx={{ mx: 'auto' }}>
+		<Typography variant="p" sx={{ textAlign: 'center', fontSize: '0.9rem' }}>
+			* Please note, some deashboard functionality is not completed yet. You will be able to view NFTs up-close, and see price history once we get back to this project. 
+		</Typography>
 			<Grid container spacing={1} alignItems="stretch" sx={{ pt: 4 }}>
 
 				<Grid item xs={12} md={6}>
@@ -232,7 +236,7 @@ const Dashboard = () => {
 				
 				<Grid item xs={12} md={6}>
 					<GlassContainer>
-					<Typography variant='h4'>Portfolio Hisory</Typography>
+					<Typography variant='h4'>Portfolio History</Typography>
 						{loading ? (
 								<>
 									<CircularProgress color="inherit" />

@@ -1,6 +1,19 @@
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { text } from 'dom-helpers';
 
+const themeSetup = 
+	{
+		dark: {
+			background: 'rgb( 29, 29, 32 )',
+			greyBackground: 'rgb(46, 46, 51)',
+			primaryText: 'rgb(244, 244, 245)',
+			secondaryText: 'rgb(162, 162, 168)',
+			borderColor: 'rgba(82,82,90,1)',
+		},
+	}
+
+  
+
 // Create a theme instance.
 let theme = createTheme({
   palette: {
@@ -25,11 +38,11 @@ let theme = createTheme({
     },
     background: {
       paper: 'rgba(35, 35, 39, 1)',
-      default: 'rgb( 29, 29, 32 )',
+      default: themeSetup.dark.background,
     },
     text: {
-      primary: 'rgb(244, 244, 245)',
-      secondary: 'rgb(162, 162, 168)',
+      primary: themeSetup.dark.primaryText,
+      secondary: themeSetup.dark.secondaryText,
       tertiary: 'rgb(228, 228, 231)'
     },
     action: {
@@ -60,10 +73,32 @@ let theme = createTheme({
         {
           props: { color: 'background' },
           style: {
-            background: 'rgb( 29, 29, 32 )'
+            background: themeSetup.dark.background
           }
         }
       ]
+    },
+    MuiTextField: {
+		variants: [
+			{
+				props: { variant: 'filled' },
+				style: {
+					'&:hover': {
+						border: 'none',
+					},
+					'& .MuiFilledInput-root': {
+						background: themeSetup.dark.greyBackground,
+						border: `1px solid ${themeSetup.dark.borderColor}`,
+						borderRadius: 4,
+					},
+					'& .MuiInputLabel-root': {
+						'&.Mui-focused': {
+							color: themeSetup.dark.secondaryText,
+						},
+					},
+				}
+			}
+		]
     }
   },
 });

@@ -48,7 +48,7 @@ const Hero = ({ title, subtitle }) => {
             </Button>
           </a>
 
-          <a href="https://discord.gg/ZpCqFCjT4g" target="_blank">
+          <a href="https://discord.gg/M9VJ9XUMuA" target="_blank">
             <Button 
               variant="contained"
               sx={{
