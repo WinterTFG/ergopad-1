@@ -196,7 +196,7 @@ const Dashboard = () => {
 
 		<Container maxWidth='lg' sx={{ mx: 'auto' }}>
 		<Typography variant="p" sx={{ textAlign: 'center', fontSize: '0.9rem' }}>
-			* Please note, some deashboard functionality is not completed yet. You will be able to view NFTs up-close, and see price history once we get back to this project. 
+			* Please note, some dashboard functionality is not completed yet. You will be able to view NFTs up-close, and see price history once we get back to this part of the project. 
 		</Typography>
 			<Grid container spacing={1} alignItems="stretch" sx={{ pt: 4 }}>
 

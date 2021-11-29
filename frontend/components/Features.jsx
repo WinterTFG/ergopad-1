@@ -32,7 +32,7 @@ const Features = ({}) => {
         </Box>
     </Box>
 
-    <Grid container spacing={1} sx={{ pt: 4 }}>
+    <Grid container spacing={1} sx={{ pt: 4,  mb: 10 }}>
         <Grid item xs={6} sm={3} sx={{ position: 'relative', textAlign: 'center' }}>
           <Box aria-hidden="true" sx={{ visibility: { xs: 'hidden', sm: 'visible' }, position: 'absolute', height: '1px', background: 'linear-gradient(240deg, rgba(212,212,212,0) 0%, rgba(212,212,212,0.3) 50%, rgba(212,212,212,0) 100%)' }} style={{ width: 'calc(100% - 120px)', left: 'calc(50% + 64px)', top: '50px' }}></Box>
           <Box sx={{ position: 'relative', marginBottom: 1 }}>
@@ -76,15 +76,6 @@ const Features = ({}) => {
           <Typography variant="subtitle1">Blockchain Development</Typography>
         </Grid>
 
-    </Grid>
-
-    <Grid container spacing={1} sx={{ pt: 10 }}>
-        <Grid item xs={12} sm={7}>
-            
-        </Grid>
-        <Grid item xs={12} sm={5}>
-            
-        </Grid>
     </Grid>
     </>
   );
