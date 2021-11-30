@@ -65,6 +65,11 @@ const Footer = () => {
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
+							<Link activeClassName='active' href='/#roadmap' sx={linkStyles}>
+								Roadmap
+							</Link>
+						</ListItem> 
+						<ListItem disableGutters sx={listItemStyles}>
 							<Link activeClassName='active' href='/projects' sx={linkStyles}>
 								Projects
 							</Link>
@@ -79,11 +84,7 @@ const Footer = () => {
 								Staking
 							</Link>
 						</ListItem>
-						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='/legal' sx={linkStyles}>
-								Legal
-							</Link>
-						</ListItem>
+						
 					</List>
 				</Grid>
 				<Grid item xs={6} md={2}>
@@ -125,7 +126,7 @@ const Footer = () => {
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://discord.gg/M9VJ9XUMuA' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://discord.gg/E8cHp6ThuZ' sx={linkStyles} target='_blank'>
 								Discord
 							</Link>
 						</ListItem>
@@ -191,7 +192,7 @@ const Footer = () => {
 					</Link>
 				</ListItem> 
 				<ListItem sx={socialStyles}>
-					<Link sx={{ display: 'flex', justifyContent: 'center' }} href="https://discord.gg/M9VJ9XUMuA" aria-label="Discord" title="Discord" target="_blank">
+					<Link sx={{ display: 'flex', justifyContent: 'center' }} href="https://discord.gg/E8cHp6ThuZ" aria-label="Discord" title="Discord" target="_blank">
 						<SvgIcon sx={{ width: '32px', height: '32px' }} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 							<path d="m24.242 9.115c-2.865-2.144-5.61-2.084-5.61-2.084l-.28.321c3.406 1.022 4.989 2.524 4.989 2.524-4.873-2.683-11.079-2.663-16.148 0 0 0 1.643-1.583 5.249-2.604l-.2-.241c0 0-2.725-.06-5.609 2.084 0 0-2.885 5.189-2.885 11.58 0 0 1.683 2.885 6.111 3.025 0 0 .741-.882 1.342-1.643-2.544-.761-3.506-2.344-3.506-2.344 1.599 1 3.215 1.626 5.229 2.023 3.277.674 7.353-.019 10.398-2.023 0 0-1.002 1.623-3.626 2.364.601 .741 1.322 1.603 1.322 1.603 4.427-.14 6.11-3.025 6.11-3.005 0-6.391-2.885-11.58-2.885-11.58zm-12.541 9.717c-1.122 0-2.044-.982-2.044-2.204.082-2.927 4.026-2.918 4.087 0 0 1.222-.902 2.204-2.043 2.204zm7.312 0c-1.122 0-2.043-.982-2.043-2.204.09-2.921 3.984-2.922 4.087 0 0 1.222-.901 2.204-2.044 2.204z" />
 						</SvgIcon>

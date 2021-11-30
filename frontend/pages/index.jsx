@@ -3,11 +3,38 @@ import Hero from '@components/Hero';
 import { Container, Divider, Box } from '@mui/material';
 import RoadMap from '@components/RoadMap';
 import CenterTitle from '@components/CenterTitle'
-// import { useEffect, useState, useRef, createRef } from 'react';
-// import { useRouter } from 'next/router'
+import { useEffect, useState, useRef, createRef } from 'react';
+import { useRouter } from 'next/router'
 
 const Homepage = () => {
   
+  const router = useRouter()
+
+  let id = router.asPath.match(/#([a-z0-9]+)/gi )
+
+  useEffect(() => {
+
+  
+			if (id) {
+				let element = document.querySelector(id);
+        
+				console.log({ element });
+
+				if (element) {
+					element.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+						inline: "nearest"
+					});
+
+				}
+        
+
+			}
+      else window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
+
+	}, [id]);
+
   return (
     <>
       <Container maxWidth='lg'>
