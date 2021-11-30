@@ -7,6 +7,7 @@ from api.v1.routes.users import users_router
 from api.v1.routes.auth import auth_router
 from api.v1.routes.asset import asset_router
 from api.v1.routes.blockchain import blockchain_router
+from api.v1.routes.util import util_router
 from core import config
 # from app.db.session import SessionLocal
 from core.auth import get_current_active_user
@@ -64,6 +65,7 @@ app.include_router(users_router, prefix="/api/users", tags=["users"], dependenci
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(asset_router, prefix="/api/asset", tags=["asset"])
 app.include_router(blockchain_router, prefix="/api/blockchain", tags=["blockchain"])
+app.include_router(util_router, prefix="/api/util", tags=["util"])
 
 
 ### MAIN
