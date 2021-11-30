@@ -17,13 +17,10 @@ import { useEffect, useState } from 'react';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-
-
 function MyApp({ Component, pageProps }) {
 
 	const emotionCache = clientSideEmotionCache;
 	const router = useRouter();
-	let id = router.asPath.match(/#([a-z0-9]+)/gi)
 
 	return (
 		<CacheProvider value={emotionCache}>
@@ -40,7 +37,7 @@ function MyApp({ Component, pageProps }) {
 					
 						<WalletProvider>
 						<SearchProvider>
-						<AnimatePresence exitBeforeEnter onExitComplete={false}>
+						<AnimatePresence exitBeforeEnter>
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
@@ -50,7 +47,7 @@ function MyApp({ Component, pageProps }) {
 							>
 							
 								<Layout>
-									<Component {...pageProps} />
+									<Component {...pageProps}/>
 								</Layout>
 								
 							</motion.div>

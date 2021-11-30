@@ -4,6 +4,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -11,7 +12,17 @@ body {
 }
 
 #__next {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+}
+
+/* 
+use in conjunction with body and __next attributs
+ref: https://stackoverflow.com/questions/68362273/remove-smooth-scroll-animation-on-changing-page-in-nextjs-with-link-component
+*/
+a:link { 
+  scroll-behavior: auto!important;
 }
 
 a {
