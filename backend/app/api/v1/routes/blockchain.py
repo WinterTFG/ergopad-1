@@ -49,6 +49,7 @@ def getNodeInfo():
     res = requests.get(f'{CFG.node}/info', headers=dict(headers, **{'api_key': CFG.ergopadApiKey}))
     if res.ok:
       info = res.json()
+      nodeInfo['network'] = Network
       if 'parameters' in info:
         if 'height' in info['parameters']:
           nodeInfo['currentHeight'] = info['parameters']['height']
@@ -60,6 +61,15 @@ def getNodeInfo():
   except Exception as e:
     logging.error(f'getBoxesWithUnspentTokens {e}')
     return None
+
+@r.get("/tokeninfo/{tokenId}", name="blockchain:tokeninfo")
+def getTokenInfo(tokenId):
+  # tkn = requests.get(f'{CFG.node}/wallet/balances/withUnconfirmed', headers=dict(headers, **{'api_key': CFG.apiKey})
+  try:
+    tkn = requests.get(f'{CFG.explorer}/tokens/{tokenId}')
+    return tkn.json()
+  except Exception as e:
+    return {'status': 'error', 'details': f'{CFG.explorer}/tokens/{tokenId}', 'exception': e}
 
 # find unspent boxes with tokens
 @r.get("/unspentTokens", name="blockchain:unspentTokens")
@@ -157,9 +167,13 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
 
   try:
     nodeInfo = getNodeInfo()  
-    smartContract = getErgoscript(scScript)
     ergopadTokenBoxes = getBoxesWithUnspentTokens(tokenId)
-    vestingBeginHeight = nodeInfo['currentHeight']+1 # next height
+    avgBlockHeight_s = 128 # seconds
+    vestingEpoch_hr = .1 # hour(s); every 6 mins
+    vestingInterval_ht = int(vestingEpoch_hr*(3600/avgBlockHeight_s))
+    vestingBeginHeight = nodeInfo['currentHeight']+vestingInterval_ht # vesting period converted to height
+    # smartContract = getErgoscript('alwaysTrue')
+    smartContract = getErgoscript('heightLock', params={'heightLock': vestingBeginHeight})
 
     # 1 outbox per vesting period to lock spending until vesting complete
     outBox = []
@@ -171,7 +185,7 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
       logging.info(remainder)
       if i == CFG.vestingPeriods-1:
         remainder = qty%CFG.vestingPeriods
-      scVesting = getErgoscript('heightLock', {'heightLock': vestingBeginHeight+i*2}) # unlock every 2
+      scVesting = getErgoscript('heightLock', {'heightLock': vestingBeginHeight+i*vestingInterval_ht})
 
       # create outputs for each vesting period; add remainder to final output, if exists
       outBox.append({
@@ -179,7 +193,7 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
         'value': CFG.minTx,
         'script': scVesting,
         'register': {
-          'R4': vestingBeginHeight+i*2, # heightlock
+          'R4': vestingBeginHeight+i*vestingInterval_ht, # heightlock
         },
         'assets': [{ 
           'tokenId': tokenId,
@@ -203,6 +217,8 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
         },
     }
 
+    # return({'status': 'testing', 'x': vestingBeginHeight, 'smartContract': smartContract, 'request': request})
+
     # make async request to assembler
     # logging.info(request); exit(); # !! testing
     res = requests.post(f'{CFG.assembler}/follow', headers=headers, json=request)
@@ -215,4 +231,3 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
     logging.error(f'scHeightLock: {e}')
     return({'status': 'fail', 'id': -1, 'tokenId': tokenId, 'description': e})
 
-# tkn = requests.get(f'{CFG.node}/wallet/balances/withUnconfirmed', headers=dict(headers, **{'api_key': CFG.apiKey})
