@@ -12,15 +12,22 @@ import { WalletProvider } from '../utils/WalletContext';
 import { SearchProvider } from '../utils/SearchContext';
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
+
+const exitCompleter = () => {
+	if (typeof window !== 'undefined') {
+		window.scrollTo({top: 0, left: 0, behavior: 'instant'})
+	}
+}
 
 function MyApp({ Component, pageProps }) {
 
 	const emotionCache = clientSideEmotionCache;
 	const router = useRouter();
+
+	
 
 	return (
 		<CacheProvider value={emotionCache}>
@@ -37,7 +44,7 @@ function MyApp({ Component, pageProps }) {
 					
 						<WalletProvider>
 						<SearchProvider>
-						<AnimatePresence exitBeforeEnter onExitComplete={window.scrollTo({top: 0, left: 0, behavior: 'instant'})}>
+						<AnimatePresence exitBeforeEnter onExitComplete={exitCompleter}>
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}

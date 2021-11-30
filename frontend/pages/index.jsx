@@ -25,7 +25,9 @@ const Homepage = () => {
 						block: "start",
 						inline: "nearest"
 					});
+
 				}
+
 			}
 
 	}, [id]);
