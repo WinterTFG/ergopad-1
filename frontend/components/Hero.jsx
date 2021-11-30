@@ -1,16 +1,19 @@
-import { Grid, Typography, Button, Box, Image }  from '@mui/material';
+import { Grid, Typography, Button, Box }  from '@mui/material';
 import LowerGradients from '@components/stylistic/LowerGradients';
 import theme from '../styles/theme';
+import Image from 'next/image'
 
 const Hero = ({ title, subtitle }) => {
   return (
     <>
-    {/* <Box maxWidth='lg' sx={{ position: 'relative', mx: 'auto', height: '0', pointerEvents: 'none', zIndex: '-100' }} aria-hidden="true">
-      <LowerGradients />
-    </Box> */}
+    
 
-    <Grid container spacing={2} sx={{ pt: 10 }}>
-      <Grid item xs={12} sm={7} sx={{ mb: 8 }}>
+    <Box maxWidth='lg' sx={{ position: 'relative', mx: 'auto', height: '0', pointerEvents: 'none', zIndex: '-100', overflow: 'visible' }} aria-hidden="true">
+      <LowerGradients />
+    </Box>  
+
+    <Grid container spacing={2} sx={{alignItems: 'center'}}>
+      <Grid item xs={12} md={5} sx={{ mt: { xs: 12, md: 6 } }}>
         <Typography variant='h1'>{title}</Typography>
         <Typography
           variant='subtitle1'
@@ -48,7 +51,7 @@ const Hero = ({ title, subtitle }) => {
             </Button>
           </a>
 
-          <a href="https://discord.gg/ZpCqFCjT4g" target="_blank">
+          <a href="https://discord.gg/M9VJ9XUMuA" target="_blank">
             <Button 
               variant="contained"
               sx={{
@@ -74,8 +77,8 @@ const Hero = ({ title, subtitle }) => {
         </Box>
 
       </Grid>
-      <Grid item xs={12} sm={5}>
-        
+      <Grid item xs={12} md={7} sx={{ pb: { xs: 4, md: 16 } }}>
+        <Image src="/ergo-illustration.png" alt="ErgoPad Illustration" layout="responsive" width="600" height="600" />
       </Grid>
     </Grid>
     </>

@@ -10,6 +10,7 @@ const Search = ({ placeholder }) => {
     };
     const submitForm = (e) => {
         e.preventDefault()
+
     }
 
     return (
@@ -62,7 +63,7 @@ const Search = ({ placeholder }) => {
                 />
 
             </Paper>
-
+                <div id="top"></div>
             
         </>
     )
