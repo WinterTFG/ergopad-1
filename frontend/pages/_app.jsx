@@ -37,12 +37,11 @@ function MyApp({ Component, pageProps }) {
 					
 						<WalletProvider>
 						<SearchProvider>
-						<AnimatePresence exitBeforeEnter>
+						<AnimatePresence exitBeforeEnter onExitComplete={window.scrollTo({top: 0, left: 0, behavior: 'instant'})}>
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								className={`app-container`}
-								exit={{ opacity: 1 }}
 								key={router.route}
 							>
 							

@@ -39,7 +39,7 @@ const Footer = () => {
 
 			<Grid container spacing={1} sx={{ justifyContent: 'space-between' }}>
 				<Grid item xs={12} md={4}>
-					<MuiNextLink activeClassName='active' href='/'>
+					<MuiNextLink activeClassName='active' href='/#'>
 								<IconButton sx={{ mb: '2rem' }}>
 									<svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 										<linearGradient id="b" x2="32" y1="8" y2="8" gradientUnits="userSpaceOnUse">
