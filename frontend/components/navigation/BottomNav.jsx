@@ -19,12 +19,13 @@ import MuiNextLink from '@components/MuiNextLink';
 
 const drawerLinks = [
   { title: 'About', path: '/about' },
+  { title: 'Roadmap', path: '/#roadmap' },
   { title: 'Projects', path: '/projects' },
   { title: 'Apply for IDO', path: '/apply' },
   { title: 'Documentation', path: '/documentation' },
   { title: 'Tutorials', path: '/guides' },
   { title: 'FAQ', path: '/faq' },
-  { title: 'Legal', path: '/legal' },
+  
 ];
 
 const bottomNavLinks = [

@@ -14,9 +14,10 @@ const Homepage = () => {
 
   useEffect(() => {
 
+  
 			if (id) {
 				let element = document.querySelector(id);
-        console.log(id)
+        
 				console.log({ element });
 
 				if (element) {
@@ -27,8 +28,10 @@ const Homepage = () => {
 					});
 
 				}
+        
 
 			}
+      else window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
 
 	}, [id]);
 
