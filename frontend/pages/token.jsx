@@ -19,7 +19,7 @@ import RelatedLinks from '@components/RelatedLinks/RelatedLinks';
 import theme from '../styles/theme';
 
 const boxStyles = {
-    background: 'linear-gradient(rgba(35, 35, 39, 1), rgba(29, 29, 32, 1) 300px)',
+    background: 'linear-gradient(rgba(35, 35, 39, 0.3), rgba(29, 29, 32, 0) 300px)',
     pt: '5rem',
     pb: '3rem',
     borderTopColor: 'rgba(46,46,51,1)!important',
@@ -102,7 +102,7 @@ const tokenCards = [
 ]
 
 const gridBox = {
-    background: 'rgba(35, 35, 39, 1)',
+    background: 'rgba(35, 35, 39, 0.7)',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
@@ -140,7 +140,7 @@ const Token = () => {
                      >
 
                         {tokenCards.map((value) => (
-                            <Grid item md={4} sm={6} xs={12} sx={{ maxWidth: {xs: '320px'}}}>
+                            <Grid item md={4} sm={6} xs={12} sx={{ maxWidth: { xs: '320px' }}}>
                             <Box sx={gridBox}>
                                 <Typography>
                                     {value.title}
@@ -194,8 +194,8 @@ const Token = () => {
                     <Grid item md={4} >
                         <Box>
                             <List sx={{ color: theme.palette.text.secondary }}>
-                                {tokenAllocation.map((value) => (
-                                    <ListItem id={value.x}><ListItemText>
+                                {tokenAllocation.map((value, i) => (
+                                    <ListItem id={value.x} key={value.x}><ListItemText>
                                         {value.x}: {value.y}%
                                     </ListItemText></ListItem>
                                 ))}
@@ -208,14 +208,14 @@ const Token = () => {
         </Box>
 
         <Box sx={boxStyles}>
-            <Container maxWidth='lg' sx={{ }}>
+            <Container maxWidth='md' sx={{ }}>
 
                 <CenterTitle 
                     title="Token Utility" 
                     subtitle="How to put the ErgoPad token to use"
                 />
-                        
-                    <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+
+                    <Accordion key="panel1" expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1bh-content"
@@ -231,7 +231,7 @@ const Token = () => {
                         </Typography>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+                    <Accordion key="panel2" expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel2bh-content"
@@ -256,7 +256,7 @@ const Token = () => {
                             </Typography>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                    <Accordion key="panel3" expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel3bh-content"
@@ -272,7 +272,7 @@ const Token = () => {
                         </Typography>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+                    <Accordion key="panel4" expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel4bh-content"

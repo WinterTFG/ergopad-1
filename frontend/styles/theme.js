@@ -110,11 +110,14 @@ theme.typography.h1 = {
   fontWeight: '700',
   letterSpacing: '-0.02em',
   marginBottom: '2rem',
-  '@media (max-width:880px)': {
+  '@media (max-width:1200px)': {
     fontSize: '4.71rem',
   },
-  '@media (max-width:800px)': {
+  '@media (max-width:1024px)': {
     fontSize: '3.9rem',
+  },
+  '@media (max-width:880px)': {
+    fontSize: '3rem',
   },
 };
 

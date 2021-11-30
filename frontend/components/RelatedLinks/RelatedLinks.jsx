@@ -27,7 +27,7 @@ const Projects = ({ title, subtitle, links }) => {
 };
 
 const boxStyles = {
-    background: 'linear-gradient(rgba(35, 35, 39, 1), rgba(29, 29, 32, 1) 600px)',
+    background: 'linear-gradient(rgba(46, 46, 51, 0.3), rgba(29, 29, 32, 0) 300px)',
     pt: 6,
     borderTopColor: 'rgba(46,46,51,1)!important',
     borderStyle: 'solid',

@@ -2,7 +2,7 @@ import { Box, Container }  from '@mui/material';
 import CenterTitle from '@components/CenterTitle'
 
 const boxStyles = {
-    background: 'linear-gradient(rgba(35, 35, 39, 1), rgba(29, 29, 32, 1) 300px)',
+    background: 'linear-gradient(rgba(46, 46, 51, 0.3), rgba(29, 29, 32, 0) 300px)',
     pt: '5rem',
     pb: '3rem',
     borderTopColor: 'rgba(46,46,51,1)!important',

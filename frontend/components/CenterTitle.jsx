@@ -3,7 +3,7 @@ import { Typography, Box }  from '@mui/material';
 const CenterTitle = ({ title, subtitle, main }) => {
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: '3rem' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mb: '3rem', mt: (main ? 12 : 0) }}>
             <Box
                 sx={{
                     textAlign: 'center'

@@ -7,6 +7,7 @@ import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import Typography from '@mui/material/Typography';
 import theme from '../styles/theme';
+import Box from '@mui/material/Box';
 
 const timelineItems = [
 	{
@@ -54,6 +55,8 @@ const RoadMap = () => {
       <Timeline position="right" sx={{ mt: -3 }}>
 		{timelineItems.map((item, i) => {
 			return (
+				<Box key={`timeline_item_${i}`}>
+
 				<TimelineItem>
 					<TimelineOppositeContent
 						sx={{  m: 'auto 0', maxWidth: '30%' }}
@@ -77,6 +80,7 @@ const RoadMap = () => {
 						</Typography>
 					</TimelineContent>
 				</TimelineItem>
+				</Box>
 			);
 		})} 
       </Timeline>

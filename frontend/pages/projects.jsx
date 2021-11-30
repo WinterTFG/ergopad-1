@@ -4,7 +4,7 @@ import RelatedLinks from '@components/RelatedLinks/RelatedLinks';
 import theme from '../styles/theme';
 
 const boxStyles = {
-    background: 'linear-gradient(rgba(46, 46, 51, 0.3), rgba(29, 29, 32, 0.3) 300px)',
+    background: 'linear-gradient(rgba(46, 46, 51, 0.3), rgba(29, 29, 32, 0) 300px)',
     pt: '5rem',
     pb: '3rem',
     borderTopColor: 'rgba(46,46,51,1)!important',
