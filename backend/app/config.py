@@ -24,10 +24,9 @@ Config = {
     'node'              : 'http://launchpad:9052',
     'explorer'          : 'https://api-testnet.ergoplatform.com/api/v1',
     'ergopadApiKey'     :  os.getenv('ERGOPAD_APIKEY'),
-    'bogusApiKey'       :  os.getenv('BOGUS_APIKEY'),
     'assembler'         : 'http://assembler:8080',
-    'minTx'             : 10000000, # required
-    'txFee'             : 2000000, # tips welcome
+    'minTx'             : 100000, # smallest required for tx
+    'txFee'             : 1000000, # min required
     'nanoergsInErg'     : 1000000000, # 1e9
     'nergAmount'        : .1, # default
     'qtyTokens'         : 5, 
@@ -35,10 +34,11 @@ Config = {
     'ergopadTokenId'    : os.getenv('ERGOPAD_TOKENID'),
     'b64ergopadTokenId' : b64encode(bytes.fromhex(os.getenv('ERGOPAD_TOKENID'))).decode(),
     'ergopadWallet'     : os.getenv('ERGOPAD_WALLET'),
+    'buyerApiKey'       :  os.getenv('BOGUS_APIKEY'),
     'buyerWallet'       : os.getenv('BOGUS_WALLET'),
+    'buyerNode'         : 'http://ergonode:9052',
     'requestedTokens'   : 4,
     'vestingPeriods'    : 2,
-    'wallet'            : 'http://ergonode:9052',
   }),
   'mainnet': dotdict({
     'node'              : 'http://ergonode:9053',
@@ -58,6 +58,6 @@ Config = {
     'buyerWallet'       : os.getenv('BOGUS_WALLET'),
     'requestedTokens'   : 4,
     'vestingPeriods'    : 2,
-    'wallet'            : 'http://ergonode2:9053',
+    # 'buyer'            : 'http://ergonode2:9053', # used for simulations
   })
 }

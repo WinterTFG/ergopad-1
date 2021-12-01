@@ -50,6 +50,7 @@ def getNodeInfo():
     if res.ok:
       info = res.json()
       nodeInfo['network'] = Network
+      nodeInfo['uri'] = CFG.node
       if 'parameters' in info:
         if 'height' in info['parameters']:
           nodeInfo['currentHeight'] = info['parameters']['height']
@@ -172,8 +173,10 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
     vestingEpoch_hr = .1 # hour(s); every 6 mins
     vestingInterval_ht = int(vestingEpoch_hr*(3600/avgBlockHeight_s))
     vestingBeginHeight = nodeInfo['currentHeight']+vestingInterval_ht # vesting period converted to height
-    # smartContract = getErgoscript('alwaysTrue')
-    smartContract = getErgoscript('heightLock', params={'heightLock': vestingBeginHeight})
+    smartContract = getErgoscript('alwaysTrue')
+    txFee = CFG.txFee # * CFG.vestingPeriods ??
+    txMin = 100000 # .01 ergs; remove after reload ENV
+    txTotal = txMin * CFG.vestingPeriods # without fee
 
     # 1 outbox per vesting period to lock spending until vesting complete
     outBox = []
@@ -190,8 +193,8 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
       # create outputs for each vesting period; add remainder to final output, if exists
       outBox.append({
         'address': buyerWallet.address,
-        'value': CFG.minTx,
         'script': scVesting,
+        'value': txMin,
         'register': {
           'R4': vestingBeginHeight+i*vestingInterval_ht, # heightlock
         },
@@ -207,11 +210,11 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
         'address': smartContract,
         'returnTo': buyerWallet.address,
         'startWhen': {
-            'erg': CFG.txFee + CFG.minTx*CFG.vestingPeriods, # nergAmount + 2*minTx + txFee
+            'erg': txFee + txTotal, # nergAmount + 2*minTx + txFee
         },
         'txSpec': {
             'requests': outBox,
-            'fee': CFG.txFee,          
+            'fee': txFee,          
             'inputs': ['$userIns', ','.join([k for k in ergopadTokenBoxes.keys()])], # 'inputs': ['$userIns', '488a6f4cddb8d4565f5eddf065e943765539b5e861df160ab47e8692637a4a4e'],
             'dataInputs': [],
         },
@@ -225,9 +228,45 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
     id = res.json()['id']
     fin = requests.get(f'{CFG.assembler}/result/{id}')
     logging.info({'status': 'success', 'fin': fin.json(), 'followId': id, 'request': request})
-    return({'status': 'success', 'fin': fin.json(), 'smartContract': smartContract, 'followId': id, 'request': request})
+    return({
+        'status': 'success', 
+        'details': f'send {txTotal/CFG.nanoergsInErg} total ergs, and {txFee/CFG.nanoergsInErg} fee ergs to {smartContract}',
+        'fin': fin.json(), 
+        'smartContract': smartContract, 
+        'followId': id, 
+        'request': request
+    })
   
   except Exception as e:
-    logging.error(f'scHeightLock: {e}')
+    logging.error(f'purchaseToken: {e}')
     return({'status': 'fail', 'id': -1, 'tokenId': tokenId, 'description': e})
 
+@r.get("/sendPayment/{address}/{nergs}", name="blockchain:sendpayment")
+def sendPayment(address, nergs):
+  # TODO: require login/password or something; disable in PROD
+  try:
+    # !! add in check for wallet lock, and unlock/relock if needed
+    isWalletLocked = False
+
+    # unlock wallet
+    if isWalletLocked:
+        logging('unlock wallet')
+
+    # send nergs to address/smartContract from the buyer wallet
+    # for testing, address/smartContract is 1==1, which anyone could fulfill
+    sendMe = [{
+        'address': address,
+        'value': int(nergs),
+        'assets': [],
+    }]    
+    # pay = requests.post(f'{CFG.buyer}/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': CFG.buyerApiKey}, json=sendMe)
+    pay = requests.post(f'http://ergonode:9052/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': 'oncejournalstrangeweather'}, json=sendMe)
+
+    # relock wallet
+    if isWalletLocked:
+        logging('relock wallet')
+
+    return {'status': 'success', 'detail': f'payment: {pay.json()}'}
+
+  except Exception as e:
+    return {'status': 'fail', 'detail': f'sendPayment\n{sendMe}', 'exception': e}    
