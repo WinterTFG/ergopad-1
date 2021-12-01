@@ -126,7 +126,7 @@ const Token = () => {
         <Container maxWidth="lg" sx={{ mb: '3rem' }}>
             <CenterTitle 
                 title="Tokenomics"
-                subtitle="The ErgoPad tokenomics and uses"
+                subtitle="For Ergo projects, are tokenomics called Ergonomics? "
                 main={true}
             />
 
@@ -158,9 +158,10 @@ const Token = () => {
 
         
 
-        <Box sx={boxStyles}>
+        
             <Container maxWidth='lg' sx={{ }}>
 
+            <Divider sx={{ my: 10 }} />
                 <CenterTitle 
                     title="Token Allocation" 
                     subtitle="The ErgoPad token will be released in public sales only. No VCs, no private allocation. We believe in fair access."
@@ -205,10 +206,12 @@ const Token = () => {
                 </Grid>
 
             </Container>
-        </Box>
 
-        <Box sx={boxStyles}>
+           
+            <Divider sx={{ my: 10, maxWidth: 'lg', mx: 'auto' }} />
             <Container maxWidth='md' sx={{ }}>
+
+           
 
                 <CenterTitle 
                     title="Token Utility" 
@@ -289,9 +292,9 @@ const Token = () => {
                         </AccordionDetails>
                     </Accordion>
             </Container>
-        </Box>
         
-        <RelatedLinks title="Learn More" subtitle="Want to get more info about how these projects started?" links={relatedLinkList} />
+        
+        <RelatedLinks title="Learn More" subtitle="" links={relatedLinkList} />
     </>
   );
 };
