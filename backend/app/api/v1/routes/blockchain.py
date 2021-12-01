@@ -41,7 +41,7 @@ blockchain_router = r = APIRouter()
 #
 # current node info
 #
-@r.get("/nodeinfo", name="blockchain:nodeinfo")
+@r.get("/nodeInfo", name="blockchain:nodeInfo")
 def getNodeInfo():
   try:
     nodeInfo = {}
@@ -63,7 +63,7 @@ def getNodeInfo():
     logging.error(f'getBoxesWithUnspentTokens {e}')
     return None
 
-@r.get("/tokeninfo/{tokenId}", name="blockchain:tokeninfo")
+@r.get("/tokenInfo/{tokenId}", name="blockchain:tokenInfo")
 def getTokenInfo(tokenId):
   # tkn = requests.get(f'{CFG.node}/wallet/balances/withUnconfirmed', headers=dict(headers, **{'api_key': CFG.apiKey})
   try:
@@ -71,6 +71,15 @@ def getTokenInfo(tokenId):
     return tkn.json()
   except Exception as e:
     return {'status': 'error', 'details': f'{CFG.explorer}/tokens/{tokenId}', 'exception': e}
+
+@r.get("/followInfo/{tokenId}", name="blockchain:followinfo")
+def followInfo(followId):    
+    try:
+        res = f'http://localhost:8080/result/{followId}'
+        return res.json()
+    
+    except Exception as e:
+        return {'status': 'fail', 'details': e}    
 
 # find unspent boxes with tokens
 @r.get("/unspentTokens", name="blockchain:unspentTokens")
