@@ -198,7 +198,7 @@ const Apply = () => {
 							</Button>
 						</a>
 
-						<a href="https://discord.gg/M9VJ9XUMuA" target="_blank">
+						<a href="https://discord.gg/E8cHp6ThuZ" target="_blank">
 							<Button 
 							variant="contained"
 							sx={{
