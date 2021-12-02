@@ -1,4 +1,14 @@
-import { Typography, Container, Box, Grid, Button, Divider } from '@mui/material';
+import { 
+	Typography, 
+	Container, 
+	Box, 
+	Grid, 
+	Button, 
+	Divider, 
+	Paper, 
+	FormControlLabel, 
+	Checkbox 
+} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,6 +16,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CenterTitle from '@components/CenterTitle';
 import theme from '../styles/theme';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import MuiNextLink from '@components/MuiNextLink'
 
 const stakingItem = (item) => { 
 	const extraStyles = {
@@ -42,12 +54,12 @@ const stakingItem = (item) => {
 const stakingItems = [
 	{
 		title: 'Number of Stakers',
-		value: '1234',
+		value: '-',
 		background: theme.palette.primary.main
 	},
 	{
 		title: 'ErgoPad Tokens Staked',
-		value: '12.3M',
+		value: '-',
 		background: theme.palette.secondary.main
 	},
 	{
@@ -68,8 +80,9 @@ const gridBox = {
     borderRadius: 2,
     border: 1,
     borderColor: 'rgba(46,46,51,1)',
-	maxWidth: '300px',
-	minWidth: '240px'
+	width: '100%',
+	minWidth: '240px',
+	maxWidth: '380px'
 }
 
 const unstakeFees = [
@@ -95,28 +108,63 @@ const unstakeFees = [
 	},
 ]
 
+const stakingHeading = {
+	tier: 'Tier',
+	value: 'Amount', 
+	requirements: 'Staking Requirements',
+	weight: 'Allocation Weight'
+}
+
+const stakingTiers = [
+	{
+		tier: 'Bronze',
+		value: '10000',
+		requirements: 'Twitter like, comment, and retweet',
+		weight: '10',
+	},
+	{
+		tier: 'Silver',
+		value: '25000',
+		requirements: 'Twitter like, comment, and retweet',
+		weight: '25',
+	},
+	{
+		tier: 'Gold',
+		value: '50000',
+		requirements: 'Twitter like',
+		weight: '60',
+	},
+	{
+		tier: 'Platinum',
+		value: '150000',
+		requirements: 'none',
+		weight: '200',
+	}
+]
+
 const Staking = () => {
-  return (
-    <>
-        <Container sx={{ mb: '3rem' }}>
-            <CenterTitle 
-                title="Stake Your Tokens"
-                subtitle="Connect your wallet and stake your tokens to receive staking rewards and early access to upcoming IDOs"
-                main={true}
-            />
-        </Container>
 
-            <Container maxWidth='lg' sx={{ }}>
+	const checkSmall = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
-                
-                <Grid container spacing={3} alignItems="stretch" justifyContent="center" sx={{ flexGrow: 1, mb: 3 }}> 
+	return (
+		<>
+			<Container sx={{ mb: '3rem' }}>
+				<CenterTitle 
+					title="Stake Your Tokens"
+					subtitle="Connect your wallet and stake your tokens to receive staking rewards and early access to upcoming IDOs"
+					main={true}
+				/>
+			</Container>
+
+			<Container maxWidth='lg' sx={{ }}>
+				<Grid container spacing={3} alignItems="stretch" justifyContent="center" sx={{ flexGrow: 1, mb: 3 }}> 
 					{stakingItems.map((item) => {
 						return stakingItem(item)
 					})} 
-                </Grid>
+				</Grid>
 
 				<Grid container spacing={3} sx={{ mt: 8, justifyContent: 'space-between', flexDirection: { xs: 'column-reverse', md: 'row' } }}>
-      				<Grid item xs={12} md={8} sx={{ pr: { lg: 12, xs: 0 } }}>
+					<Grid item xs={12} md={8} sx={{ pr: { lg: 12, xs: 0 } }}>
 						<Typography variant="h3">
 							Instructions
 						</Typography>
@@ -127,11 +175,13 @@ const Staking = () => {
 							Once staked, you will earn rewards based on the Current APY, which will be automatically compounded for you. When you decide to unstake, use the withdrawal button and follow the instructions. As with staking, please get the exact values correct when you make the transaction. You must cover the transaction fees to initiate the withdrawal contract. Luckily, this is not Eth, and the fees are very low. 
 						</Typography>
 						<Typography variant="p">
-							Please note, if you choose to unstake early, there will be a fee as outlined to the right. 
+							Please note, if you choose to unstake early, there will be a fee as outlined to the right. Those fees will be burned, one of the deflationary mechanisms in place to control the ErgoPad token supply. 
 						</Typography>
 						<Typography variant="p">
 							When new IDOs are announced on ErgoPad, we will also announce a snapshot date and time. If you are staking during that time, you will be eligible to receive an allocation of the IDO tokens at a reduced price. This will be weighted based on your staking tier. You'll be able to check your allocation on this website and interact with the sales contract. 
 						</Typography>
+						
+						<Typography variant="p" sx={{ textAlign: 'center' }}><Checkbox color="tertiary" /> I have read and agree to the staking <MuiNextLink href="/terms">Terms and Conditions</MuiNextLink></Typography>
 						
 
 						<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
@@ -166,19 +216,19 @@ const Staking = () => {
 							</Typography>
 						</Box>
 						<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                            <Box sx={gridBox}>
-                                <Typography>
-                                    ErgoPad Staked
-                                </Typography>
-                                <Typography variant="h3" sx={{ mb: 3 }}>
-                                    1234
-                                </Typography>
+							<Box sx={gridBox}>
 								<Typography>
-                                    Rewards
-                                </Typography>
-                                <Typography variant="h3" sx={{ mb: 3 }}>
-                                    1234
-                                </Typography>
+									ErgoPad Staked
+								</Typography>
+								<Typography variant="h3" sx={{ mb: 3 }}>
+									-
+								</Typography>
+								<Typography>
+									Rewards
+								</Typography>
+								<Typography variant="h3" sx={{ mb: 3 }}>
+									-
+								</Typography>
 								<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
 									<Button 
 										variant="contained"
@@ -201,7 +251,7 @@ const Staking = () => {
 										Withdraw
 									</Button>
 								</Box>
-                            </Box>
+							</Box>
 						</Box>
 						<Box sx={{ width: '100%', display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' }, flexDirection: 'column' }}>
 							<Typography variant="h5" sx={{ fontWeight: '700', mt: 6 }}>
@@ -240,22 +290,100 @@ const Staking = () => {
 						</Box>
 					</Grid>
 				</Grid>
-            </Container>
-
-			
-            <Container maxWidth='lg' sx={{ }}>
-				<Divider sx={{ my: 10,  }} />
-				<CenterTitle 
-					title="Staking Tiers"
-					subtitle="Higher tier stakers will receive a higher pool allocation on IDOs"
-				/>
-
 			</Container>
 
+				
+			<Container maxWidth='lg' sx={{ mt: 6 }}>
+				
+				<Paper sx={{ p: {xs: 2, sm: 4} , borderRadius: 3 }}>
+						<Typography variant="h5" sx={{ fontWeight: '700' }}>
+						Staking Tiers
+						</Typography>
+						{ checkSmall ? (
+						<Table>
+							<TableHead>
+								<TableRow>
+									<TableCell sx={{ fontWeight: '800' }}>
+										Tier
+									</TableCell>
+									<TableCell sx={{ fontWeight: '800' }}>
+										Amount
+									</TableCell>
+									<TableCell sx={{ fontWeight: '800' }}>
+										Whitelist Requirements
+									</TableCell>
+									<TableCell sx={{ fontWeight: '800' }}>
+										Allocation Weight
+									</TableCell>
+								</TableRow>
+							</TableHead>
+							
+							<TableBody>
+								{stakingTiers.map((tier) => {
+									return(
+										<TableRow>
+											<TableCell sx={{ color: theme.palette.text.secondary, fontWeight: '800' }}>
+												{tier.tier}
+											</TableCell>
+											<TableCell>
+												{tier.value}
+											</TableCell>
+											<TableCell>
+												{tier.requirements}
+											</TableCell>
+											<TableCell>
+												{tier.weight}
+											</TableCell>
+										</TableRow>
+									)
+									})}
+							</TableBody>
+						</Table>
+					) : (
+						<Table sx={{ p: 0 }}>
+							{stakingTiers.map((tier) => {
+								return(<>
+									<TableRow sx={{ borderTop: `1px solid #444` }}>
+										<TableCell sx={{ color: theme.palette.text.secondary, border: 'none', p: 1, pt: 2 }}>
+											{stakingHeading.tier}
+										</TableCell>
+										<TableCell sx={{ border: 'none', p: 1, pt: 2 }}>
+											{tier.tier}
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell sx={{ color: theme.palette.text.secondary, border: 'none', p: 1 }}>
+											{stakingHeading.value}
+										</TableCell>
+										<TableCell sx={{ border: 'none', p: 1 }}>
+											{tier.value}
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell sx={{ color: theme.palette.text.secondary, border: 'none', p: 1 }}>
+											{stakingHeading.requirements}
+										</TableCell>
+										<TableCell sx={{ border: 'none', p: 1 }}>
+											{tier.requirements}
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell sx={{ color: theme.palette.text.secondary, border: 'none', p: 1, pb: 2 }}>
+											{stakingHeading.weight}
+										</TableCell>
+										<TableCell sx={{ border: 'none', p: 1, pb: 2 }}>
+											{tier.weight}
+										</TableCell>
+									</TableRow>
+								</>)
+								})}
+						</Table>
+					)}
+				</Paper>
 
-
-    </>
-  );
+			</Container>
+		</>
+	);
 };
 
 export default Staking;
