@@ -117,25 +117,25 @@ const stakingHeading = {
 
 const stakingTiers = [
 	{
-		tier: 'Bronze',
+		tier: '(A) Alpha',
 		value: '10000',
 		requirements: 'Twitter like, comment, and retweet',
 		weight: '10',
 	},
 	{
-		tier: 'Silver',
+		tier: '(Ω) Omega',
 		value: '25000',
 		requirements: 'Twitter like, comment, and retweet',
 		weight: '25',
 	},
 	{
-		tier: 'Gold',
+		tier: '(Φ) Phi',
 		value: '50000',
 		requirements: 'Twitter like',
 		weight: '60',
 	},
 	{
-		tier: 'Platinum',
+		tier: '(Σ) SIgma',
 		value: '150000',
 		requirements: 'none',
 		weight: '200',

@@ -1,4 +1,4 @@
-import { Button, Icon, Box } from '@mui/material';
+import { Button, Icon, Box, Typography } from '@mui/material';
 import Section from '@components/layout/Section';
 import AccordionComponent from '@components/AccordionComponent';
 import { useState, useEffect } from 'react';
@@ -65,9 +65,10 @@ const Faq = () => {
 
             setData(filtered)
         }
-        
+        else {
+        setData(faqItems)
+        }
     }, [search])
-
     
   return (
     <>
@@ -147,11 +148,19 @@ const Faq = () => {
 
             </Box>
 
+
+
+            {data.length != 0 ? (
+                <AccordionComponent 
+                    accordionItems={data}
+                    uniqueId="faq"
+                />
+            ):(
+                <Typography variant="p">
+                    No questions found
+                </Typography>
+            )}
             
-            <AccordionComponent 
-                accordionItems={data}
-                uniqueId="faq"
-            />
         </Section>
     </>
   );
