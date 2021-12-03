@@ -1,4 +1,4 @@
-import { Typography, Box, Container, Grid, List, ListItem } from '@mui/material';
+import { Typography, Box, Container, Grid, List, ListItem, Divider } from '@mui/material';
 import CenterTitle from '@components/CenterTitle';
 import RelatedLinks from '@components/RelatedLinks/RelatedLinks';
 import theme from '../styles/theme';
@@ -50,7 +50,7 @@ const Projects = () => {
                 main={true}
             />
         </Container>
-        <Box sx={boxStyles}>
+        <Divider sx={{ my: 10, maxWidth: 'lg', mx: 'auto' }} />
             <Container maxWidth='lg' sx={{ }}>
 
                 <Grid container>
@@ -66,9 +66,9 @@ const Projects = () => {
                 </Grid>
 
             </Container>
-        </Box>
         
-        <RelatedLinks title="Learn More" subtitle="Want to get more info about how these projects started?" links={relatedLinkList} />
+        
+        <RelatedLinks title="Learn More" subtitle="" links={relatedLinkList} />
     </>
   );
 };
