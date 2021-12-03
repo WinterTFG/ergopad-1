@@ -1,4 +1,4 @@
-import { Typography, Box, Container, Grid } from '@mui/material';
+import { Typography, Box, Container, Grid, Divider } from '@mui/material';
 import CenterTitle from '@components/CenterTitle';
 import RelatedLinkItem from './RelatedLinkItem';
 
@@ -8,31 +8,22 @@ const Projects = ({ title, subtitle, links }) => {
   return (
     <>
         
-        <Box sx={boxStyles}>
+        <Divider sx={{ my: 10, maxWidth: 'lg', mx: 'auto' }} />
             <Container maxWidth='lg'>
                 <CenterTitle 
                     title={title}
                     subtitle={subtitle}
                 />
-                    <Grid container spacing={3} alignItems="stretch" justifyContent="center" sx={{ flexGrow: 1, }}> 
+                    <Grid container spacing={3} alignItems="stretch" justifyContent="center" sx={{ flexGrow: 1, mb: 3 }}> 
                         {links.map((link) => {
                             return <RelatedLinkItem key={link.id} link={link} />;
                         })} 
                     </Grid>
 
             </Container>
-        </Box>
+        
     </>
   );
 };
-
-const boxStyles = {
-    background: 'linear-gradient(rgba(46, 46, 51, 0.3), rgba(29, 29, 32, 0) 300px)',
-    pt: 6,
-    borderTopColor: 'rgba(46,46,51,1)!important',
-    borderStyle: 'solid',
-    border: 0,
-    borderTop: 1
-}
 
 export default Projects;

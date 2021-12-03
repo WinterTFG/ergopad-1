@@ -9,10 +9,9 @@ const themeSetup =
 			primaryText: 'rgb(244, 244, 245)',
 			secondaryText: 'rgb(162, 162, 168)',
 			borderColor: 'rgba(82,82,90,1)',
+      dividerColor: 'rgba(255,255,255,0.08)'
 		},
 	}
-
-  
 
 // Create a theme instance.
 let theme = createTheme({
@@ -31,6 +30,7 @@ let theme = createTheme({
     },
     tertiary: {
       main: '#667eea',
+      hover: '#8096F7',
       active: 'rgba(90, 103, 216, 0.25)'
     },
     quaternary: {
@@ -79,26 +79,33 @@ let theme = createTheme({
       ]
     },
     MuiTextField: {
-		variants: [
-			{
-				props: { variant: 'filled' },
-				style: {
-					'&:hover': {
-						border: 'none',
-					},
-					'& .MuiFilledInput-root': {
-						background: themeSetup.dark.greyBackground,
-						border: `1px solid ${themeSetup.dark.borderColor}`,
-						borderRadius: 4,
-					},
-					'& .MuiInputLabel-root': {
-						'&.Mui-focused': {
-							color: themeSetup.dark.secondaryText,
-						},
-					},
-				}
-			}
-		]
+      variants: [
+        {
+          props: { variant: 'filled' },
+          style: {
+            '&:hover': {
+              border: 'none',
+            },
+            '& .MuiFilledInput-root': {
+              background: themeSetup.dark.greyBackground,
+              border: `1px solid ${themeSetup.dark.borderColor}`,
+              borderRadius: 4,
+            },
+            '& .MuiInputLabel-root': {
+              '&.Mui-focused': {
+                color: themeSetup.dark.secondaryText,
+              },
+            },
+          }
+        }
+      ]
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderColor: themeSetup.dark.dividerColor
+        }
+      }
     }
   },
 });

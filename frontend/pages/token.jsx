@@ -9,7 +9,9 @@ import {
     Divider, 
     Accordion,
     AccordionSummary,
-    AccordionDetails
+    AccordionDetails,
+    ListItemIcon,
+    Icon
  } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useState } from 'react';
@@ -17,6 +19,7 @@ import { VictoryContainer, VictoryPie } from 'victory';
 import CenterTitle from '@components/CenterTitle';
 import RelatedLinks from '@components/RelatedLinks/RelatedLinks';
 import theme from '../styles/theme';
+import MuiNextLink from '@components/MuiNextLink'
 
 const boxStyles = {
     background: 'linear-gradient(rgba(35, 35, 39, 0.3), rgba(29, 29, 32, 0) 300px)',
@@ -57,20 +60,24 @@ const relatedLinkList = [
 
 const tokenAllocation = [
     {
-        x: 'Public Pre-sale',
-        y: 10
+        x: 'Seed-sale',
+        y: 27,
+        color: '#3abab4'
+    },
+    {
+        x: 'Pre-sale',
+        y: 54,
+        color: '#1A6BD2'
     },
     {
         x: 'Team',
-        y: 10
-    },
-    {
-        x: 'Public Sale',
-        y: 60
+        y: 8,
+        color: '#3F7CDC'
     },
     {
         x: 'Liqudity',
-        y: 20
+        y: 12,
+        color: '#36A9DA'
     },
 ]
 
@@ -80,25 +87,25 @@ const tokenCards = [
         desc: 'ErgoPad'
     },
     {
-        title: 'Token ID:',
-        desc: 'TBD'
-    },
-    {
         title: 'Blockchain:',
         desc: 'Ergo'
     },
     {
-        title: 'Initial Supply:',
-        desc: '10M'
+        title: 'Initial Available Supply:',
+        desc: '1.27M'
     },
     {
         title: 'Market Cap at IDO:',
-        desc: '150,000 SigUSD'
+        desc: '254k SigUSD'
     },
     {
-        title: 'IDO Token Price:',
-        desc: '0.35 SigUSD'
-    }
+        title: 'Pre-sale Price:',
+        desc: '0.20 SigUSD'
+    },
+    {
+        title: 'Total Available Supply:',
+        desc: '30M'
+    },
 ]
 
 const gridBox = {
@@ -126,7 +133,7 @@ const Token = () => {
         <Container maxWidth="lg" sx={{ mb: '3rem' }}>
             <CenterTitle 
                 title="Tokenomics"
-                subtitle="The ErgoPad tokenomics and uses"
+                subtitle="For Ergo projects, are tokenomics called Ergonomics? "
                 main={true}
             />
 
@@ -158,9 +165,10 @@ const Token = () => {
 
         
 
-        <Box sx={boxStyles}>
+        
             <Container maxWidth='lg' sx={{ }}>
 
+            <Divider sx={{ my: 10 }} />
                 <CenterTitle 
                     title="Token Allocation" 
                     subtitle="The ErgoPad token will be released in public sales only. No VCs, no private allocation. We believe in fair access."
@@ -191,13 +199,18 @@ const Token = () => {
                             
                         />
                     </Grid>
-                    <Grid item md={4} >
+                    <Grid item md={4}>
                         <Box>
                             <List sx={{ color: theme.palette.text.secondary }}>
                                 {tokenAllocation.map((value, i) => (
-                                    <ListItem id={value.x} key={value.x}><ListItemText>
-                                        {value.x}: {value.y}%
-                                    </ListItemText></ListItem>
+                                    <ListItem id={value.x} key={value.x}>
+                                        <ListItemIcon>
+                                            <Icon sx={{ color: value.color }}>square</Icon>
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            {value.x}: {value.y}%
+                                        </ListItemText>
+                                    </ListItem>
                                 ))}
                             </List>
                         </Box>
@@ -205,10 +218,12 @@ const Token = () => {
                 </Grid>
 
             </Container>
-        </Box>
 
-        <Box sx={boxStyles}>
+           
+            <Divider sx={{ my: 10, maxWidth: 'lg', mx: 'auto' }} />
             <Container maxWidth='md' sx={{ }}>
+
+           
 
                 <CenterTitle 
                     title="Token Utility" 
@@ -246,7 +261,7 @@ const Token = () => {
                                 Tiers
                             </Typography>
                             <Typography variant="p">
-                                The more you stake, the higher the tier. More detail added soon. 
+                                The more you stake, the higher the tier. More detail found on the <MuiNextLink href="/staking">Staking Page</MuiNextLink>. 
                             </Typography>
                             <Typography variant="h6">
                                 Allocations
@@ -268,7 +283,7 @@ const Token = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                         <Typography variant="p">
-                            We will add deflationary mechanics to the ErgoPad token. Similar to other platforms, there will be a lottery and other ways to earn which will also burn tokens. 
+                            We will add deflationary mechanics to the ErgoPad token. Similar to other platforms, there will be a lottery and other ways to earn which will also burn tokens. Early unstaking fees will be burned, removing those from the supply. 
                         </Typography>
                         </AccordionDetails>
                     </Accordion>
@@ -289,9 +304,9 @@ const Token = () => {
                         </AccordionDetails>
                     </Accordion>
             </Container>
-        </Box>
         
-        <RelatedLinks title="Learn More" subtitle="Want to get more info about how these projects started?" links={relatedLinkList} />
+        
+        <RelatedLinks title="Learn More" subtitle="" links={relatedLinkList} />
     </>
   );
 };

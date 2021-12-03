@@ -1,5 +1,11 @@
 version: '3.9'
 
+# docker compose -f docker-compose-prod.yml --profile all up --build --force-recreate -d
+# -f X = use X (i.e. docker-compose-prod.yml)
+# --profile X = enable profile
+# -- build --force-recarete = rebuild containers, no questions asked
+# -d = daemon mode
+
 services:
   # copythis:
     # container_name: template
@@ -115,25 +121,27 @@ services:
     image: openjdk
     volumes: 
       - ./ergonode/:/opt/ergo # jar/conf
-      - /ergo/testnet/.ergo:/opt/ergo/.ergo # blockchain
+      - /ergo/testnet/.ergo:/opt/ergo/.ergo # blockchain files
     ports: 
       - ${ERGONODE_PORT}:9052 # testnet
     # ports: ${ERGONODE_PORT}:9053 # mainnet
     working_dir: /opt/ergo
-    command: java -jar ergo-4.0.15.jar --testnet -c testnet.conf
+    # running out of heap space, use -Xmx3G (suggested by Kushti)
+    command: java -jar -Xmx3G ergo-4.0.15.jar --testnet -c testnet.conf
 
   # allow a different node to test with
-  launchpad:
+  ergonode2:
     container_name: launchpad
     env_file: .env
     image: openjdk
     volumes: 
       - ./ergonode/:/opt/ergo # jar/conf
-      - /ergo/launchpad/.ergo:/opt/ergo/.ergo # blockchain
+      - /ergo/testnet2/.ergo:/opt/ergo/.ergo # blockchain files
     ports: 
-      - 9054:9052 # bogus
+      - ${ERGONODE2_PORT}:9052 # simulation
     working_dir: /opt/ergo
-    command: java -jar ergo-4.0.15.jar --testnet -c launchpad.conf
+    # running out of heap space, use -Xmx3G (suggested by Kushti)
+    command: java -jar -Xmx3G ergo-4.0.15.jar --testnet -c launchpad.conf
 
   assembler:
     container_name: assembler
@@ -144,7 +152,7 @@ services:
     ports: 
       - ${ASSEMBLER_PORT}:8080
     working_dir: /opt/assembler # set this if using image and not build
-    command: java -jar -Dconfig.file=application.conf -Dhttp.port=8080 ergo-assembler-1.1.jar
+    command: java -jar -Xmx3G -Dconfig.file=application.conf -Dhttp.port=8080 ergo-assembler-1.1.jar
     # command: tail /dev/null -f
 
 #   ergostratum:
