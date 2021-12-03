@@ -2,6 +2,9 @@
   "extends": "next/core-web-vitals",
   "rules": {
     // Without this rule, for some reason it's throwing display name error on _document.js
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "react/no-unescaped-entities": 0,
+    "react/jsx-no-target-blank": 0,
+    "react/jsx-key": 0
   }
 }
