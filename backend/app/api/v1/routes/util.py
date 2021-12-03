@@ -49,9 +49,11 @@ async def email(email: Email):
     usr = os.getenv('EMAIL_ERGOPAD_USERNAME')
     pwd = os.getenv('EMAIL_ERGOPAD_PASSWORD')
     svr = os.getenv('EMAIL_ERGOPAD_SMTP') 
+    frm = os.getenv('EMAIL_ERGOPAD_FROM')
     ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
     # create connection
+    logging.info(f'creating connection for: {svr} as {usr}')
     con = SMTP(svr, 587)
     res = con.ehlo()
     res = con.starttls(context=ctx)
@@ -62,9 +64,9 @@ async def email(email: Email):
     if res[0] == 235: logging.info('login success')
     else: logging.error(res)
 
-    msg = f"""From: {usr}\nTo: {email.to}\nSubject: {email.subject}\n\n{email.body}"""
-    res = con.sendmail(usr, email.to, msg)
+    msg = f"""From: {frm}\nTo: {email.to}\nSubject: {email.subject}\n\n{email.body}"""
+    res = con.sendmail(frm, email.to, msg) # con.sendmail(frm, 'erickson.winter@gmail.com', msg)
     if res == {}: logging.info('message sent')
     else: logging.error(res)
 
-    return {'status': 'success', 'detail': f'email send to {email.to}'}
+    return {'status': 'success', 'detail': f'email sent to {email.to}'}
