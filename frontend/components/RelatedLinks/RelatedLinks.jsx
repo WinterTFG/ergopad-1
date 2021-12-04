@@ -1,4 +1,4 @@
-import { Typography, Box, Container, Grid, Divider } from '@mui/material';
+import { Container, Grid, Divider } from '@mui/material';
 import CenterTitle from '@components/CenterTitle';
 import RelatedLinkItem from './RelatedLinkItem';
 

@@ -1,16 +1,12 @@
-import { Typography, Container, Divider, Grid, Box, TextField, FormControlLabel, Checkbox, Button, Link } from '@mui/material';
+import { Typography, Grid, Box, TextField, Button } from '@mui/material';
 import CenterTitle from '@components/CenterTitle';
 import theme from '../styles/theme';
 
 const Apply = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    // const data = new FormData(event.currentTarget);
+
   };
 
   return (
@@ -174,7 +170,7 @@ const Apply = () => {
 					</Typography>
 
 					<Box>
-						<a href="http://t.me/ergopad" target="_blank">
+						<a href="http://t.me/ergopad" target="_blank" rel="noreferrer">
 							<Button 
 							variant="contained"
 							sx={{
@@ -198,7 +194,7 @@ const Apply = () => {
 							</Button>
 						</a>
 
-						<a href="https://discord.gg/E8cHp6ThuZ" target="_blank">
+						<a href="https://discord.gg/E8cHp6ThuZ" target="_blank" rel="noreferrer">
 							<Button 
 							variant="contained"
 							sx={{

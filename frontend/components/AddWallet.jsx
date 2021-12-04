@@ -14,7 +14,7 @@ import { useWallet } from 'utils/WalletContext';
 import { Address } from "utils/Address";
 import theme from "../styles/theme";
 
-export const AddWallet = ({ children }) => {
+export const AddWallet = () => {
     const [walletInput, setWalletInput] = useState('');
     const [open, setOpen] = useState(false);
     const [walletButtonText, setWalletButtonText] = useState('Connect Wallet');

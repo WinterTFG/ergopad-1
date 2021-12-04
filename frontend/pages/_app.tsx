@@ -1,4 +1,3 @@
-// import type { AppProps /*, AppContext */ } from 'next/app'
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +11,7 @@ import { WalletProvider } from '../utils/WalletContext';
 import { SearchProvider } from '../utils/SearchContext';
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from 'next/router';
+import { AppProps } from 'next/app';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -22,7 +22,7 @@ const exitCompleter = () => {
 	}
 }
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
 
 	const emotionCache = clientSideEmotionCache;
 	const router = useRouter();

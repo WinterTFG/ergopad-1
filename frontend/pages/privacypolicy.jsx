@@ -14,7 +14,7 @@ const PrivacyPolicy = () => {
             </Typography>
 
             <Typography variant="p">
-                LocalStorage persists when you leave this website, but is never shared with others. To delete it, just click the button at the top where your wallet is saved, and select "remove wallet." 
+                LocalStorage persists when you leave this website, but is never shared with others. To delete it, just click the button at the top where your wallet is saved, and select &quot;remove wallet.&quot; 
             </Typography>
         </Container>
     </>

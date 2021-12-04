@@ -4,9 +4,7 @@ import {
 	Box, 
 	Grid, 
 	Button, 
-	Divider, 
 	Paper, 
-	FormControlLabel, 
 	Checkbox 
 } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -29,8 +27,7 @@ const stakingItem = (item) => {
 		color: '#fff',
 		borderRadius: 2,
 		textDecoration: 'none',
-		'&:hover': {
-			
+		'&:hover': {	
 		}
 	}
 
@@ -169,7 +166,7 @@ const Staking = () => {
 							Instructions
 						</Typography>
 						<Typography variant="p">
-							Stake your tokens by first connecting your wallet above, then click on the Stake button. There, enter the number of tokens you'd like to stake, and the dApp will generate a contract for you to send the tokens to. Send the exact number of tokens (and Erg to cover fees) that is given. If you make a mistake and the contract doesn't work, it will refund you. If you send too much but the contract goes through, the leftover amount can be skimmed from the network by bots. Please follow the instructions carefully and send the correct amount!
+							Stake your tokens by first connecting your wallet above, then click on the Stake button. There, enter the number of tokens you&apos;d like to stake, and the dApp will generate a contract for you to send the tokens to. Send the exact number of tokens (and Erg to cover fees) that is given. If you make a mistake and the contract doesn&apos;t work, it will refund you. If you send too much but the contract goes through, the leftover amount can be skimmed from the network by bots. Please follow the instructions carefully and send the correct amount!
 						</Typography>
 						<Typography variant="p">
 							Once staked, you will earn rewards based on the Current APY, which will be automatically compounded for you. When you decide to unstake, use the withdrawal button and follow the instructions. As with staking, please get the exact values correct when you make the transaction. You must cover the transaction fees to initiate the withdrawal contract. Luckily, this is not Eth, and the fees are very low. 
@@ -178,7 +175,7 @@ const Staking = () => {
 							Please note, if you choose to unstake early, there will be a fee as outlined to the right. Those fees will be burned, one of the deflationary mechanisms in place to control the ErgoPad token supply. 
 						</Typography>
 						<Typography variant="p">
-							When new IDOs are announced on ErgoPad, we will also announce a snapshot date and time. If you are staking during that time, you will be eligible to receive an allocation of the IDO tokens at a reduced price. This will be weighted based on your staking tier. You'll be able to check your allocation on this website and interact with the sales contract. 
+							When new IDOs are announced on ErgoPad, we will also announce a snapshot date and time. If you are staking during that time, you will be eligible to receive an allocation of the IDO tokens at a reduced price. This will be weighted based on your staking tier. You&apos;ll be able to check your allocation on this website and interact with the sales contract. 
 						</Typography>
 						
 						<Typography variant="p" sx={{ textAlign: 'center' }}><Checkbox color="tertiary" /> I have read and agree to the staking <MuiNextLink href="/terms">Terms and Conditions</MuiNextLink></Typography>
@@ -274,7 +271,7 @@ const Staking = () => {
 
 									{unstakeFees.map((fee) => {
 										return(
-											<TableRow>
+											<TableRow key={fee.fee} >
 												<TableCell sx={{ color: theme.palette.text.secondary, fontWeight: '800' }}>
 													{fee.fee}
 												</TableCell>
@@ -321,7 +318,7 @@ const Staking = () => {
 							<TableBody>
 								{stakingTiers.map((tier) => {
 									return(
-										<TableRow>
+										<TableRow key={tier.tier}>
 											<TableCell sx={{ color: theme.palette.text.secondary, fontWeight: '800' }}>
 												{tier.tier}
 											</TableCell>

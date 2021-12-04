@@ -1,4 +1,4 @@
-import { useMediaQuery, Stack, Toolbar, useTheme } from '@mui/material';
+import { useMediaQuery, Stack, useTheme } from '@mui/material';
 import MuiNextLink from '@components/MuiNextLink';
 
 const Navbar = ({ navLinks }) => {

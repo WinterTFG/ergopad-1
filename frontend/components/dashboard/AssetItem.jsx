@@ -1,4 +1,4 @@
-import { Divider, Typography, SvgIcon } from '@mui/material';
+import { Typography, SvgIcon } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledAsset = styled('div')(({ theme }) => ({
@@ -14,13 +14,13 @@ const StyledAsset = styled('div')(({ theme }) => ({
   // backgroundColor: `rgba( 255, 255, 255, 0.04)`,
 }));
 
-const AssetIcon = styled('img')(({ theme }) => ({
+const AssetIcon = styled('img')(() => ({
   width: '50px',
   height: 'auto',
   borderRadius: '12px',
 }));
 
-const IconWrapper = styled('div')(({ theme }) => ({
+const IconWrapper = styled('div')(() => ({
   width: '50px',
   height: 'auto',
   borderRadius: '12px',
@@ -39,7 +39,7 @@ const AssetNameContainer = styled('div')(({ theme }) => ({
     padding: 2,
   },
 }));
-const AssetAmountContainer = styled('div')(({ theme }) => ({
+const AssetAmountContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',

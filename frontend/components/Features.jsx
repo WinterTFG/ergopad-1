@@ -1,7 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material';
-import theme from '../styles/theme';
 
-const Features = ({}) => {
+const Features = () => {
 
   return (
     <>

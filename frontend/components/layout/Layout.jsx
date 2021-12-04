@@ -1,16 +1,19 @@
 import { useMediaQuery, Container, Box } from '@mui/material';
-import { styled, useTheme } from '@mui/system';
+import { 
+  // styled, 
+  useTheme 
+} from '@mui/system';
 import Header from '@components/layout/Header';
 import Footer from '@components/layout/Footer';
 import BottomNav from '@components/navigation/BottomNav';
-import Gradients from '@components/stylistic/Gradients';
+/* import Gradients from '@components/stylistic/Gradients';
 import theme from '../../styles/theme';
 
 const PageWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
 }));
-
+ */
 const Layout = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

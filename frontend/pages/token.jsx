@@ -21,16 +21,6 @@ import RelatedLinks from '@components/RelatedLinks/RelatedLinks';
 import theme from '../styles/theme';
 import MuiNextLink from '@components/MuiNextLink'
 
-const boxStyles = {
-    background: 'linear-gradient(rgba(35, 35, 39, 0.3), rgba(29, 29, 32, 0) 300px)',
-    pt: '5rem',
-    pb: '3rem',
-    borderTopColor: 'rgba(46,46,51,1)!important',
-    borderStyle: 'solid',
-    border: 0,
-    borderTop: 1
-}
-
 const relatedLinkList = [
     { 
         id: 0, 
@@ -147,16 +137,16 @@ const Token = () => {
                      >
 
                         {tokenCards.map((value) => (
-                            <Grid item md={4} sm={6} xs={12} sx={{ maxWidth: { xs: '320px' }}}>
-                            <Box sx={gridBox}>
-                                <Typography>
-                                    {value.title}
-                                </Typography>
-                                <Typography variant="h3" sx={{ mb: 0 }}>
-                                    {value.desc}
-                                </Typography>
-                            </Box>
-                        </Grid>
+                            <Grid item md={4} sm={6} xs={12} sx={{ maxWidth: { xs: '320px' }}} key={value.title}>
+                                <Box sx={gridBox}>
+                                    <Typography>
+                                        {value.title}
+                                    </Typography>
+                                    <Typography variant="h3" sx={{ mb: 0 }}>
+                                        {value.desc}
+                                    </Typography>
+                                </Box>
+                            </Grid>
                         ))}
 
                     </Grid>
@@ -202,7 +192,7 @@ const Token = () => {
                     <Grid item md={4}>
                         <Box>
                             <List sx={{ color: theme.palette.text.secondary }}>
-                                {tokenAllocation.map((value, i) => (
+                                {tokenAllocation.map((value) => (
                                     <ListItem id={value.x} key={value.x}>
                                         <ListItemIcon>
                                             <Icon sx={{ color: value.color }}>square</Icon>
@@ -299,7 +289,7 @@ const Token = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                         <Typography variant="p">
-                            If you aren't interested in investing in IDOs and feel liquidity farming will provide a greater yield than the current staking rewards, you can provide liquidity on ErgoDex. We may even release a dex of our own!
+                            If you aren&apos;t interested in investing in IDOs and feel liquidity farming will provide a greater yield than the current staking rewards, you can provide liquidity on ErgoDex. We may even release a dex of our own!
                         </Typography>
                         </AccordionDetails>
                     </Accordion>

@@ -3,8 +3,6 @@ import {
     Box, 
     Container, 
     Grid, 
-    Divider,
-    Button,
     IconButton
 } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -83,7 +81,7 @@ const Projects = () => {
                                     SigmaSwap Decentralized Exchange
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    ErgoPad's own decentralized exchange on the Ergo blockchain. 
+                                    ErgoPad&apos;s own decentralized exchange on the Ergo blockchain. 
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -143,7 +141,7 @@ const Projects = () => {
                                     Decentralized Social Platform
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    A social media platform where users are given control of their data, and are paid by advertisers directly. You're the commodity, may as well keep all the value you provide. 
+                                    A social media platform where users are given control of their data, and are paid by advertisers directly. You&apos;re the commodity, may as well keep all the value you provide. 
                                 </Typography>
                             </CardContent>
                         </CardActionArea>

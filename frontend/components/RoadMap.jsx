@@ -6,7 +6,6 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import Typography from '@mui/material/Typography';
-import theme from '../styles/theme';
 import Box from '@mui/material/Box';
 
 const timelineItems = [
