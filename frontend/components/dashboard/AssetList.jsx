@@ -1,4 +1,3 @@
-import GlassContainer from '@components/GlassContainer';
 import { Container, Typography } from '@mui/material';
 import React from 'react';
 import AssetItem from './AssetItem';

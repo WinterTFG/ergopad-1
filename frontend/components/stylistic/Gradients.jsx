@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import theme from '../../styles/theme';
 
-const Gradients = ({}) => {
+const Gradients = () => {
     return (
         <>
         <Box sx={{ position: 'absolute', right: '-450px', top: '0' }}>

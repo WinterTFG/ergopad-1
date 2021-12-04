@@ -1,12 +1,11 @@
 import AssetList from '@components/dashboard/AssetList';
 import GlassContainer from '@components/GlassContainer';
-import { Grid, Typography, TextField, Box, Button, Backdrop, CircularProgress, Container } from '@mui/material';
-import React, { useState, useEffect, useContext } from 'react';
+import { Grid, Typography, CircularProgress, Container } from '@mui/material';
+import React, { useState, useEffect, } from 'react';
 import { VictoryArea, VictoryContainer, VictoryPie } from 'victory';
 import axios from 'axios';
 import { useWallet } from 'utils/WalletContext'
 import CenterTitle from '@components/CenterTitle'
-// import { useAuth } from 'src/auth';
 
 const rawData2 = 
 {
@@ -183,7 +182,7 @@ const Dashboard = () => {
 		}
 	}, [wallet])
 
-  	return (
+	return (
 		<>
 
 		<CenterTitle 
@@ -315,7 +314,7 @@ function tokenDataArray(data) {
   };
   if (ergoValue.y > 0) res.unshift(ergoValue);
   return res;
-};
+}
 
 function assetListArray(data) {
   let tokenObject = data.balance.ERG.tokens;
@@ -344,7 +343,7 @@ function assetListArray(data) {
   };
   res.unshift(ergoValue);
   return res;
-};
+}
 
 function sumTotals(data){
   let value = data.map((item) => item.y).reduce((a, b) => a + b);
