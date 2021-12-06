@@ -1,7 +1,8 @@
+import * as React from 'react';
 import { Box } from '@mui/material';
 import theme from '../../styles/theme';
 
-const LowerGradients = ({}) => {
+const LowerGradients = () => {
     return (
         <>
             <Box sx={{ position: 'absolute', right: { xs: '-70vw', sm: '-100vw', md: '-70vw' }, top: { xs: '100px', md: '-40vh' } }}>

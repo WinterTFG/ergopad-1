@@ -3,8 +3,6 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/icons-material/Menu";
 import MuiNextLink from "@components/MuiNextLink";
 import { MenuOutlined } from '@mui/icons-material';
 

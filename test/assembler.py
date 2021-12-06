@@ -5,6 +5,8 @@ def ping(host, port, path):
         res = requests.get(f'http://{host}:{port}/{path}')
         if res.status_code == 200:
             return res.json()
+        else:
+            return {}
     
     except Exception as e:
         return {'status': 'error', 'detail': e}

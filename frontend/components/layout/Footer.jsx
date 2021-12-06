@@ -2,11 +2,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Link from '@components/MuiNextLink';
 import { List, ListItem, SvgIcon, IconButton, Divider } from '@mui/material';
-import { styled } from '@mui/system';
+// import { styled } from '@mui/system';
 // import theme from 'styles/theme';
 import MuiNextLink from '@components/MuiNextLink';
 
-const BackgroundContainer = styled('div')(({ theme }) => ({
+/* const BackgroundContainer = styled('div')(({ theme }) => ({
 	zIndex: '-100',
 	pointerEvents: 'none'
 }));
@@ -18,7 +18,7 @@ const BackgroundSVG = styled('svg')(({ theme }) => ({
 	bottom: '0',
 	left: '-400px',
 }));
-
+ */
 const Footer = () => {
 	return (
 		<>
@@ -91,7 +91,7 @@ const Footer = () => {
 					<Typography variant='inherit' sx={titleStyles}>SUPPORT</Typography>
 					<List>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='/documentation' sx={linkStyles}>
+							<Link activeClassName='active' href='https://github.com/ergo-pad/ergopad/blob/main/docs/README.md' target="_blank" rel="noreferrer" sx={linkStyles}>
 								Documentation
 							</Link>
 						</ListItem>
@@ -116,22 +116,22 @@ const Footer = () => {
 					<Typography variant='inherit' sx={titleStyles}>SOCIAL</Typography>
 					<List>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://t.me/ergopad_chat' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://t.me/ergopad_chat' sx={linkStyles} target="_blank" rel="noreferrer">
 								Telegram
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://twitter.com/ErgoPadOfficial' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://twitter.com/ErgoPadOfficial' sx={linkStyles} target="_blank" rel="noreferrer">
 								Twitter
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://discord.gg/E8cHp6ThuZ' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://discord.gg/E8cHp6ThuZ' sx={linkStyles} target="_blank" rel="noreferrer">
 								Discord
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://ergopad.medium.com/' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://ergopad.medium.com/' sx={linkStyles} target="_blank" rel="noreferrer">
 								Medium
 							</Link>
 						</ListItem>
@@ -146,22 +146,22 @@ const Footer = () => {
 					<Typography variant='inherit' sx={titleStyles}>RESOURCES</Typography>
 					<List>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://ergoplatform.org/en/' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://ergoplatform.org/en/' sx={linkStyles} target="_blank" rel="noreferrer">
 								Official Website
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://ergodex.io/' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://ergodex.io/' sx={linkStyles} target="_blank" rel="noreferrer">
 								ErgoDex
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://ergoplatform.org/en/blog/2021-04-26-the-ergo-manifesto/' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://ergoplatform.org/en/blog/2021-04-26-the-ergo-manifesto/' sx={linkStyles} target="_blank" rel="noreferrer">
 								Ergo Manifesto
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
-							<Link activeClassName='active' href='https://github.com/ergoplatform/ergo-appkit' sx={linkStyles} target='_blank'>
+							<Link activeClassName='active' href='https://github.com/ergoplatform/ergo-appkit' sx={linkStyles} target="_blank" rel="noreferrer">
 								AppKit
 							</Link>
 						</ListItem>
@@ -279,9 +279,9 @@ const socialStyles = {
 	background: (theme) => theme.palette.background.paper
 	, borderRadius: '15px' 
 }
-
+/* 
 const backgroundStyles = {
 	ml: 24,
-}
+} */
 
 export default Footer;

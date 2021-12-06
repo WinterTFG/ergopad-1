@@ -3,7 +3,7 @@ import Hero from '@components/Hero';
 import { Container, Divider, Box } from '@mui/material';
 import RoadMap from '@components/RoadMap';
 import CenterTitle from '@components/CenterTitle'
-import { useEffect, useState, useRef, createRef } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router'
 
 const Homepage = () => {
@@ -18,7 +18,7 @@ const Homepage = () => {
 			if (id) {
 				let element = document.querySelector(id);
         
-				console.log({ element });
+				// console.log({ element });
 
 				if (element) {
 					element.scrollIntoView({

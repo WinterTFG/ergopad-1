@@ -27,7 +27,7 @@ const Hero = ({ title, subtitle }) => {
         </Typography>
 
         <Box sx={{ textAlign: 'center', mb: '3rem' }}>
-          <a href="http://t.me/ergopad" target="_blank">
+          <a href="http://t.me/ergopad" target="_blank" rel="noreferrer">
             <Button 
               variant="contained"
               sx={{
@@ -51,7 +51,7 @@ const Hero = ({ title, subtitle }) => {
             </Button>
           </a>
 
-          <a href="https://discord.gg/E8cHp6ThuZ" target="_blank">
+          <a href="https://discord.gg/E8cHp6ThuZ" target="_blank" rel="noreferrer">
             <Button 
               variant="contained"
               sx={{
@@ -78,7 +78,7 @@ const Hero = ({ title, subtitle }) => {
 
       </Grid>
       <Grid item xs={12} md={7} sx={{ pb: { xs: 4, md: 16 } }}>
-        <Image src="/ergo-illustration.png" alt="ErgoPad Illustration" layout="responsive" width="600" height="600" priority />
+        <Image src="/ergo-illustration.png" alt="ErgoPad Illustration" layout="responsive" width="600" height="600" priority={true} />
       </Grid>
     </Grid>
     </>

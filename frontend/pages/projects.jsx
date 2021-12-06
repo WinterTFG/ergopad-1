@@ -1,17 +1,21 @@
-import { Typography, Box, Container, Grid, List, ListItem, Divider } from '@mui/material';
+import { 
+    Typography, 
+    Box, 
+    Container, 
+    Grid, 
+    IconButton
+} from '@mui/material';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import CenterTitle from '@components/CenterTitle';
 import RelatedLinks from '@components/RelatedLinks/RelatedLinks';
 import theme from '../styles/theme';
-
-const boxStyles = {
-    background: 'linear-gradient(rgba(46, 46, 51, 0.3), rgba(29, 29, 32, 0) 300px)',
-    pt: '5rem',
-    pb: '3rem',
-    borderTopColor: 'rgba(46,46,51,1)!important',
-    borderStyle: 'solid',
-    border: 0,
-    borderTop: 1
-}
+import Search from '@components/Search';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
 
 const relatedLinkList = [
     { 
@@ -49,23 +53,117 @@ const Projects = () => {
                 subtitle="Building the future of the Ergo ecosystem"
                 main={true}
             />
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
+                <Search placeholder="Search projects" sx={{ }} />
+            </Box>
         </Container>
-        <Divider sx={{ my: 10, maxWidth: 'lg', mx: 'auto' }} />
-            <Container maxWidth='lg' sx={{ }}>
+        
+        
+        <Container maxWidth='lg' sx={{ }}>
 
-                <Grid container>
-                    <Grid item >
-                        
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="p">
-                            This section coming very soon
-                        </Typography>
+            <Typography variant="h4" sx={{ fontWeight: '800', mb: 4 }}>
+                Upcoming
+            </Typography>
 
-                    </Grid>
+            <Grid container spacing={3} alignItems="stretch" sx={{ mb: 6 }}>
+            
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card sx={{ display: 'flex', height: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <CardActionArea>
+                            <CardMedia
+                                component="img"
+                                alt=""
+                                height="180"
+                                image="/projects/crypto-coins.jpg"
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    SigmaSwap Decentralized Exchange
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    ErgoPad&apos;s own decentralized exchange on the Ergo blockchain. 
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                        <CardActions sx={{ justifyContent: 'right' }}>
+                            <IconButton aria-label="add to favorites">
+                                <FavoriteIcon />
+                            </IconButton>
+                            <IconButton aria-label="share">
+                                <ShareIcon />
+                            </IconButton>
+                            
+                        </CardActions>
+                    </Card> 
                 </Grid>
 
-            </Container>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card sx={{ display: 'flex', height: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <CardActionArea>
+                            <CardMedia
+                                component="img"
+                                alt=""
+                                height="180"
+                                image="/projects/nft-game.jpg"
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    NFT Game
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    An NFT game where you can play to earn, rather than pay to play. 
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                        <CardActions sx={{ justifyContent: 'right' }}>
+                            <IconButton aria-label="add to favorites">
+                                <FavoriteIcon />
+                            </IconButton>
+                            <IconButton aria-label="share">
+                                <ShareIcon />
+                            </IconButton>
+                            
+                        </CardActions>
+                    </Card> 
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card sx={{ display: 'flex', height: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <CardActionArea>
+                            <CardMedia
+                                component="img"
+                                alt=""
+                                height="180"
+                                image="/projects/social-media-platforms.jpg"
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Decentralized Social Platform
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    A social media platform where users are given control of their data, and are paid by advertisers directly. You&apos;re the commodity, may as well keep all the value you provide. 
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                        <CardActions sx={{ justifyContent: 'right' }}>
+                            <IconButton aria-label="add to favorites">
+                                <FavoriteIcon />
+                            </IconButton>
+                            <IconButton aria-label="share">
+                                <ShareIcon />
+                            </IconButton>
+                            
+                        </CardActions>
+                    </Card> 
+                </Grid>
+                
+            </Grid>
+
+            <Typography variant="h4" sx={{ fontWeight: '800', mb: 4 }}>
+                Launched
+            </Typography>
+
+        </Container>
         
         
         <RelatedLinks title="Learn More" subtitle="" links={relatedLinkList} />

@@ -39,7 +39,6 @@ const Search = ({ placeholder }) => {
                 onSubmit={submitForm}
                 sx={{ 
                     p: '8px', 
-                    mt: '1rem',
                     display: 'flex', 
                     alignItems: 'center', 
                     background: theme.palette.greyButton.background,

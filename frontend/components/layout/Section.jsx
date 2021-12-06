@@ -25,7 +25,7 @@ const Section = ({ title, subtitle, children, toggleOutside, extra, main }) => {
                 />
                 
                 {extra ? (
-                <Container maxWidth='lg' sx={{ display: 'flex', justifyContent: 'center', width: '100%', mt: '-3rem', mb: '3rem' }}>
+                <Container maxWidth='lg' sx={{ display: 'flex', justifyContent: 'center', width: '100%', mb: '3rem' }}>
                     {extra}
                 </Container>
                 ) : ''}
