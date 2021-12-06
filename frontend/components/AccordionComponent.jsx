@@ -33,7 +33,7 @@ const AccordionComponent = ({ accordionItems, uniqueId }) => {
                     aria-controls={'panel' + uniqueId + item.id + 'bh-content'}
                     id={'panel' + uniqueId + item.id + 'bh-header'} 
                 >
-                    <Typography variant="h5" sx={{ flexShrink: 0, m: 0 }}>
+                    <Typography variant="h6" sx={{ m: 0 }}>
                         {item.title}
                     </Typography>
                 </AccordionSummary>

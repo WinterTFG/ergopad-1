@@ -8,22 +8,40 @@ import Search from '@components/Search';
 import { useSearch } from '../utils/SearchContext';
 
 const faqItems = [
+    // {
+    //     id: '0',
+    //     title: '',
+    //     bodyText: '',
+    //     category: '',
+    // },
     {
         id: '1',
-        title: 'Token questions',
-        bodyText: 'Token questions coming soon',
-        category: 'Token',
+        title: 'Will you only support projects that build on Ergo, or will you support projects on other blockchains like Cardano?',
+        bodyText: 'We will definitely support cross-chain projects in the future, as long as they also have utility on the Ergo blockchain',
+        category: 'Company',
     },
     {
         id: '2',
-        title: 'Staking questions',
-        bodyText: 'Coming soon',
-        category: 'Staking',
-    },    
+        title: 'What will the use-cases be for the ErgoPad token?',
+        bodyText: 'You can stake ErgoPad tokens which will generate new tokens based on the number you have staked and the emission schdule. If you reach one of the staking tiers, you\'ll get pool allocation which gives you an opportunity to buy into new projects launched on ErgoPad at seed-sale prices not always open to the public.',
+        category: 'Token Staking',
+    },
     {
         id: '3',
-        title: 'Question about ErgoPad',
-        bodyText: 'Answers to all your questions coming soon',
+        title: 'How will ErgoPad vet each project that it launches?',
+        bodyText: 'Projects will be vetted based on the team, the uniqueness of the project, the use-case, how far along the project is, how much they expect to raise, and how likely the project is a good candidate for a token. If a project is a piece of software that doesn\'t necessarily benefit from the token IDO method, we may try to raise funds through our marketing but not necessarily a token IDO. ',
+        category: 'Company',
+    },
+    {
+        id: '4',
+        title: 'How do we sign up for whitelist to invest in the ErgoPad token, and what info will you need?',
+        bodyText: 'You\'ll need to join either telegram or discord, and supply a social account such as linkedin, twitter, reddit... anywhere that you have some kind of online prescence so we can confirm you\'re not just using duplicate wallets. Signup will be a form you submit on the website. ',
+        category: 'Token',
+    },
+    {
+        id: '5',
+        title: 'When ergopad goes live will there be projects ready day 1? ',
+        bodyText: 'Yes, we have projects in the pipeline that we will announce before the IDO date. ',
         category: 'Company',
     },
 ]
@@ -50,7 +68,7 @@ const Faq = () => {
             setData(faqItems)
         }
         else {
-            const newFaqItems = faqItems.filter(item => item.category === category)
+            const newFaqItems = faqItems.filter(item => item.category.includes(category))
             setData(newFaqItems)
         }
         
