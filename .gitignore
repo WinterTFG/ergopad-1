@@ -5,6 +5,7 @@ frontend/out
 frontend/yarn.lock
 /.pnp
 .pnp.js
+next.config.js
 
 # testing
 /coverage

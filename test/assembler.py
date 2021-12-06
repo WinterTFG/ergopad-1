@@ -10,4 +10,5 @@ def ping(host, port, path):
         return {'status': 'error', 'detail': e}
 
 if __name__ == '__main__':
-    ping('localhost', 8080, 'state')
+    res = ping('localhost', 8080, 'state')
+    print(res)

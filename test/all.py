@@ -1,5 +1,7 @@
 import ergonode
 import assembler
+import backend
+import frontend
 
 ### LOGGING
 import logging
@@ -18,24 +20,57 @@ class dotDict(dict):
 if __name__ == '__main__':
     results = dotDict({})
 
-    # ergonode
-    res = ergonode.ping('localhost', 9053)
-    results.backend = assert res['hello'] == 'world'
+    # ergonode    
+    try:
+        logging.info('ergonode...')
+        res = ergonode.ping('localhost', 9053, 'info')
+        assert res['fullHeight'] != int(res['fullHeight']), 'fullHeight is non-numeric'
+        assert res['fullHeight'] == res['headersHeight'], 'node not syncd'
+        results.ergonode = {'status': 'success'}
+    except AssertionError as e:
+        results.ergonode = {'status': 'assertion error', 'details': e}
+    except Exception as e:
+        results.ergonode = e
 
-    res = ergonode.ping('localhost', 9054)
-    results.backend = assert res['hello'] == 'world'
+    try:
+        logging.info('ergonode2...')
+        res = ergonode.ping('localhost', 9054, 'info')
+        assert res['fullHeight'] != int(res['fullHeight']), 'fullHeight is non-numeric'
+        assert res['fullHeight'] == res['headersHeight'], 'node not syncd'
+        results.ergonode2 = {'status': 'success'}
+    except AssertionError as e:
+        results.ergonode2 = {'status': 'assertion error', 'details': e}
+    except Exception as e:
+        results.ergonode2 = e
 
     # assembler
-    res = assembler.ping('localhost', 8080, '/api/ping')
-    results.backend = assert res['hello'] == 'world'
+    try:
+        logging.info('assembler...')
+        res = assembler.ping('localhost', 8080, 'state')
+        assert res['functioning'] == True, 'not functioning'
+        results.assembler = {'status': 'success'}
+    except AssertionError as e:
+        results.ergonode2 = {'status': 'assertion error', 'details': e}
+    except Exception as e:
+        results.assembler = e
 
     # frontend
-    res = assembler.ping('localhost', 3000, '/api/ping')
-    results.backend = assert res['hello'] == 'world'
+    # try:
+    #     res = frontend.ping('localhost', 3000, '/index.html')
+    #     assert res['hello'] == 'world'
+    # except Exception as e:
+    #     results.frontend = e
 
     # backend
-    res = backend.ping('localhost', 8000, '/api/ping')
-    results.backend = assert res['hello'] == 'world'
+    try:
+        logging.info('backend...')
+        res = backend.ping('localhost', 8000, 'api/ping')
+        assert res['hello'] == 'world', 'hello != world'
+        results.backend = {'status': 'success'}
+    except AssertionError as e:
+        results.backend = {'status': 'assertion error', 'details': e}
+    except Exception as e:
+        results.backend = e
 
     # fin
     logging.info(results)
