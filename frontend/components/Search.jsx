@@ -1,16 +1,20 @@
+import { useRef } from 'react'
 import { Icon, Paper, InputBase } from "@mui/material";
 import theme from "../styles/theme";
 import { useSearch } from "../utils/SearchContext";
 
-const Search = ({ placeholder }) => {
+const Search = (props, { placeholder }) => {
     const { search, setSearch } = useSearch()
+
+    const thisComponent = useRef(null);
+
     const handleChange = (e) => {
         e.preventDefault()
         setSearch(e.target.value);
     };
     const submitForm = (e) => {
         e.preventDefault()
-
+        thisComponent.current?.scrollIntoView()
     }
 
     return (
@@ -50,6 +54,7 @@ const Search = ({ placeholder }) => {
                     },
                     color: theme.palette.text.primary
                 }}
+                ref={thisComponent}
             >
 
                 <Icon sx={{ color: theme.palette.text.secondary }}>search</Icon>
