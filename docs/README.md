@@ -37,8 +37,8 @@ Image
 - Token Name: ErgoPad
 - Token ID: TBD
 - Blockchain: Ergo
-- Initial supply: 1.27M
-- Total supply: 30M
+- Initial supply: 12.7M
+- Total supply: 300M
 
 ### Seed Sale
 
@@ -46,7 +46,7 @@ Seed sale will take place December 17, 2021. It will be capped at 5k sigUSD per 
 
 Seed sale participants will receive be able to trade 1/6 of their tokens for ErgoPad tokens once a month for 6 months. 
 
-There are 1M seed sale tokens available at 0.11 sigUSD each, and so 167k tokens will be released to the ecosystem each month after the ErgoPad IDO. 
+There are 10M seed sale tokens available at 0.011 sigUSD each, and so 1.67M tokens will be released to the ecosystem each month after the ErgoPad IDO. 
 
 ### Pre-sale
 
@@ -54,7 +54,7 @@ Pre-sale will take place December 29, 2021. It will be capped at 20k sigUSD per 
 
 Pre-sale participants will be on a 1/4 per month vesting schedule. IE you'll be able to trade in 1/4 of your tokens each month after launch day for ErgoPad tokens and begin staking those tokens immediately. 
 
-There are 2M pre-sale tokens available at 0.20 SigUSD each. 500k tokens will be released to the ecosystem each month for 4 months after the ErgoPad IDO. 
+There are 20M pre-sale tokens available at 0.02 SigUSD each. 5M tokens will be released to the ecosystem each month for 4 months after the ErgoPad IDO. 
 
 ### Team tokens
 
@@ -64,11 +64,11 @@ The ErgoPad team will receive 8% of the total supply of tokens. This will be rel
 
 Distributed to | Amount | Percent of IDO | Percent of Total Supply | Vesting Tranche | Vesting Period
 --- | --- | --- | --- | --- | ---
-DAO | 2.4M | 10% | 8% | 400k | Quarterly for 6 Quarters
-Seed Sale | 1M | 25% | 3.3% | 167k | Monthly for 6 Months
-Pre Sale | 2M | 51% | 6.7% | 500k | Monthly for 4 Months
-Liquidity | 500k | 12.8% | 1.6% | 500k | Immediate
-Staking | 24.1M | 0% | 80.3% | Daily | 36 months
+DAO | 24M | 10% | 8% | 4M | Quarterly for 6 Quarters
+Seed Sale | 10M | 25% | 3.3% | 1.67M | Monthly for 6 Months
+Pre Sale | 20M | 51% | 6.7% | 5M | Monthly for 4 Months
+Liquidity | 5M | 12.8% | 1.6% | 5M | Immediate
+Staking | 241M | 0% | 80.3% | Daily | 36 months
 
 
 ## Staking
@@ -79,10 +79,11 @@ Staking provides a few utilites. Staking your ErgoPad tokens will generate new t
 
 Tier | Amount | Whitelist Requirements | Allocation Weight
 --- | --- | --- | ---
-(A) Alpha	| 10000	| Twitter like, comment, and retweet | 10
-(Ω) Omega	| 25000	| Twitter like, comment, and retweet | 25
-(Φ) Phi	| 50000	| Twitter like | 60
-(Σ) Sigma	| 150000 | none | 200
+(A) Alpha	| 50000	| Twitter like, comment, and retweet | 3
+(Β) Beta | 100000 | Twitter like, comment, and retweet | 10
+(Ω) Omega	| 250000	| Twitter like, comment, and retweet | 25
+(Φ) Phi	| 500000	| Twitter like | 60
+(Σ) Sigma	| 1500000 | none | 200
 
 #### Pool Allocation
 
@@ -92,7 +93,7 @@ Eg. if 1000 tokens are available for stakers, and there are 5 people staking at 
 
 ### Emission
 
-There will be 30M total ErgoPad tokens, and these will be given to stakers over a 3 year period. The APR will vary day-to-day based on the number of staked tokens and the total coins left. Information on the APR and staking will be available at ergopad.io/staking when you connect your wallet to the website. 
+There will be 300M total ErgoPad tokens, and these will be given to stakers over a 3 year period. The APR will vary day-to-day based on the number of staked tokens and the total coins left. Information on the APR and staking will be available at ergopad.io/staking when you connect your wallet to the website. 
 
 ### Instructions
 
