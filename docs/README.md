@@ -81,7 +81,7 @@ Tier | Amount | Whitelist Requirements | Allocation Weight
 --- | --- | --- | ---
 (A) Alpha	| 50000	| Twitter like, comment, and retweet | 3
 (Β) Beta | 100000 | Twitter like, comment, and retweet | 10
-(Ω) Omega	| 250000	| Twitter like, comment, and retweet | 25
+(Ω) Omega	| 250000	| Twitter like, retweet | 25
 (Φ) Phi	| 500000	| Twitter like | 60
 (Σ) Sigma	| 1500000 | none | 200
 
