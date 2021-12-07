@@ -127,11 +127,11 @@ services:
     # ports: ${ERGONODE_PORT}:9053 # mainnet
     working_dir: /opt/ergo
     # running out of heap space, use -Xmx3G (suggested by Kushti)
-    command: java -jar -Xmx3G ergo-4.0.15.jar --testnet -c testnet.conf
+    command: java -jar -Xmx3G ergo-4.0.16.jar --testnet -c testnet.conf
 
   # allow a different node to test with
   ergonode2:
-    container_name: launchpad
+    container_name: ergonode2
     env_file: .env
     image: openjdk
     volumes: 
@@ -141,7 +141,7 @@ services:
       - ${ERGONODE2_PORT}:9052 # simulation
     working_dir: /opt/ergo
     # running out of heap space, use -Xmx3G (suggested by Kushti)
-    command: java -jar -Xmx3G ergo-4.0.15.jar --testnet -c launchpad.conf
+    command: java -jar -Xmx3G ergo-4.0.16.jar --testnet -c testnode2.conf
 
   assembler:
     container_name: assembler

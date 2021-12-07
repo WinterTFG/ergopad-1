@@ -83,7 +83,7 @@ def followInfo(followId):
 
 # find unspent boxes with tokens
 @r.get("/unspentTokens", name="blockchain:unspentTokens")
-def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=False):
+def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=True):
   try:
     tot = 0
     ergopadTokenBoxes = {}    
@@ -129,6 +129,64 @@ def getErgoscript(name, params={}):
       script = "{ 1 == 0 }"
 
     if name == 'ergopad':
+
+      ergopadTokenId = '123abc'
+      htLockScript = [] # compile height lockscript
+      numVestingPeriods = 6
+      for i in range(numVestingPeriods):
+          htLockScript.append(f'qwerty{i}') # call script function with input as height to lock at
+
+      return f"""{{
+        // val prefixes, use: in, out, self and ctx
+
+        // init with basic structure:
+        // 1. 1x input with correct ergs, equal to ergoPadTokens*pricePerToken + minFee*vestingPeriods (+ serviceFee?)
+        // 2. Vx output with correct number of ergoPadTokens, V=num vesting periods
+        // 3. The final vesting period will handle any leftover tokens (i.e. 7 tokens for 6 vesting periods, last period will contain 2)
+        // 4. each output will contain protection script to lock tokens until HEIGHT + vestingDuration*vestingPeriod (i.e. 100,000 + 100*6 for vesting period 6 and 100 blocks duration)
+        val defined = OUTPUTS(0).R4[Coll[Byte]].isDefined
+
+        // structure ok, check logic and return t/f as sigmaProp
+        sigmaProp( 
+          if (defined) {{
+
+            val inErgopadToken = SELF.tokens(0)
+            // val ctxHeight = HEIGHT
+            val outErgopadToken0 = OUTPUTS(0).tokens(0)_1
+            val outErgopadToken1 = OUTPUTS(1).tokens(0)_1
+            val outErgopadToken2 = OUTPUTS(2).tokens(0)_1
+            val outErgopadToken3 = OUTPUTS(3).tokens(0)_1
+            val outErgopadToken4 = OUTPUTS(4).tokens(0)_1
+            val outErgopadToken5 = OUTPUTS(5).tokens(0)_1
+            val outBoxCount = OUTPUTS.size // one output box per vesting period
+
+            // this will evaluate to true or false
+            allOf(Coll(
+              outBoxCount = {numVestingPeriods}L,              
+              inErgopadToken = {ergopadTokenId},
+              outErgopadToken0 = {ergopadTokenId},
+              outErgopadToken1 = {ergopadTokenId},
+              outErgopadToken2 = {ergopadTokenId},
+              outErgopadToken3 = {ergopadTokenId},
+              outErgopadToken4 = {ergopadTokenId},
+              outErgopadToken5 = {ergopadTokenId},
+              outHtLockScript0 = {htLockScript[0]},
+              outHtLockScript1 = {htLockScript[1]},
+              outHtLockScript2 = {htLockScript[2]},
+              outHtLockScript3 = {htLockScript[3]},
+              outHtLockScript4 = {htLockScript[4]},
+              outHtLockScript5 = {htLockScript[5]},
+            ))
+          }}
+
+          // structure incorrect
+          else {{
+            false
+          }} 
+        ) // sigmaProp
+      }}"""
+
+    if name == 'testing':
       return f"""
         {{
           val isAvailable = {{
@@ -254,12 +312,26 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
 def sendPayment(address, nergs):
   # TODO: require login/password or something; disable in PROD
   try:
+    sendMe = ''
     # !! add in check for wallet lock, and unlock/relock if needed
-    isWalletLocked = False
+    lck = requests.get(f'http://ergonode2:9052/wallet/status', headers={'Content-Type': 'application/json', 'api_key': 'goalspentchillyamber'})
+    logging.info(lck.content)
+    if lck.ok:
+        if lck.json()['isUnlocked'] == False:
+            ulk = requests.post(f'http://ergonode2:9052/wallet/unlock', headers={'Content-Type': 'application/json', 'api_key': 'goalspentchillyamber'}, json={'pass': 'crowdvacationancientamber'})
+            logging.info(ulk.content)
+            if ulk.ok:
+                isWalletLocked = False
+            else:
+                isWalletLocked = True
+        else:
+            isWalletLocked = True
+    else:
+        isWalletLocked = True
 
     # unlock wallet
     if isWalletLocked:
-        logging('unlock wallet')
+        logging.info('unlock wallet')
 
     # send nergs to address/smartContract from the buyer wallet
     # for testing, address/smartContract is 1==1, which anyone could fulfill
@@ -269,11 +341,11 @@ def sendPayment(address, nergs):
         'assets': [],
     }]    
     # pay = requests.post(f'{CFG.buyer}/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': CFG.buyerApiKey}, json=sendMe)
-    pay = requests.post(f'http://ergonode:9052/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': 'oncejournalstrangeweather'}, json=sendMe)
+    pay = requests.post(f'http://ergonode2:9052/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': 'goalspentchillyamber'}, json=sendMe)
 
     # relock wallet
-    if isWalletLocked:
-        logging('relock wallet')
+    if not isWalletLocked:
+        logging.info('relock wallet')
 
     return {'status': 'success', 'detail': f'payment: {pay.json()}'}
 

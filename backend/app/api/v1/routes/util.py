@@ -52,6 +52,11 @@ async def email(email: Email):
     frm = os.getenv('EMAIL_ERGOPAD_FROM')
     ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
+    usr = 'AKIAZMGE4CQ6UKO3AFUM'
+    pwd = 'BJTHSs5J0+0SrCE2nNbrdiJLgG6bpzhgObivsH3YfA9G'
+    svr = 'email-smtp.us-east-2.amazonaws.com'
+    frm = 'sigma@ergopad.io'    
+
     # create connection
     logging.info(f'creating connection for: {svr} as {usr}')
     con = SMTP(svr, 587)
