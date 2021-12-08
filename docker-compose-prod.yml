@@ -1,11 +1,5 @@
 version: '3.9'
 
-# docker compose -f docker-compose-prod.yml --profile all up --build --force-recreate -d
-# -f X = use X (i.e. docker-compose-prod.yml)
-# --profile X = enable profile
-# -- build --force-recarete = rebuild containers, no questions asked
-# -d = daemon mode
-
 services:
   # copythis:
     # container_name: template
@@ -14,16 +8,17 @@ services:
     # volumes: .:/opt/hello
     # ${SERVICE_PORT}:54321 # set in .env; # HOST:CONTAINER
 
-  # nginx:
-  #   container_name: nginx
-  #   env_file: .env
-  #   image: nginx:1.17
-  #   volumes: 
-  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-  #   ports: 
-  #     - ${NGINX_PORT}:80
-  #   profiles: 
-  #     - reverseproxy
+  nginx:
+    container_name: nginx
+    env_file: .env
+    image: nginx:1.17
+    volumes: 
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports: 
+      - ${NGINX_PORT}:80
+    profiles: 
+      - all
+      - nginx
 
   backend:
     container_name: backend
@@ -37,22 +32,23 @@ services:
       - ${BACKEND_PORT}:${BACKEND_PORT}
     depends_on: 
       - postgres
-    command: uvicorn main:app --reload --workers 4 --reload-dir /app --host 0.0.0.0 --port 8000
+    command: uvicorn main:app --reload --workers 4 --reload-dir /app --host 0.0.0.0 --port ${BACKEND_PORT}
 
-  # frontend:
-  #   container_name: frontend
-  #   env_file: .env
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.frontend
-  #   volumes: 
-  #     - ./frontend:/app
-  #   ports: 
-  #     - ${FRONTEND_PORT}:${FRONTEND_PORT}
-  #   profiles: 
-  #     - donotstart # this profile would need to be passed for this to be enabled
-  #   command: yarn dev # start
-  #   # command: tail /dev/null -f
+  frontend:
+    container_name: frontend
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    volumes: 
+      - ./frontend:/app
+    ports: 
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+    profiles: 
+      - all
+      - frontend # this profile would need to be passed for this to be enabled
+    # command: yarn dev # start
+    command: tail /dev/null -f
 
   postgres:
     container_name: postgres
@@ -81,6 +77,7 @@ services:
     ports: 
       - ${PGADMIN_LISTEN_PORT}:${PGADMIN_LISTEN_PORT}
     depends_on:
+      - all
       - postgres
 
   aggregator:
@@ -90,12 +87,12 @@ services:
       context: .
       dockerfile: Dockerfile.aggregator
     volumes: 
-      - ./aggregator/app:/app # !! update for main docker-compose file
+      - ./aggregator/app:/app
     ports: 
       - ${AGGREGATOR_PORT}:${AGGREGATOR_PORT}
     # command: uvicorn main:app --reload --workers 4 --reload-dir /app --host 0.0.0.0 --port ${AGGREGATOR_PORT}
     command: python main.py # TODO: automate with celery and API to call refreshes; infinite loop for now
-    # command: tail /dev/null -f
+    # command: tail /dev/null -f # stall
 
   worker:
     container_name: worker
@@ -103,45 +100,44 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.aggregator
-    command: celery --app app.tasks worker --loglevel=DEBUG -Q main-queue -c 1
+    volumes: 
+      - ./aggregator/app:/app
+    command: celery --app tasks worker --loglevel=DEBUG -Q main-queue -c 1
+    # command: tail /dev/null -f # stall
 
   flower:  
     container_name: flower
     env_file: .env
     image: mher/flower
-    command: celery flower --broker=redis://redis:${REDIS_PORT}/0 --port=${FLOWER_PORT}
     ports: 
       - ${FLOWER_PORT}:${FLOWER_PORT}
     depends_on:
       - redis
+    command: celery flower --broker=redis://redis:${REDIS_PORT}/0 --port=${FLOWER_PORT}
 
-  # ergonode:
-  #   container_name: ergonode
-  #   env_file: .env
-  #   image: openjdk
-  #   volumes: 
-  #     - ./ergonode/:/opt/ergo # jar/conf
-  #     - /ergo/testnet/.ergo:/opt/ergo/.ergo # blockchain files
-  #   ports: 
-  #     - ${ERGONODE_PORT}:9052 # testnet
-  #   # ports: ${ERGONODE_PORT}:9053 # mainnet
-  #   working_dir: /opt/ergo
-  #   # running out of heap space, use -Xmx3G (suggested by Kushti)
-  #   command: java -jar -Xmx3G ergo-4.0.15.jar --testnet -c testnet.conf
+  ergonode:
+    container_name: ergonode
+    env_file: .env
+    image: openjdk
+    volumes:
+      - ./ergonode/:/opt/ergo # jar/conf
+      - /ergo/mainnet/.ergo:/opt/ergo/.ergo # blockchain
+    ports:
+      - ${ERGONODE_PORT}:9053
+    working_dir: /opt/ergo
+    command: java -jar -Xmx3G ergo-4.0.16.jar --mainnet -c mainnet.conf
 
-  # # allow a different node to test with
-  # ergonode2:
-  #   container_name: launchpad
-  #   env_file: .env
-  #   image: openjdk
-  #   volumes: 
-  #     - ./ergonode/:/opt/ergo # jar/conf
-  #     - /ergo/testnet2/.ergo:/opt/ergo/.ergo # blockchain files
-  #   ports: 
-  #     - ${ERGONODE2_PORT}:9052 # simulation
-  #   working_dir: /opt/ergo
-  #   # running out of heap space, use -Xmx3G (suggested by Kushti)
-  #   command: java -jar -Xmx3G ergo-4.0.15.jar --testnet -c launchpad.conf
+  ergonode2:
+    container_name: ergonode2
+    env_file: .env
+    image: openjdk
+    volumes:
+      - ./ergonode/:/opt/ergo # jar/conf
+      - /ergo/ergonode2/.ergo:/opt/ergo/.ergo # blockchain
+    ports:
+      - ${ERGONODE2_PORT}:9053
+    working_dir: /opt/ergo
+    command: java -jar -Xmx3G ergo-4.0.16.jar --mainnet -c ergonode2.conf
 
   assembler:
     container_name: assembler
@@ -150,9 +146,9 @@ services:
     volumes: 
       - ./assembler/:/opt/assembler
     ports: 
-      - ${ASSEMBLER_PORT}:8080
+      - ${ASSEMBLER_PORT}:${ASSEMBLER_PORT}
     working_dir: /opt/assembler # set this if using image and not build
-    command: java -jar -Xmx3G -Dconfig.file=application.conf -Dhttp.port=8080 ergo-assembler-1.1.jar
+    command: java -jar -Dconfig.file=mainnet.conf -Dhttp.port=${ASSEMBLER_PORT} ergo-assembler-1.1.jar
     # command: tail /dev/null -f
 
 #   ergostratum:
@@ -169,4 +165,3 @@ services:
 volumes:
   postgres_data:
   redis_data:
-
