@@ -6,32 +6,95 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
+import FilledInput from '@mui/material/FilledInput';
+import FormHelperText from '@mui/material/FormHelperText';
 import Select from '@mui/material/Select';
 import PageTitle from '@components/PageTitle';
 import theme from '../styles/theme';
 import MuiNextLink from '@components/MuiNextLink'
 import axios from 'axios';
+import { useWallet } from 'utils/WalletContext'
+import { useAddWallet } from 'utils/AddWalletContext'
+import { useState, useEffect } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+
+const initialFormData = Object.freeze({
+    name: "",
+    email: "",
+    sigValue: "",
+    ergoAddress: "",
+    chatHandle: "",
+    chatPlatform: "",
+    socialHandle: "",
+    socialPlatform: "",
+  });
+
+const initialCheckboxState = Object.freeze({
+    legal: false,
+    risks: false,
+    dao: false
+})
 
 const Whitelist = () => {
+    const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
+    const [checkboxError, setCheckboxError] = useState(false)
+    const [formData, updateFormData] = useState(initialFormData);
+    const [isLoading, setLoading] = useState(false);
+    const { wallet } = useWallet()
+    const { setAddWalletOpen } = useAddWallet()
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = {
-            to: "",
-            subject: "ErgoPad",
-            body: ""
-        }
+    const openWalletAdd = () => {
+        setAddWalletOpen(true)
+    }
 
-    axios.post(`${process.env.API_URL}/util/email`, { ...form })
-    .then(res=>{
-        console.log(res);
-        console.log(res.data);
-    })
-    .catch((err) => {
-        console.log('ERROR POSTING: ', err);
+    useEffect(() => {
+        updateFormData({
+            ...formData,
+            ergoAddress: wallet
+          });
+    }, [wallet])
+
+    const handleChange = (e) => {
+        updateFormData({
+          ...formData,
+            
+          // Trimming any whitespace
+          [e.target.name]: e.target.value.trim()
         });
+      };
 
-  };
+    const handleChecked = (e) => {
+        setCheckboxState({
+            ...checkboxState,
+            [e.target.name]: e.target.checked
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true)
+        // console.log(formData);
+
+        const form = {
+            to: "test@faketestemail.com",
+            subject: "ErgoPad Seed-Sale Whitelist Application",
+            body: JSON.stringify(formData)
+          }
+
+          console.log(form)
+
+        axios.post(`${process.env.API_URL}/util/email`, { ...form })
+            .then(res=>{
+                console.log(res);
+                console.log(res.data);
+                setLoading(false)
+            })
+            .catch((err) => {
+                console.log('ERROR POSTING: ', err);
+                setLoading(false)
+            }); 
+
+    };
 
   return (
     <>
@@ -136,6 +199,7 @@ const Whitelist = () => {
                             name="name"
                             type="name"
                             variant="filled"
+                            onChange={handleChange}
 						/>
 					</Grid>
 					<Grid item xs={12} sm={6}>
@@ -149,6 +213,7 @@ const Whitelist = () => {
                             id="email"
                             variant="filled"
                             helperText="To send approval notice"
+                            onChange={handleChange}
 						/>
 					</Grid>
                     <Grid item xs={12}>
@@ -156,26 +221,42 @@ const Whitelist = () => {
                             InputProps={{ disableUnderline: true }}
                             required
                             fullWidth
-                            id="amountInvest"
+                            id="sigValue"
                             label="How much would you like to invest"
-                            name="amountInvest"
-                            type="amountInvest"
+                            name="sigValue"
+                            type="sigValue"
                             variant="filled"
                             helperText="Enter value in sigUSD (max $5000)"
+                            onChange={handleChange}
 						/>
 					</Grid>
 					<Grid item xs={12}>
-						<TextField
-                            InputProps={{ disableUnderline: true }}
-                            fullWidth
-                            required
-                            name="ergoAddress"
-                            label="Your Ergo address"
-                            type="ergoAddress"
+                    <FormControl
+                        variant="filled" 
+                        fullWidth
+                        required
+                    >
+                        <InputLabel htmlFor="ergoAddress" sx={{'&.Mui-focused': { color: 'text.secondary'}}}>
+                            Ergo Wallet Address
+                        </InputLabel>
+                        <FilledInput
                             id="ergoAddress"
-                            variant="filled"
-                            helperText="Required for smart contract pre-approval"
-						/>
+                            value={wallet}
+                            onClick={openWalletAdd}
+                            readOnly
+                            disableUnderline={true}
+                            name="ergoAddress"
+                            type="ergoAddress"
+                            sx={{ 
+                                width: '100%', 
+                                border: '1px solid rgba(82,82,90,1)', 
+                                borderRadius: '4px', 
+                            }}
+                        />
+                        <FormHelperText>
+                            Your address must be pre-approved on the whitelist
+                        </FormHelperText>
+                    </FormControl>
 					</Grid>
 
                     <Grid item xs={12}>
@@ -188,22 +269,24 @@ const Whitelist = () => {
                             InputProps={{ disableUnderline: true }}
                             required
                             fullWidth
-                            id="yourHandle"
+                            id="chatHandle"
                             label="Your TG or Discord Handle"
-                            name="yourHandle"
-                            type="yourHandle"
+                            name="chatHandle"
+                            type="chatHandle"
                             variant="filled"
+                            onChange={handleChange}
 						/>
 					</Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControl variant="filled" required sx={{ minWidth: '100%', }}>
-                            <InputLabel id="patform-label" sx={{ '&.Mui-focused': { color: theme.palette.text.secondary } }}>Select Platform</InputLabel>
+                            <InputLabel id="chatPlatform" sx={{ '&.Mui-focused': { color: theme.palette.text.secondary } }}>Select Platform</InputLabel>
                             <Select
                                 disableUnderline={true}
-                                id="patform-label"
-                                // value=
+                                id="chatPlatform"
+                                name="chatPlatform"
+                                value={formData.chatPlatform}
                                 variant="filled"
-                                // onChange={handleChange}
+                                onChange={handleChange}
                                 sx={{
                                     border: `1px solid rgba(82,82,90,1)`,
                                     borderRadius: '4px',
@@ -229,17 +312,19 @@ const Whitelist = () => {
                             type="socialHandle"
                             id="socialHandle"
                             variant="filled"
+                            onChange={handleChange}
 						/>
 					</Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControl variant="filled" required sx={{ minWidth: '100%', }}>
-                            <InputLabel id="patform-label" sx={{ '&.Mui-focused': { color: theme.palette.text.secondary } }}>Select Platform</InputLabel>
+                            <InputLabel id="socialPlatform" sx={{ '&.Mui-focused': { color: theme.palette.text.secondary } }}>Select Platform</InputLabel>
                             <Select
                                 disableUnderline={true}
-                                id="patform-label"
-                                // value=
+                                id="socialPlatform"
+                                name="socialPlatform"
+                                value={formData.socialPlatform}
                                 variant="filled"
-                                // onChange={handleChange}
+                                onChange={handleChange}
                                 sx={{
                                     border: `1px solid rgba(82,82,90,1)`,
                                     borderRadius: '4px',
@@ -259,29 +344,66 @@ const Whitelist = () => {
 					</Grid>
 
                     <FormGroup sx={{mt: 6 }}>
-                        <FormControlLabel control={<Checkbox />}
+                        <FormControlLabel 
+                            control={
+                                <Checkbox 
+                                    // checked={legal} 
+                                    onChange={handleChecked} 
+                                    name="legal" 
+                                />
+                            }
                             label="I have confirmed that I am legally entitled to invest in a cryptocurrency project of this nature in the jurisdiction in which I reside" 
                             sx={{ color: theme.palette.text.secondary, mb: 3 }} 
                         />
-                        <FormControlLabel control={<Checkbox />}
+                        <FormControlLabel 
+                            control={
+                                <Checkbox 
+                                    // checked={risks} 
+                                    onChange={handleChecked} 
+                                    name="risks" 
+                                />
+                            }
                             label="I am aware of the risks involved when investing in a project of this nature. There is always a chance an investment with this level of risk can lose all it's value, and I accept full responsiblity for my decision to invest in this project" 
                             sx={{ color: theme.palette.text.secondary, mb: 3 }} 
                         />
-                        <FormControlLabel control={<Checkbox />}
+                        <FormControlLabel 
+                            control={
+                                <Checkbox 
+                                    // checked={dao} 
+                                    onChange={handleChecked} 
+                                    name="dao" 
+                                />
+                            }
                             label="I understand that the funds raised by this project will be controlled by the ErgoPad DAO, which has board members throughout the world. I am aware that this DAO does not fall within the jurisdiction of any one country, and accept the implications therein." 
                             sx={{ color: theme.palette.text.secondary, mb: 3 }} 
                         />
+                        <FormHelperText>{checkboxError && 'You must accept the terms'}</FormHelperText>
                     </FormGroup>
+                    <Box sx={{position: 'relative'}}>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            disabled={true}
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Submit
+                        </Button>
+                        {isLoading && (
+                            <CircularProgress
+                                size={24}
+                                sx={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    marginTop: '-9px',
+                                    marginLeft: '-12px',
+                                }}
+                            />
+                            )}
 
-					<Button
-                        type="submit"
-                        fullWidth
-                        // disabled
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-					>
-                        Submit
-					</Button>
+                    </Box>
+					
 				</Box>
 			</Grid>
 

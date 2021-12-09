@@ -50,23 +50,28 @@ const relatedLinkList = [
 
 const tokenAllocation = [
     {
-        x: 'Seed-sale',
-        y: 27,
+        x: 'Seed Round',
+        y: 13,
+        color: '#67D5C2'
+    },
+    {
+        x: 'Strategic Round',
+        y: 25,
         color: '#3abab4'
     },
     {
-        x: 'Pre-sale',
-        y: 54,
+        x: 'Pre-Sale',
+        y: 25,
         color: '#1A6BD2'
     },
     {
-        x: 'Team',
-        y: 8,
+        x: 'Liqudity',
+        y: 6,
         color: '#3F7CDC'
     },
     {
-        x: 'Liqudity',
-        y: 12,
+        x: 'DAO',
+        y: 30,
         color: '#36A9DA'
     },
 ]
@@ -82,19 +87,19 @@ const tokenCards = [
     },
     {
         title: 'Initial Available Supply:',
-        desc: '12.7M'
+        desc: '20M'
     },
     {
         title: 'Market Cap at IDO:',
-        desc: '254k SigUSD'
+        desc: '600k SigUSD'
     },
     {
         title: 'Pre-sale Price:',
-        desc: '0.02 SigUSD'
+        desc: '0.03 SigUSD'
     },
     {
         title: 'Total Available Supply:',
-        desc: '300M'
+        desc: '400M'
     },
 ]
 
@@ -170,12 +175,7 @@ const Token = () => {
                             id='victory-pie-chart-2'
                             innerRadius={50}
                             data={tokenAllocation}
-                            colorScale={[
-                                '#3abab4',
-                                '#1A6BD2',
-                                '#3F7CDC',
-                                '#36A9DA',
-                            ]}
+                            colorScale={tokenAllocation.map(value => {return value.color})}
                             style={{ labels: { fill: 'white' } }}
                             containerComponent={
                                 <VictoryContainer
@@ -186,7 +186,6 @@ const Token = () => {
                                     }}
                                 />
                             }
-                            
                         />
                     </Grid>
                     <Grid item md={4}>

@@ -168,7 +168,7 @@ const Dashboard = () => {
 				// console.log(assetListArray(res.data));
 				// console.log(portfolioTotal);
 			}
-			console.log('API Call')
+			// console.log('API Call')
 			setLoading(false)
 		}
 
