@@ -82,7 +82,7 @@ Eg. if 1000 tokens are available for stakers, and there are 5 people staking at 
 
 ### Emission
 
-There will be 300M total ErgoPad tokens, and these will be given to stakers over a 3 year period. The APR will vary day-to-day based on the number of staked tokens and the total coins left. Information on the APR and staking will be available at ergopad.io/staking when you connect your wallet to the website. 
+There will be 400M total ErgoPad tokens, and these will be given to stakers over a 3 year period. The APR will vary day-to-day based on the number of staked tokens and the total coins left. Information on the APR and staking will be available at ergopad.io/staking when you connect your wallet to the website. 
 
 ### Instructions
 
