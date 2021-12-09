@@ -174,8 +174,8 @@ const Dashboard = () => {
 
 		// console.log(wallet.wallets)
 
-		if (wallet.wallets && wallet.wallets != '') {
-			getWalletData(wallet.wallets)
+		if (wallet && wallet != '') {
+			getWalletData(wallet)
 		}
 		else {
 			noAssetSetup()
