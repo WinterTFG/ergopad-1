@@ -21,7 +21,7 @@ Network = os.getenv('ERGONODE_NETWORK')
 Config = {
   # 'devnet':
   'testnet': dotdict({
-    'node'              : 'http://launchpad:9052',
+    'node'              : 'http://ergonode:9052',
     'explorer'          : 'https://api-testnet.ergoplatform.com/api/v1',
     'ergopadApiKey'     :  os.getenv('ERGOPAD_APIKEY'),
     'assembler'         : 'http://assembler:8080',
@@ -34,9 +34,9 @@ Config = {
     'ergopadTokenId'    : os.getenv('ERGOPAD_TOKENID'),
     'b64ergopadTokenId' : b64encode(bytes.fromhex(os.getenv('ERGOPAD_TOKENID'))).decode(),
     'ergopadWallet'     : os.getenv('ERGOPAD_WALLET'),
-    'buyerApiKey'       :  os.getenv('BOGUS_APIKEY'),
+    'buyerApiKey'       : os.getenv('BOGUS_APIKEY'),
     'buyerWallet'       : os.getenv('BOGUS_WALLET'),
-    'buyerNode'         : 'http://ergonode:9052',
+    'buyerNode'         : 'http://ergonode2:9052',
     'requestedTokens'   : 4,
     'vestingPeriods'    : 2,
   }),
@@ -55,9 +55,10 @@ Config = {
     'ergopadTokenId'    : os.getenv('ERGOPAD_TOKENID'),
     'b64ergopadTokenId' : b64encode(bytes.fromhex(os.getenv('ERGOPAD_TOKENID'))).decode(),
     'ergopadWallet'     : os.getenv('ERGOPAD_WALLET'),
+    'buyerApiKey'       : os.getenv('BOGUS_APIKEY'),
     'buyerWallet'       : os.getenv('BOGUS_WALLET'),
-    'requestedTokens'   : 4,
-    'vestingPeriods'    : 2,
+    'requestedTokens'   : 60,
+    'vestingPeriods'    : 6,
     # 'buyer'            : 'http://ergonode2:9053', # used for simulations
   })
 }

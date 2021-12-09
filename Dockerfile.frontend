@@ -3,7 +3,7 @@ FROM node:16
 COPY ./frontend /app
 WORKDIR /app
 
-RUN npm install
-RUN npm i next
+RUN yarn install
 
-# CMD yarn start
+# ENTRYPOINT yarn dev # dev
+# ENTRYPOINT yarn build && yarn start # prod

@@ -121,13 +121,13 @@ services:
     image: openjdk
     volumes: 
       - ./ergonode/:/opt/ergo # jar/conf
-      - /ergo/testnet/.ergo:/opt/ergo/.ergo # blockchain files
+      - c:/ergo/testnet/.ergo:/opt/ergo/.ergo # blockchain files
     ports: 
       - ${ERGONODE_PORT}:9052 # testnet
     # ports: ${ERGONODE_PORT}:9053 # mainnet
     working_dir: /opt/ergo
     # running out of heap space, use -Xmx3G (suggested by Kushti)
-    command: java -jar -Xmx3G ergo-4.0.16.jar --testnet -c testnet.conf
+    command: java -jar -Xmx3G ergo-4.0.16.1.jar --testnet -c testnet.conf
 
   # allow a different node to test with
   ergonode2:
@@ -136,12 +136,12 @@ services:
     image: openjdk
     volumes: 
       - ./ergonode/:/opt/ergo # jar/conf
-      - /ergo/testnet2/.ergo:/opt/ergo/.ergo # blockchain files
+      - c:/ergo/testnet2/.ergo:/opt/ergo/.ergo # blockchain files
     ports: 
       - ${ERGONODE2_PORT}:9052 # simulation
     working_dir: /opt/ergo
     # running out of heap space, use -Xmx3G (suggested by Kushti)
-    command: java -jar -Xmx3G ergo-4.0.16.jar --testnet -c testnode2.conf
+    command: java -jar -Xmx3G ergo-4.0.16.1.jar --testnet -c testnode2.conf
 
   assembler:
     container_name: assembler
@@ -152,7 +152,7 @@ services:
     ports: 
       - ${ASSEMBLER_PORT}:8080
     working_dir: /opt/assembler # set this if using image and not build
-    command: java -jar -Xmx3G -Dconfig.file=application.conf -Dhttp.port=8080 ergo-assembler-1.1.jar
+    command: java -jar -Dconfig.file=testnet.conf -Dhttp.port=${ASSEMBLER_PORT} ergo-assembler-1.1.jar
     # command: tail /dev/null -f
 
 #   ergostratum:

@@ -1,7 +1,7 @@
 import requests 
 from wallet import Wallet
 from config import Config, Network
-
+from base64 import b64encode
 from fastapi import APIRouter
 from fastapi import Path
 from fastapi import Request
@@ -83,7 +83,7 @@ def followInfo(followId):
 
 # find unspent boxes with tokens
 @r.get("/unspentTokens", name="blockchain:unspentTokens")
-def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=False):
+def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=True):
   try:
     tot = 0
     ergopadTokenBoxes = {}    
@@ -123,12 +123,33 @@ def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=False):
 def getErgoscript(name, params={}):
   try:
     if name == 'alwaysTrue':
-      script = "{ 1 == 1 }"
+      script = f"""{{
+        val x = 1
+        val y = 1
+
+        sigmaProp( x == y )
+      }}"""
 
     if name == 'neverTrue':
       script = "{ 1 == 0 }"
 
-    if name == 'ergopad':
+    if name == 'ergopad':      
+      script = f"""{{
+        val isValid = {{
+            val heightStamp = OUTPUTS(0).R4[Coll[Byte]].isDefined
+            val minErg = OUTPUTS(0).value == {params['ergAmount']}L
+            val walletAddress = OUTPUTS(2).propositionBytes == fromBase64("{params['toAddress']}")
+            val vestingPeriods = OUTPUTS.size == {CFG.vestingPeriods}L
+
+            // heightStamp && minErg && walletAddress && vestingPeriods
+            walletAddress
+        }}
+
+        // structure ok, check logic and return t/f as sigmaProp
+        sigmaProp(isValid)
+      }}"""
+
+    if name == 'testing':
       return f"""
         {{
           val isAvailable = {{
@@ -161,8 +182,10 @@ def getErgoscript(name, params={}):
       script = f"""sigmaProp(OUTPUTS(0).R4[Long].getOrElse(0L) >= {params['heightLock']})"""
 
     # get the P2S address (basically a hash of the script??)
+    logging.debug(script)
     p2s = requests.post(f'{CFG.assembler}/compile', headers=headers, json=script)
     smartContract = p2s.json()['address']
+    logging.debug(f'p2s: {p2s.content}')
     logging.info(f'smart contract: {smartContract}')
 
     return smartContract
@@ -182,19 +205,19 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
     vestingEpoch_hr = .1 # hour(s); every 6 mins
     vestingInterval_ht = int(vestingEpoch_hr*(3600/avgBlockHeight_s))
     vestingBeginHeight = nodeInfo['currentHeight']+vestingInterval_ht # vesting period converted to height
-    smartContract = getErgoscript('alwaysTrue')
     txFee = CFG.txFee # * CFG.vestingPeriods ??
     txMin = 100000 # .01 ergs; remove after reload ENV
     txTotal = txMin * CFG.vestingPeriods # without fee
+    scPurchase = getErgoscript('ergopad', {'ergAmount': txMin, 'toAddress': buyerWallet.address})
+    logging.debug(f'smart contract: {scPurchase}')
 
     # 1 outbox per vesting period to lock spending until vesting complete
     outBox = []
     logging.info(f'vesting periods: {CFG.vestingPeriods}')
     for i in range(CFG.vestingPeriods):
-      
+      logging.debug(f':: smart contract: {scPurchase}')
       # in event the requested tokens do not divide evenly by vesting period, add remaining to final output
       remainder = 0
-      logging.info(remainder)
       if i == CFG.vestingPeriods-1:
         remainder = qty%CFG.vestingPeriods
       scVesting = getErgoscript('heightLock', {'heightLock': vestingBeginHeight+i*vestingInterval_ht})
@@ -215,33 +238,34 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
 
     # create transaction with smartcontract, into outbox(es), using tokens from ergopad token box
     logging.info(f'build request')
+    logging.debug(f'smart contract: {scPurchase}')
     request = {
-        'address': smartContract,
+        'address': scPurchase,
         'returnTo': buyerWallet.address,
         'startWhen': {
-            'erg': txFee + txTotal, # nergAmount + 2*minTx + txFee
+            'erg': txFee*2 + txTotal, # nergAmount + 2*minTx + txFee
         },
         'txSpec': {
             'requests': outBox,
             'fee': txFee,          
-            'inputs': ['$userIns', ','.join([k for k in ergopadTokenBoxes.keys()])], # 'inputs': ['$userIns', '488a6f4cddb8d4565f5eddf065e943765539b5e861df160ab47e8692637a4a4e'],
+            'inputs': ['$userIns', ','.join([k for k in ergopadTokenBoxes.keys()])],
             'dataInputs': [],
         },
     }
 
-    # return({'status': 'testing', 'x': vestingBeginHeight, 'smartContract': smartContract, 'request': request})
-
     # make async request to assembler
     # logging.info(request); exit(); # !! testing
-    res = requests.post(f'{CFG.assembler}/follow', headers=headers, json=request)
+    res = requests.post(f'{CFG.assembler}/follow', headers=headers, json=request)    
+    logging.debug(request)
+
     id = res.json()['id']
     fin = requests.get(f'{CFG.assembler}/result/{id}')
     logging.info({'status': 'success', 'fin': fin.json(), 'followId': id, 'request': request})
     return({
         'status': 'success', 
-        'details': f'send {txTotal/CFG.nanoergsInErg} total ergs, and {txFee/CFG.nanoergsInErg} fee ergs to {smartContract}',
+        'details': f'send {txTotal+txFee*2} ({txTotal/CFG.nanoergsInErg} ergs + {txFee*2/CFG.nanoergsInErg} fee) to {scPurchase}',
         'fin': fin.json(), 
-        'smartContract': smartContract, 
+        'smartContract': scPurchase, 
         'followId': id, 
         'request': request
     })
@@ -254,12 +278,24 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
 def sendPayment(address, nergs):
   # TODO: require login/password or something; disable in PROD
   try:
-    # !! add in check for wallet lock, and unlock/relock if needed
+    sendMe = ''
     isWalletLocked = False
+    
+    # !! add in check for wallet lock, and unlock/relock if needed
+    lck = requests.get(f'http://ergonode2:9052/wallet/status', headers={'Content-Type': 'application/json', 'api_key': 'goalspentchillyamber'})
+    logging.info(lck.content)
+    if lck.ok:
+        if lck.json()['isUnlocked'] == False:
+            ulk = requests.post(f'http://ergonode2:9052/wallet/unlock', headers={'Content-Type': 'application/json', 'api_key': 'goalspentchillyamber'}, json={'pass': 'crowdvacationancientamber'})
+            logging.info(ulk.content)
+            if ulk.ok: isWalletLocked = False
+            else: isWalletLocked = True
+        else: isWalletLocked = True
+    else: isWalletLocked = True
 
     # unlock wallet
     if isWalletLocked:
-        logging('unlock wallet')
+        logging.info('unlock wallet')
 
     # send nergs to address/smartContract from the buyer wallet
     # for testing, address/smartContract is 1==1, which anyone could fulfill
@@ -269,11 +305,11 @@ def sendPayment(address, nergs):
         'assets': [],
     }]    
     # pay = requests.post(f'{CFG.buyer}/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': CFG.buyerApiKey}, json=sendMe)
-    pay = requests.post(f'http://ergonode:9052/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': 'oncejournalstrangeweather'}, json=sendMe)
+    pay = requests.post(f'http://ergonode2:9052/wallet/payment/send', headers={'Content-Type': 'application/json', 'api_key': 'goalspentchillyamber'}, json=sendMe)
 
     # relock wallet
-    if isWalletLocked:
-        logging('relock wallet')
+    if not isWalletLocked:
+        logging.info('relock wallet')
 
     return {'status': 'success', 'detail': f'payment: {pay.json()}'}
 
