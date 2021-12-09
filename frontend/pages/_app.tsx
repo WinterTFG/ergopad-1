@@ -8,6 +8,7 @@ import theme from '../styles/theme';
 import Layout from '@components/layout/Layout';
 import { SnackbarProvider } from 'notistack';
 import { WalletProvider } from '../utils/WalletContext';
+import { AddWalletProvider } from '../utils/AddWalletContext';
 import { SearchProvider } from '../utils/SearchContext';
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from 'next/router';
@@ -27,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const emotionCache = clientSideEmotionCache;
 	const router = useRouter();
 
-	
+
 
 	return (
 		<CacheProvider value={emotionCache}>
@@ -41,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<SnackbarProvider anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} maxSnack={3} dense> 
 					{/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 					<CssBaseline />
-					
+						<AddWalletProvider>
 						<WalletProvider>
 						<SearchProvider>
 						<AnimatePresence exitBeforeEnter onExitComplete={exitCompleter}>
@@ -60,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						</AnimatePresence>
 						</SearchProvider>
 						</WalletProvider>
-					
+						</AddWalletProvider>
 				</SnackbarProvider>
 				
 			</ThemeProvider>
