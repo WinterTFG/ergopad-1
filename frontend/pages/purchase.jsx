@@ -5,14 +5,22 @@ import Checkbox from '@mui/material/Checkbox';
 import FilledInput from '@mui/material/FilledInput';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
 import PageTitle from '@components/PageTitle';
 import theme from '../styles/theme';
 // import axios from 'axios';
 import { useWallet } from 'utils/WalletContext'
 import { useAddWallet } from 'utils/AddWalletContext'
+import { useState, useEffect } from 'react';
+
+const initialFormData = Object.freeze({
+    sigValue: "",
+    ergoAddress: ""
+  });
 
 const Purchase = () => {
+
+    const [formData, updateFormData] = useState(initialFormData);
 
     const { wallet } = useWallet()
     const { setAddWalletOpen } = useAddWallet()
@@ -21,33 +29,43 @@ const Purchase = () => {
         setAddWalletOpen(true)
     }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // const form = {
-    //         to: "",
-    //         subject: "ErgoPad",
-    //         body: ""
-    //     }
-    //
-    // axios.post(`${process.env.API_URL}/util/email`, { ...form })
-    // .then(res=>{
-    //     console.log(res);
-    //     console.log(res.data);
-    // })
-    // .catch((err) => {
-    //     console.log('ERROR POSTING: ', err);
-    //     });
+    useEffect(() => {
+        updateFormData({
+            ...formData,
+            ergoAddress: wallet
+          });
+    }, [wallet])
 
-  };
+    const handleChange = (e) => {
+        updateFormData({
+          ...formData,
+            
+          // Trimming any whitespace
+          [e.target.name]: e.target.value.trim()
+        });
+      };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(formData);
+
+        // axios.post(`${process.env.API_URL}/util/email`, { ...formData })
+        // .then(res=>{
+        //     console.log(res);
+        //     console.log(res.data);
+        // })
+        // .catch((err) => {
+        //     console.log('ERROR POSTING: ', err);
+        //     });
+
+    };
 
   return (
     <>
         <Container maxWidth="lg" sx={{ px: {xs: 2, md: 3 } }}>
 		<PageTitle 
 			title="Purchase ErgoPad Tokens"
-			subtitle="If you are approved for seed-sale whitelist, you can purchase them here."
-			// main={true}
+			subtitle="If you are approved for seed-sale whitelist, you can purchase tokens here."
 		/>
         </Container>
 
@@ -62,63 +80,53 @@ const Purchase = () => {
                     <Typography variant="p" sx={{ fontSize: '1rem', mb: 3 }}>
                         You must be pre-approved on whitelist to be able to purchase tokens. Add your wallet address to check if you have an allocation available. 
                     </Typography>
-
-                    
 				</Box>
-
-                
 			</Grid>
-
 
 			<Grid item md={8}>
 				<Box component="form" noValidate onSubmit={handleSubmit}>
-					<Typography variant="h4" sx={{ mb: 4, fontWeight: '700' }}>
+					<Typography variant="h4" sx={{ mb: 3, fontWeight: '700' }}>
 						Token Purchase Form
 					</Typography>
-					<Grid container spacing={2}>
-					
-                    <Grid item xs={12}>
-						<TextField
-                            InputProps={{ disableUnderline: true }}
-                            required
-                            fullWidth
-                            id="amountInvest"
-                            label="How much would you like to invest"
-                            name="amountInvest"
-                            type="amountInvest"
-                            variant="filled"
-                            helperText="Enter value in sigUSD (max $5000), we'll convert to Erg for you"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<FormControl
-                            variant="filled" 
-                            fullWidth
-                            required 
-                            // helperText="Must be the address you white-listed with"
-						>
-                            <InputLabel htmlFor="ergoAddress">Ergo Wallet Address</InputLabel>
-                            <FilledInput
-                                id="ergoAddress"
-                                value={wallet}
-                                onClick={openWalletAdd}
-                                readOnly
-                                disableUnderline={true}
-                                name="ergoAddress"
-                                type="ergoAddress"
-                                label="Your Ergo address"
-                                sx={{ width: '100%' }}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                      
-                                    </InputAdornment>
-                                  }
-                            />
-                            </FormControl>
-					</Grid>
-					
-                    
-					</Grid>
+                    <TextField
+                        InputProps={{ disableUnderline: true }}
+                        required
+                        fullWidth
+                        id="sigValue"
+                        label="How much would you like to invest"
+                        name="sigValue"
+                        variant="filled"
+                        helperText="Enter value in sigUSD (max $5000), we'll convert to Erg for you"
+                        sx={{ mb: 3 }}
+                        onChange={handleChange}
+                    />
+
+                    <FormControl
+                        variant="filled" 
+                        fullWidth
+                        required
+                    >
+                        <InputLabel htmlFor="ergoAddress" sx={{'&.Mui-focused': { color: 'text.secondary'}}}>
+                            Ergo Wallet Address
+                        </InputLabel>
+                        <FilledInput
+                            id="ergoAddress"
+                            value={wallet}
+                            onClick={openWalletAdd}
+                            readOnly
+                            disableUnderline={true}
+                            name="ergoAddress"
+                            type="ergoAddress"
+                            sx={{ 
+                                width: '100%', 
+                                border: '1px solid rgba(82,82,90,1)', 
+                                borderRadius: '4px', 
+                            }}
+                        />
+                        <FormHelperText>
+                            Your address must be pre-approved on the whitelist
+                        </FormHelperText>
+                    </FormControl>
 
                     <FormGroup sx={{mt: 3 }}>
                         <FormControlLabel control={<Checkbox />}

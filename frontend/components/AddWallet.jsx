@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
     Button, 
     Dialog, 
@@ -17,6 +17,12 @@ export const AddWallet = () => {
     const [walletInput, setWalletInput] = useState('');
     const { addWalletOpen, setAddWalletOpen } = useAddWallet()
     const { wallet, setWallet } = useWallet()
+
+    useEffect(() => {
+        if (localStorage.getItem('Address')){
+            setWallet(localStorage.getItem('Address'))
+        }
+    }, [])
 
     const handleClose = () => {
         setAddWalletOpen(false);

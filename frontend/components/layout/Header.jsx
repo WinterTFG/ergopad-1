@@ -31,8 +31,8 @@ function ElevationScroll(props) {
 }
 
 const Header = () => {
-  const { wallet, setWallet } = useWallet()
-  const { addWalletOpen, setAddWalletOpen } = useAddWallet()
+  const { wallet } = useWallet()
+  const { setAddWalletOpen } = useAddWallet()
 
   const walletButtonText = wallet ? wallet : 'Connect Wallet'
 

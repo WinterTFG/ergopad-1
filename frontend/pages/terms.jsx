@@ -1,11 +1,11 @@
 import { Typography, Container } from '@mui/material';
-import CenterTitle from '@components/CenterTitle';
+import PageTitle from '@components/PageTitle';
 
 const Terms = () => {
   return (
     <>
         <Container maxWidth="760px" sx={{ maxWidth: '760px', mx: 'auto' }}>
-            <CenterTitle 
+            <PageTitle 
                 title="Terms and Conditions"
             />
 
