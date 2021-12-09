@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { 
     Button, 
     Dialog, 
@@ -9,24 +9,23 @@ import {
     DialogTitle, 
     FormHelperText,
 } from '@mui/material';
-// import FormControl, { useFormControl } from '@mui/material/FormControl';
 import { useWallet } from 'utils/WalletContext';
+import { useAddWallet } from 'utils/AddWalletContext'
 import { Address } from "utils/Address";
-import theme from "../styles/theme";
 
 export const AddWallet = () => {
     const [walletInput, setWalletInput] = useState('');
-    const [open, setOpen] = useState(false);
-    const [walletButtonText, setWalletButtonText] = useState('Connect Wallet');
-
+    const { addWalletOpen, setAddWalletOpen } = useAddWallet()
     const { wallet, setWallet } = useWallet()
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    useEffect(() => {
+        if (localStorage.getItem('Address')){
+            setWallet(localStorage.getItem('Address'))
+        }
+    }, [])
 
     const handleClose = () => {
-        setOpen(false);
+        setAddWalletOpen(false);
         setWalletInput('');
     };
 
@@ -35,60 +34,20 @@ export const AddWallet = () => {
     };
 
     const handleSubmitWallet = () => {
-        // console.log('wallet input = ' + walletInput)
-        setOpen(false);
+        setAddWalletOpen(false);
         localStorage.setItem('Address', walletInput);
-        setWalletButtonText(walletInput)
-        setWallet({wallets: walletInput})
+        setWallet(walletInput)
         setWalletInput('');
     };
 
     const clearWallet = () => {
-        // setOpen(false);
-        setWallet({wallets: ''})
+        setWallet('')
         localStorage.removeItem('Address');
-        setWalletButtonText('Connect Wallet');
-        // console.log(wallet.wallets)
     }
-
-    useEffect(() => {
-        if (localStorage.getItem('Address')) {
-            const item = localStorage.getItem('Address')
-            if (walletButtonText != item) {
-                setWallet({wallets: item})
-                setWalletButtonText(item)
-                // console.log(wallet.wallets)
-            }
-        }
-    }, []);
 
   return (
     <>
-        <Button 
-        variant="contained"
-        id="walletButton"
-        sx={{
-            color: '#fff',
-            fontSize: '1rem',
-            px: '1.2rem',
-            textTransform: 'none',
-            backgroundColor: theme.palette.primary.main,
-            '&:hover': {
-                backgroundColor: theme.palette.primary.hover,
-                boxShadow: 'none',
-            },
-            '&:active': {
-                backgroundColor: theme.palette.primary.active,
-            },
-            textOverflow: 'ellipsis',
-            maxWidth: '10em',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-        }}
-        onClick={handleClickOpen}>
-            {walletButtonText}
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={addWalletOpen} onClose={handleClose}>
             <DialogTitle>Connect Wallet</DialogTitle>
             <DialogContent>
             <DialogContentText>

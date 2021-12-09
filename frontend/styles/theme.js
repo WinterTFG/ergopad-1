@@ -1,5 +1,4 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import { text } from 'dom-helpers';
+import { createTheme } from '@mui/material/styles';
 
 const themeSetup = 
 	{

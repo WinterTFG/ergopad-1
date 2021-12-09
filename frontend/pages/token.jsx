@@ -43,7 +43,7 @@ const relatedLinkList = [
         title: 'Documentation', 
         caption: 'Read more about how ErgoPad Works', 
         icon: 'auto_stories', 
-        href: '/documentation', 
+        href: 'https://github.com/ergo-pad/ergopad/blob/main/docs/README.md', 
         background: theme.palette.tertiary.main
     },
 ]
@@ -82,7 +82,7 @@ const tokenCards = [
     },
     {
         title: 'Initial Available Supply:',
-        desc: '1.27M'
+        desc: '12.7M'
     },
     {
         title: 'Market Cap at IDO:',
@@ -90,11 +90,11 @@ const tokenCards = [
     },
     {
         title: 'Pre-sale Price:',
-        desc: '0.20 SigUSD'
+        desc: '0.02 SigUSD'
     },
     {
         title: 'Total Available Supply:',
-        desc: '30M'
+        desc: '300M'
     },
 ]
 

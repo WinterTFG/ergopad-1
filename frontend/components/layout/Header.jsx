@@ -1,9 +1,11 @@
-import { AppBar, Toolbar, Box, IconButton, useScrollTrigger } from '@mui/material';
+import { AppBar, Toolbar, Box, IconButton, useScrollTrigger, Button } from '@mui/material';
 import MuiNextLink from '@components/MuiNextLink';
 import Navbar from '@components/navigation/Navbar';
-import AddWallet from '@components/AddWallet';
 import theme from '../../styles/theme';
 import { cloneElement } from 'react';
+import { useAddWallet } from 'utils/AddWalletContext'
+import { useWallet } from 'utils/WalletContext';
+import AddWallet from '@components/AddWallet';
 
 export const navLinks = [
   { title: `About`, path: `/about` },
@@ -29,9 +31,18 @@ function ElevationScroll(props) {
 }
 
 const Header = () => {
+  const { wallet } = useWallet()
+  const { setAddWalletOpen } = useAddWallet()
+
+  const walletButtonText = wallet ? wallet : 'Connect Wallet'
+
+  const handleClickOpen = (() => {
+    setAddWalletOpen(true)
+  })
 
   return (
     <>
+    <AddWallet />
       <ElevationScroll>
         <AppBar color="transparent" enableColorOnDark sx={{ 
           p: 0, 
@@ -72,7 +83,14 @@ const Header = () => {
             </Box>
 
             <Box sx={{ display: 'flex' }}>
-              <AddWallet />
+              <Button 
+                variant="contained"
+                id="walletButton"
+                sx={walletButtonSx}
+                onClick={handleClickOpen}
+              >
+                {walletButtonText}
+              </Button>
             </Box>
 
               {/* {isMobile && <SideDrawer navLinks={navLinks} />} */}
@@ -84,3 +102,22 @@ const Header = () => {
 };
 
 export default Header;
+
+const walletButtonSx = {
+  color: '#fff',
+  fontSize: '1rem',
+  px: '1.2rem',
+  textTransform: 'none',
+  backgroundColor: theme.palette.primary.main,
+  '&:hover': {
+      backgroundColor: theme.palette.primary.hover,
+      boxShadow: 'none',
+  },
+  '&:active': {
+      backgroundColor: theme.palette.primary.active,
+  },
+  textOverflow: 'ellipsis',
+  maxWidth: '10em',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+}
