@@ -84,7 +84,6 @@ const Whitelist = () => {
                 // Authorization: auth?.accessToken ? `Bearer ${auth.accessToken}` : '',
             },
         };
-        console.log('test')
         axios.get(`${process.env.API_URL}/util/whitelist`, { ...defaultOptions })
             .then(res => {
                 if (res.data.qty > 80000) {
