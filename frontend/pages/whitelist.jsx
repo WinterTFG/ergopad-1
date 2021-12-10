@@ -62,19 +62,47 @@ const emailRegex = /\S+@\S+\.\S+/;
 
 const Whitelist = () => {
     const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
-    const [buttonEnabled, setButtonEnabled] = useState(false)
+    const [buttonDisabled, setbuttonDisabled] = useState(false) 
     const [formErrors, setFormErrors] = useState(initialFormErrors)
     const [formData, updateFormData] = useState(initialFormData);
     const [isLoading, setLoading] = useState(false);
 	const [openError, setOpenError] = useState(false);
 	const [openSuccess, setOpenSuccess] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('Please eliminate form errors and try again')
+    const [soldOut, setSoldOut] = useState(false)
     const { wallet } = useWallet()
     const { setAddWalletOpen } = useAddWallet()
 
     const openWalletAdd = () => {
         setAddWalletOpen(true)
     }
+
+    useEffect(() => {
+        const defaultOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                // Authorization: auth?.accessToken ? `Bearer ${auth.accessToken}` : '',
+            },
+        };
+        console.log('test')
+        axios.get(`${process.env.API_URL}/util/whitelist`, { ...defaultOptions })
+            .then(res => {
+                if (res.data.qty > 80000) {
+                    setbuttonDisabled(true)
+                    setSoldOut(true)
+                }
+                else {
+                    setSoldOut(false)
+                }
+
+                if (res.data.gmt < 1639155600) {
+                    setbuttonDisabled(true)
+                }
+            })
+            .catch((err) => {
+				console.log(err)
+            }); 
+    }, [buttonDisabled])
 
     useEffect(() => {
         updateFormData({
@@ -97,10 +125,10 @@ const Whitelist = () => {
 
     useEffect(() => {
         if (isLoading) {
-            setButtonEnabled(true)
+            setbuttonDisabled(true)
         }
         else {
-            setButtonEnabled(false)
+            setbuttonDisabled(false)
         }
     }, [isLoading])
 
@@ -168,7 +196,7 @@ const Whitelist = () => {
     const checkboxError = [legal, risks, dao].filter((v) => v).length !== 3
 
     useEffect(() => {
-        checkboxError ? setButtonEnabled(true) : setButtonEnabled(false)
+        checkboxError ? setbuttonDisabled(true) : setbuttonDisabled(false)
     }, [checkboxError])
 
 	const handleCloseError = (event, reason) => {
@@ -530,7 +558,7 @@ const Whitelist = () => {
                         <Button
                             type="submit"
                             fullWidth
-                            disabled={buttonEnabled}
+                            disabled={buttonDisabled}
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
@@ -550,6 +578,7 @@ const Whitelist = () => {
                             )}
 
                     </Box>
+                    <Typography sx={{ color: theme.palette.text.secondary }}>{soldOut && 'We apologize for the inconvenience, the seed round is sold out'}</Typography>
 					<Snackbar open={openError} autoHideDuration={6000} onClose={handleCloseError}>
 						<Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
 							{errorMessage}
