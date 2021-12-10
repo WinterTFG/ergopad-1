@@ -68,6 +68,7 @@ const Whitelist = () => {
     const [isLoading, setLoading] = useState(false);
 	const [openError, setOpenError] = useState(false);
 	const [openSuccess, setOpenSuccess] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('Please eliminate form errors and try again')
     const { wallet } = useWallet()
     const { setAddWalletOpen } = useAddWallet()
 
@@ -198,14 +199,14 @@ const Whitelist = () => {
 
 		if (errorCheck && emptyCheck) { 
 			axios.post(`${process.env.API_URL}/util/email`, { ...form })
-            .then(res=>{
+            .then(res => {
                 console.log(res);
                 console.log(res.data);
                 setLoading(false)
 				setOpenSuccess(true)
             })
             .catch((err) => {
-                console.log('ERROR POSTING: ', err);
+				setErrorMessage('ERROR POSTING: ' + err)
                 setLoading(false)
             }); 
 		}
@@ -223,6 +224,7 @@ const Whitelist = () => {
 				...formErrors,
 				...updateErrors
 			})
+			setErrorMessage('Please eliminate form errors and try again')
 			setOpenError(true)
 			setLoading(false)
 		}
@@ -550,7 +552,7 @@ const Whitelist = () => {
                     </Box>
 					<Snackbar open={openError} autoHideDuration={6000} onClose={handleCloseError}>
 						<Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
-							Please eliminate errors and try again
+							{errorMessage}
 						</Alert>
 					</Snackbar>
 					<Dialog
