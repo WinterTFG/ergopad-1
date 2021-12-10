@@ -15,19 +15,42 @@ import MuiNextLink from '@components/MuiNextLink'
 import axios from 'axios';
 import { useWallet } from 'utils/WalletContext'
 import { useAddWallet } from 'utils/AddWalletContext'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+const Alert = forwardRef(function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  
 
 const initialFormData = Object.freeze({
-    name: "",
-    email: "",
-    sigValue: "",
-    ergoAddress: "",
-    chatHandle: "",
-    chatPlatform: "",
-    socialHandle: "",
-    socialPlatform: "",
+    name: '',
+    email: '',
+    sigValue: '',
+    ergoAddress: '',
+    chatHandle: '',
+    chatPlatform: '',
+    socialHandle: '',
+    socialPlatform: '',
   });
+
+const initialFormErrors = Object.freeze({
+	name: false,
+    email: false,
+    sigValue: false,
+    ergoAddress: false,
+    chatHandle: false,
+    chatPlatform: false,
+    socialHandle: false,
+    socialPlatform: false,
+})
 
 const initialCheckboxState = Object.freeze({
     legal: false,
@@ -35,11 +58,16 @@ const initialCheckboxState = Object.freeze({
     dao: false
 })
 
+const emailRegex = /\S+@\S+\.\S+/;
+
 const Whitelist = () => {
     const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
-    const [checkboxError, setCheckboxError] = useState(false)
+    const [buttonEnabled, setButtonEnabled] = useState(false)
+    const [formErrors, setFormErrors] = useState(initialFormErrors)
     const [formData, updateFormData] = useState(initialFormData);
     const [isLoading, setLoading] = useState(false);
+	const [openError, setOpenError] = useState(false);
+	const [openSuccess, setOpenSuccess] = useState(false);
     const { wallet } = useWallet()
     const { setAddWalletOpen } = useAddWallet()
 
@@ -52,9 +80,74 @@ const Whitelist = () => {
             ...formData,
             ergoAddress: wallet
           });
+		if (wallet) {
+			setFormErrors({
+				...formErrors,
+				ergoAddress: false
+			});
+		}
+		else {
+			setFormErrors({
+				...formErrors,
+				ergoAddress: true
+			});
+		}
     }, [wallet])
 
+    useEffect(() => {
+        if (isLoading) {
+            setButtonEnabled(true)
+        }
+        else {
+            setButtonEnabled(false)
+        }
+    }, [isLoading])
+
     const handleChange = (e) => {
+		if (e.target.value == '') {
+			setFormErrors({
+				...formErrors,
+				[e.target.name]: true
+			});
+		}
+		else {
+			setFormErrors({
+				...formErrors,
+				[e.target.name]: false
+			});
+		}
+		
+		if (e.target.name == 'email') {
+            if (emailRegex.test(e.target.value)) {
+                setFormErrors({
+					...formErrors,
+					email: false
+				});
+            }
+            else {
+                setFormErrors({
+					...formErrors,
+					email: true
+				});
+            }
+        }
+
+		if (e.target.name == 'sigValue') {
+			const sigNumber = Number(e.target.value)
+			if (sigNumber <= 5000 && sigNumber > 0 ) {
+				setFormErrors({
+					...formErrors,
+					sigValue: false
+				});
+			}
+			else {
+				setFormErrors({
+					...formErrors,
+					sigValue: true
+				});
+			}
+		}
+
         updateFormData({
           ...formData,
             
@@ -70,29 +163,70 @@ const Whitelist = () => {
         })
     }
 
+    const { legal, risks, dao } = checkboxState;
+    const checkboxError = [legal, risks, dao].filter((v) => v).length !== 3
+
+    useEffect(() => {
+        checkboxError ? setButtonEnabled(true) : setButtonEnabled(false)
+    }, [checkboxError])
+
+	const handleCloseError = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpenError(false);
+	};
+
+	const handleCloseSuccess = () => {
+		setOpenSuccess(false);
+	};
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true)
-        // console.log(formData);
 
+		const emptyCheck = Object.values(formData).every(v => v != '')
+		const errorCheck = Object.values(formErrors).every(v => v === false)
+		
         const form = {
             to: "test@faketestemail.com",
             subject: "ErgoPad Seed-Sale Whitelist Application",
             body: JSON.stringify(formData)
           }
 
-          console.log(form)
+		// console.log(emptyCheck)
 
-        axios.post(`${process.env.API_URL}/util/email`, { ...form })
+		if (errorCheck && emptyCheck) { 
+			axios.post(`${process.env.API_URL}/util/email`, { ...form })
             .then(res=>{
                 console.log(res);
                 console.log(res.data);
                 setLoading(false)
+				setOpenSuccess(true)
             })
             .catch((err) => {
                 console.log('ERROR POSTING: ', err);
                 setLoading(false)
             }); 
+		}
+		else {
+			let updateErrors = {}
+			Object.entries(formData).forEach(entry => {
+				const [key, value] = entry;
+				if (value == '') {
+					let newEntry = {[key]: true}
+					updateErrors = {...updateErrors, ...newEntry};
+				}
+			})
+
+			setFormErrors({
+				...formErrors,
+				...updateErrors
+			})
+			setOpenError(true)
+			setLoading(false)
+		}
+        
 
     };
 
@@ -197,9 +331,10 @@ const Whitelist = () => {
                             id="name"
                             label="Your Name"
                             name="name"
-                            type="name"
                             variant="filled"
                             onChange={handleChange}
+							error={formErrors.name}
+							helperText={formErrors.name && 'Enter your name'}
 						/>
 					</Grid>
 					<Grid item xs={12} sm={6}>
@@ -209,10 +344,10 @@ const Whitelist = () => {
                             required
                             name="email"
                             label="Your Email"
-                            type="email"
+                            error={formErrors.email}
                             id="email"
                             variant="filled"
-                            helperText="To send approval notice"
+                            helperText={formErrors.email && 'Please enter a valid email address'}
                             onChange={handleChange}
 						/>
 					</Grid>
@@ -224,10 +359,10 @@ const Whitelist = () => {
                             id="sigValue"
                             label="How much would you like to invest"
                             name="sigValue"
-                            type="sigValue"
                             variant="filled"
-                            helperText="Enter value in sigUSD (max $5000)"
+                            helperText={formErrors.sigValue && 'Please enter between 1 and 5000 sigUSD'}
                             onChange={handleChange}
+							error={formErrors.sigValue}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -235,6 +370,7 @@ const Whitelist = () => {
                         variant="filled" 
                         fullWidth
                         required
+						error={formErrors.ergoAddress}
                     >
                         <InputLabel htmlFor="ergoAddress" sx={{'&.Mui-focused': { color: 'text.secondary'}}}>
                             Ergo Wallet Address
@@ -246,7 +382,7 @@ const Whitelist = () => {
                             readOnly
                             disableUnderline={true}
                             name="ergoAddress"
-                            type="ergoAddress"
+                            
                             sx={{ 
                                 width: '100%', 
                                 border: '1px solid rgba(82,82,90,1)', 
@@ -254,7 +390,7 @@ const Whitelist = () => {
                             }}
                         />
                         <FormHelperText>
-                            Your address must be pre-approved on the whitelist
+                            Your address will be pre-approved on the whitelist
                         </FormHelperText>
                     </FormControl>
 					</Grid>
@@ -272,13 +408,14 @@ const Whitelist = () => {
                             id="chatHandle"
                             label="Your TG or Discord Handle"
                             name="chatHandle"
-                            type="chatHandle"
+                            error={formErrors.chatHandle}
+							helperText={formErrors.chatHandle && 'Please enter your handle'}
                             variant="filled"
                             onChange={handleChange}
 						/>
 					</Grid>
                     <Grid item xs={12} sm={6}>
-                        <FormControl variant="filled" required sx={{ minWidth: '100%', }}>
+                        <FormControl variant="filled" error={formErrors.chatPlatform} required sx={{ minWidth: '100%', }}>
                             <InputLabel id="chatPlatform" sx={{ '&.Mui-focused': { color: theme.palette.text.secondary } }}>Select Platform</InputLabel>
                             <Select
                                 disableUnderline={true}
@@ -295,7 +432,9 @@ const Whitelist = () => {
                                 <MenuItem value="telegram">Telegram</MenuItem>
                                 <MenuItem value="discord">Discord</MenuItem>
                             </Select>
+							<FormHelperText>{formErrors.chatPlatform && 'Please select the platform'}</FormHelperText>
                         </FormControl>
+						
                     </Grid>
                     <Grid item xs={12}>
                         <Typography sx={{ color: theme.palette.text.secondary, mt: 3 }}>
@@ -309,20 +448,22 @@ const Whitelist = () => {
                             required
                             name="socialHandle"
                             label="Your Handle"
-                            type="socialHandle"
+                            error={formErrors.socialHandle}
+							helperText={formErrors.socialHandle && 'Please enter your handle'}
                             id="socialHandle"
                             variant="filled"
                             onChange={handleChange}
 						/>
 					</Grid>
                     <Grid item xs={12} sm={6}>
-                        <FormControl variant="filled" required sx={{ minWidth: '100%', }}>
+                        <FormControl variant="filled" error={formErrors.socialPlatform} required sx={{ minWidth: '100%', }}>
                             <InputLabel id="socialPlatform" sx={{ '&.Mui-focused': { color: theme.palette.text.secondary } }}>Select Platform</InputLabel>
                             <Select
                                 disableUnderline={true}
                                 id="socialPlatform"
                                 name="socialPlatform"
                                 value={formData.socialPlatform}
+								error={formErrors.socialPlatform}
                                 variant="filled"
                                 onChange={handleChange}
                                 sx={{
@@ -337,17 +478,18 @@ const Whitelist = () => {
                                 <MenuItem value="instagram">Instagram</MenuItem>
                                 <MenuItem value="facebook">Facebook</MenuItem>
                             </Select>
+							<FormHelperText>{formErrors.socialPlatform && 'Please select the platform'}</FormHelperText>
                         </FormControl>
                     </Grid>
 					
                     
 					</Grid>
-
+                    <FormControl required error={checkboxError}>
                     <FormGroup sx={{mt: 6 }}>
                         <FormControlLabel 
                             control={
                                 <Checkbox 
-                                    // checked={legal} 
+                                    checked={legal} 
                                     onChange={handleChecked} 
                                     name="legal" 
                                 />
@@ -358,7 +500,7 @@ const Whitelist = () => {
                         <FormControlLabel 
                             control={
                                 <Checkbox 
-                                    // checked={risks} 
+                                    checked={risks} 
                                     onChange={handleChecked} 
                                     name="risks" 
                                 />
@@ -369,7 +511,7 @@ const Whitelist = () => {
                         <FormControlLabel 
                             control={
                                 <Checkbox 
-                                    // checked={dao} 
+                                    checked={dao} 
                                     onChange={handleChecked} 
                                     name="dao" 
                                 />
@@ -377,13 +519,16 @@ const Whitelist = () => {
                             label="I understand that the funds raised by this project will be controlled by the ErgoPad DAO, which has board members throughout the world. I am aware that this DAO does not fall within the jurisdiction of any one country, and accept the implications therein." 
                             sx={{ color: theme.palette.text.secondary, mb: 3 }} 
                         />
-                        <FormHelperText>{checkboxError && 'You must accept the terms'}</FormHelperText>
+                        <FormHelperText>{checkboxError && 'Please accept the terms before submitting'}</FormHelperText>
                     </FormGroup>
+                    </FormControl>
+
+
                     <Box sx={{position: 'relative'}}>
                         <Button
                             type="submit"
                             fullWidth
-                            disabled={true}
+                            disabled={buttonEnabled}
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
@@ -403,6 +548,34 @@ const Whitelist = () => {
                             )}
 
                     </Box>
+					<Snackbar open={openError} autoHideDuration={6000} onClose={handleCloseError}>
+						<Alert onClose={handleCloseError} severity="error" sx={{ width: '100%' }}>
+							Please eliminate errors and try again
+						</Alert>
+					</Snackbar>
+					<Dialog
+						open={openSuccess}
+						onClose={handleCloseSuccess}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{"Form submitted"}
+						</DialogTitle>
+						<DialogContent>
+							<DialogContentText id="alert-dialog-description">
+								We have received your application and will get back to you shortly. If approved, instructions will be sent on how to secure your tokens on the 17th. Thanks a lot for your support!
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<MuiNextLink href="/">
+								<Button onClick={handleCloseSuccess} autoFocus>
+									Go Home
+								</Button>
+							</MuiNextLink>
+						</DialogActions>
+					</Dialog>
+
 					
 				</Box>
 			</Grid>

@@ -53,7 +53,7 @@ defaultHoldingData[defaultHoldingData.length - 1].y = portfolioValue;
 
 const Dashboard = () => {
 
-	const { wallet, setWallet } = useWallet()
+	const { wallet } = useWallet()
 
 	const [holdingData, setHoldingData] = useState(defaultHoldingData);
 	const [assetList, setAssetList] = useState(assetListArray(rawData2));
