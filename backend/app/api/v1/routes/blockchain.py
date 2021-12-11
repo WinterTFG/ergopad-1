@@ -25,11 +25,14 @@ logging.basicConfig(format="%(asctime)s %(levelname)s %(threadName)s %(name)s %(
 
 try:
   CFG = Config[Network]
+  CFG.ergopadTokenId = '0890ad268cd62f29d09245baa423f2251f1d77ea21443a27d60c3c92377d2e4d'
   isSimulation = True
   headers = {'Content-Type': 'application/json'}
   tokenInfo = requests.get(f'{CFG.explorer}/tokens/{CFG.ergopadTokenId}')
-  nodeWallet  = Wallet(CFG.ergopadWallet) # contains tokens
-  buyerWallet  = Wallet(CFG.buyerWallet) # simulate buyer
+  buyerWallet = Wallet('3WzKopFYhfRGPaUvC7v49DWgeY1efaCD3YpNQ6FZGr2t5mBhWjmw') # simulate buyer/3WzKopFYhfRGPaUvC7v49DWgeY1efaCD3YpNQ6FZGr2t5mBhWjmw
+  nodeWallet = Wallet('3WwjaerfwDqYvFwvPRVJBJx2iUvCjD2jVpsL82Zho1aaV5R95jsG') # contains tokens/3WwjaerfwDqYvFwvPRVJBJx2iUvCjD2jVpsL82Zho1aaV5R95jsG
+  # nodeWallet  = Wallet(CFG.ergopadWallet) # contains tokens
+  # buyerWallet  = Wallet(CFG.buyerWallet) # simulate buyer
 
 except Exception as e:
   logging.error(f'Init {e}')
@@ -41,21 +44,23 @@ blockchain_router = r = APIRouter()
 #
 # current node info
 #
-@r.get("/nodeInfo", name="blockchain:nodeInfo")
-def getNodeInfo():
+@r.get("/info", name="blockchain:info")
+def getInfo():
   try:
-    nodeInfo = {}
-    
+    nodeInfo = {}    
     res = requests.get(f'{CFG.node}/info', headers=dict(headers, **{'api_key': CFG.ergopadApiKey}))
     if res.ok:
-      info = res.json()
+      i = res.json()
       nodeInfo['network'] = Network
       nodeInfo['uri'] = CFG.node
-      if 'parameters' in info:
-        if 'height' in info['parameters']:
-          nodeInfo['currentHeight'] = info['parameters']['height']
-      if 'currentTime' in info:
-        nodeInfo['currentTime'] = info['currentTime']
+      if 'parameters' in i:
+        if 'height' in i['parameters']:
+          nodeInfo['currentHeight'] = i['parameters']['height']
+      if 'currentTime' in i:
+        nodeInfo['currentTime'] = i['currentTime']
+      nodeInfo['ergopadTokenId'] = CFG.ergopadTokenId
+      nodeInfo['buyer'] = buyerWallet.address
+      nodeInfo['seller'] = nodeWallet.address
     
     return nodeInfo
 
@@ -94,10 +99,10 @@ def getBoxesWithUnspentTokens(tokenId=CFG.ergopadTokenId, allowMempool=True):
       for ast in assets:
         if 'box' in ast:
           if ast['box']['assets'] != []:
-            for tkn in ast['box']['assets']:              
+            for tkn in ast['box']['assets']:
               if 'tokenId' in tkn and 'amount' in tkn:
                 logging.info(tokenId)
-                if tkn['tokenId'] == tokenId:                  
+                if tkn['tokenId'] == tokenId:
                   tot += tkn['amount']
                   if ast['box']['boxId'] in ergopadTokenBoxes:
                     ergopadTokenBoxes[ast['box']['boxId']].append(tkn)
@@ -138,15 +143,16 @@ def getErgoscript(name, params={}):
         val isValid = {{
             val heightStamp = OUTPUTS(0).R4[Coll[Byte]].isDefined
             val minErg = OUTPUTS(0).value == {params['ergAmount']}L
-            val walletAddress = OUTPUTS(2).propositionBytes == fromBase64("{params['toAddress']}")
+            val isBuyer = INPUTS(0).propositionBytes == fromBase64("{params['toAddress']}")
             val vestingPeriods = OUTPUTS.size == {CFG.vestingPeriods}L
 
             // heightStamp && minErg && walletAddress && vestingPeriods
-            walletAddress
+            isBuyer
         }}
 
         // structure ok, check logic and return t/f as sigmaProp
-        sigmaProp(isValid)
+        // sigmaProp(isValid)
+        sigmaProp(1==1)
       }}"""
 
     if name == 'testing':
@@ -181,6 +187,10 @@ def getErgoscript(name, params={}):
     if name == 'heightLock':
       script = f"""sigmaProp(OUTPUTS(0).R4[Long].getOrElse(0L) >= {params['heightLock']})"""
 
+    if name == 'vestingLock':
+      params['heightLock'] = 12345
+      script = f"""sigmaProp(PK("{buyerWallet.address}") && HEIGHT > {params['heightLock']})"""
+
     # get the P2S address (basically a hash of the script??)
     logging.debug(script)
     p2s = requests.post(f'{CFG.assembler}/compile', headers=headers, json=script)
@@ -199,11 +209,12 @@ def getErgoscript(name, params={}):
 def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue'):
 
   try:
-    nodeInfo = getNodeInfo()  
+    nodeInfo = getInfo()  
     ergopadTokenBoxes = getBoxesWithUnspentTokens(tokenId)
-    avgBlockHeight_s = 128 # seconds
-    vestingEpoch_hr = .1 # hour(s); every 6 mins
+    avgBlockHeight_s = 120 # seconds
+    vestingEpoch_hr = 16 # hour(s); every 6 mins
     vestingInterval_ht = int(vestingEpoch_hr*(3600/avgBlockHeight_s))
+    logging.debug(nodeInfo)
     vestingBeginHeight = nodeInfo['currentHeight']+vestingInterval_ht # vesting period converted to height
     txFee = CFG.txFee # * CFG.vestingPeriods ??
     txMin = 100000 # .01 ergs; remove after reload ENV
@@ -220,11 +231,11 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
       remainder = 0
       if i == CFG.vestingPeriods-1:
         remainder = qty%CFG.vestingPeriods
-      scVesting = getErgoscript('heightLock', {'heightLock': vestingBeginHeight+i*vestingInterval_ht})
+      scVesting = getErgoscript('vestingLock', {'heightLock': vestingBeginHeight+i*vestingInterval_ht})
 
       # create outputs for each vesting period; add remainder to final output, if exists
       outBox.append({
-        'address': buyerWallet.address,
+        # 'address': buyerWallet.address,
         'script': scVesting,
         'value': txMin,
         'register': {
@@ -248,7 +259,7 @@ def purchaseToken(qty:int=-1, tokenId=CFG.ergopadTokenId, scScript='alwaysTrue')
         'txSpec': {
             'requests': outBox,
             'fee': txFee,          
-            'inputs': ['$userIns', ','.join([k for k in ergopadTokenBoxes.keys()])],
+            'inputs': ['$userIns']+list(ergopadTokenBoxes.keys()),
             'dataInputs': [],
         },
     }
