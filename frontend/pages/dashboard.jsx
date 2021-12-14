@@ -119,26 +119,26 @@ const Dashboard = () => {
 						const res2 = await axios
 						.get(`https://api.ergoplatform.com/api/v0/assets/${initialAssetList[i].id}/issuingBox`, { ...defaultOptions })
 						.catch((err) => {
-						console.log('ERROR FETCHING: ', err);
+							console.log('ERROR FETCHING: ', err);
 						});
 						if (res2?.data) {
 						let data2 = res2?.data;
 	
 							let tokenObject = {
-								name: data2.map(token => token.assets[0].name),
-								ch: data2.map(token => token.creationHeight),
-								description: data2.map(token => toUtf8String(token.additionalRegisters.R5).substr(2)),
-								r7: data2.map(token => token.additionalRegisters.R7),
+								name: data2[0].assets[0].name,
+								ch: data2[0].creationHeight,
+								description: toUtf8String(data2[0].additionalRegisters.R5).substr(2),
+								r7: data2[0].additionalRegisters.R7,
 								r9: data2[0].additionalRegisters?.R9 ? resolveIpfs(toUtf8String(data2[0].additionalRegisters?.R9).substr(2)) : undefined,
-								r5: data2.map(token => toUtf8String(token.additionalRegisters.R5).substr(2)),
-								ext: data2.map(token => toUtf8String(token.additionalRegisters.R9).substr(2).slice(-4)),
+								r5: toUtf8String(data2[0].additionalRegisters.R5).substr(2),
+								ext: toUtf8String(data2[0].additionalRegisters.R9).substr(2).slice(-4),
 								token: initialAssetList[i].token,
 								id: initialAssetList[i].id,
 								amount: initialAssetList[i].amount,
 								amountUSD: initialAssetList[i].amountUSD ? initialAssetList[i].amountUSD : ''
 							}
 	
-							// console.log(tokenObject.r9);
+							// console.log(tokenObject);
 							
 							// if audio NFT
 							if (tokenObject.ext == '.mp3' || tokenObject.ext == '.ogg' || tokenObject.ext == '.wma' || tokenObject.ext == '.wav' || tokenObject.ext == '.aac' || tokenObject.ext == 'aiff' || tokenObject.r7 == '0e020102'){
@@ -277,13 +277,13 @@ const Dashboard = () => {
 				
 				<Grid item xs={12} md={4}>
 					<GlassContainer>
-						<AssetList assets={imgNftList} title='Image NFTs' />
+						<AssetList assets={imgNftList} title='Image NFTs' type='NFT' />
 					</GlassContainer>
 				</Grid>
 
 				<Grid item xs={12} md={4}>
 					<GlassContainer>
-						<AssetList assets={audNftList} title='Audio NFTs' />
+						<AssetList assets={audNftList} title='Audio NFTs' type='NFT' />
 					</GlassContainer>
 				</Grid>
 				</>

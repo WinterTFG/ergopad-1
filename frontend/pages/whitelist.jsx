@@ -61,16 +61,37 @@ const initialCheckboxState = Object.freeze({
 const emailRegex = /\S+@\S+\.\S+/;
 
 const Whitelist = () => {
+    // boolean object for each checkbox
     const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
-    const [buttonDisabled, setbuttonDisabled] = useState(false) 
+
+    // set true to disable submit button
+    const [buttonDisabled, setbuttonDisabled] = useState(false)
+
+    // form error object, all booleans
     const [formErrors, setFormErrors] = useState(initialFormErrors)
+
+    // form data is all strings
     const [formData, updateFormData] = useState(initialFormData);
+
+    // loading spinner for submit button
     const [isLoading, setLoading] = useState(false);
+
+    // open error snackbar 
 	const [openError, setOpenError] = useState(false);
+
+    // open success modal
 	const [openSuccess, setOpenSuccess] = useState(false);
+
+    // change error message for error snackbar
 	const [errorMessage, setErrorMessage] = useState('Please eliminate form errors and try again')
+
+    // disable form after API endpoint reports max submissions hit
     const [soldOut, setSoldOut] = useState(false)
+
+    // brings wallet data from AddWallet modal component. Will load from localStorage if wallet is set
     const { wallet } = useWallet()
+
+    // opens the modal to set wallet into localStorage
     const { setAddWalletOpen } = useAddWallet()
 
     const openWalletAdd = () => {
@@ -86,7 +107,7 @@ const Whitelist = () => {
         };
         axios.get(`${process.env.API_URL}/util/whitelist`, { ...defaultOptions })
             .then(res => {
-                if (res.data.qty > 80000) {
+                if (res.data.qty > 130000) {
                     setbuttonDisabled(true)
                     setSoldOut(true)
                 }
@@ -198,6 +219,7 @@ const Whitelist = () => {
         checkboxError ? setbuttonDisabled(true) : setbuttonDisabled(false)
     }, [checkboxError])
 
+    // snackbar for error reporting
 	const handleCloseError = (event, reason) => {
 		if (reason === 'clickaway') {
 			return;
@@ -205,6 +227,7 @@ const Whitelist = () => {
 		setOpenError(false);
 	};
 
+    // modal for success message
 	const handleCloseSuccess = () => {
 		setOpenSuccess(false);
 	};
@@ -240,9 +263,12 @@ const Whitelist = () => {
                 console.log(res);
                 console.log(res.data);
                 setLoading(false)
+
+                // modal for success message
 				setOpenSuccess(true)
             })
             .catch((err) => {
+                // snackbar for error message
 				setErrorMessage('ERROR POSTING: ' + err)
                 setLoading(false)
             }); 
@@ -261,12 +287,14 @@ const Whitelist = () => {
 				...formErrors,
 				...updateErrors
 			})
+
+            // snackbar for error message
 			setErrorMessage('Please eliminate form errors and try again')
 			setOpenError(true)
+
+            // turn off loading spinner for submit button
 			setLoading(false)
 		}
-        
-
     };
 
   return (
@@ -292,7 +320,7 @@ const Whitelist = () => {
 					</Typography>
 
 					<Box>
-						<a href="http://t.me/ergopad" target="_blank" rel="noreferrer">
+						<a href="https://t.me/ergopad_chat" target="_blank" rel="noreferrer">
 							<Button 
 							variant="contained"
 							sx={{
