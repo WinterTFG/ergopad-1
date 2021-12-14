@@ -45,6 +45,8 @@ ergo.*.log.gz
 /assembler/data/*
 /assembler/*net.conf
 
+.whitelist.jsx.swp
+
 ### PYTHON
 # Byte-compiled / optimized / DLL files
 __pycache__/
