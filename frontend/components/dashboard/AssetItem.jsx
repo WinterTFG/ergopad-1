@@ -46,7 +46,7 @@ const AssetAmountContainer = styled('div')(() => ({
   justifyContent: 'center',
 }));
 
-const AssetItem = ({ asset, stableDenominator = 'USD' }) => {
+const AssetItem = ({ asset, stableDenominator = 'USD', type }) => {
   
   const AssetImage = () => {
     if (asset?.r9) {
@@ -80,12 +80,14 @@ const AssetItem = ({ asset, stableDenominator = 'USD' }) => {
           {asset.name}
         </Typography>
       </AssetNameContainer>
-      <AssetAmountContainer>
+      {(type != 'NFT') && <AssetAmountContainer>
         <Typography>{asset.amount}</Typography>
-        <Typography variant='caption'>
-          ${asset.amountUSD} {stableDenominator}
-        </Typography>
-      </AssetAmountContainer>
+        
+          <Typography variant='caption'>
+            ${asset.amountUSD} {stableDenominator}
+          </Typography>
+        
+      </AssetAmountContainer>}
     </StyledAsset>
   );
 };
