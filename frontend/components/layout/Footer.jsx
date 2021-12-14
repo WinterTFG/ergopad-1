@@ -121,6 +121,11 @@ const Footer = () => {
 							</Link>
 						</ListItem>
 						<ListItem disableGutters sx={listItemStyles}>
+							<Link activeClassName='active' href='https://t.me/ergopad' sx={linkStyles} target="_blank" rel="noreferrer">
+								TG Announcements
+							</Link>
+						</ListItem>
+						<ListItem disableGutters sx={listItemStyles}>
 							<Link activeClassName='active' href='https://twitter.com/ErgoPadOfficial' sx={linkStyles} target="_blank" rel="noreferrer">
 								Twitter
 							</Link>
@@ -206,7 +211,7 @@ const Footer = () => {
 					</Link>
 				</ListItem>
 				<ListItem sx={socialStyles}>
-					<Link sx={{ display: 'flex', justifyContent: 'center' }}  href="https://t.me/ergopad" aria-label="Telegram" title="Telegram" rel="noreferrer" target="_blank">
+					<Link sx={{ display: 'flex', justifyContent: 'center' }}  href="https://t.me/ergopad_chat" aria-label="Telegram" title="Telegram" rel="noreferrer" target="_blank">
 						<SvgIcon sx={{ width: '32px', height: '32px' }} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 							<path d="M7.153 15.71C11.631 13.759 14.616 12.473 16.11 11.852 20.376 10.078 21.262 9.77 21.84 9.759 21.967 9.757 22.251 9.789 22.435 9.938 22.591 10.064 22.633 10.234 22.654 10.354 22.674 10.473 22.7 10.746 22.68 10.959 22.448 13.387 21.448 19.281 20.939 22.002 20.724 23.153 20.3 23.539 19.89 23.576 18.998 23.658 18.32 22.987 17.456 22.421 16.105 21.534 15.341 20.983 14.029 20.118 12.512 19.119 13.495 18.569 14.359 17.672 14.586 17.437 18.516 13.862 18.592 13.538 18.601 13.497 18.61 13.346 18.52 13.266 18.431 13.186 18.298 13.214 18.202 13.235 18.067 13.266 15.907 14.694 11.723 17.518 11.11 17.939 10.555 18.144 10.058 18.133 9.509 18.121 8.454 17.823 7.67 17.568 6.708 17.255 5.944 17.09 6.01 16.559 6.045 16.282 6.426 16 7.153 15.71Z" />
 						</SvgIcon>
